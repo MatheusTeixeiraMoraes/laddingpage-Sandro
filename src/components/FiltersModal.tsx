@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent } from "react";
-import type { Filtros } from "@/lib/filterImoveis";
+import type { Filtros } from "@/lib/filterEmpreendimentos";
 
 type FiltersModalProps = {
   open: boolean;

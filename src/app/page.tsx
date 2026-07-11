@@ -1,4 +1,4 @@
-import { imoveis } from "@/data/imoveis";
+import { empreendimentos } from "@/data/empreendimentos";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { PropertySearch } from "@/components/PropertySearch";
 
@@ -23,7 +23,7 @@ export default function Home() {
       >
         Falar no WhatsApp
       </a>
-      <PropertySearch imoveis={imoveis} />
+      <PropertySearch empreendimentos={empreendimentos} />
     </div>
   );
 }
