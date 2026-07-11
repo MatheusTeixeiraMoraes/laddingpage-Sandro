@@ -6,6 +6,8 @@ export const empreendimentos: Empreendimento[] = [
     nome: "Residencial Jardim das Flores",
     tipo: "apartamento",
     bairro: "Vila Prado",
+    latitude: -23.4936,
+    longitude: -47.4451,
     plantas: [
       {
         id: "1-sem-suite",
@@ -32,6 +34,8 @@ export const empreendimentos: Empreendimento[] = [
     nome: "Edifício Bela Vista",
     tipo: "apartamento",
     bairro: "Centro",
+    latitude: -23.5015,
+    longitude: -47.4526,
     plantas: [
       {
         id: "2-65",
@@ -58,6 +62,8 @@ export const empreendimentos: Empreendimento[] = [
     nome: "Casa Recanto Verde",
     tipo: "casa",
     bairro: "Chácara Elisa",
+    latitude: -23.4858,
+    longitude: -47.4611,
     plantas: [
       {
         id: "3-unica",
@@ -75,6 +81,8 @@ export const empreendimentos: Empreendimento[] = [
     nome: "Studio Central",
     tipo: "apartamento",
     bairro: "Centro",
+    latitude: -23.5028,
+    longitude: -47.4508,
     plantas: [
       {
         id: "4-unica",
@@ -92,6 +100,8 @@ export const empreendimentos: Empreendimento[] = [
     nome: "Sala Comercial Prime Office",
     tipo: "comercial",
     bairro: "Vila Prado",
+    latitude: -23.4951,
+    longitude: -47.4467,
     plantas: [
       {
         id: "5-unica",

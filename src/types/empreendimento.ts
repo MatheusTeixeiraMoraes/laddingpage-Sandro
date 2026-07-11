@@ -15,5 +15,7 @@ export type Empreendimento = {
   nome: string;
   tipo: TipoEmpreendimento;
   bairro: string;
+  latitude: number;
+  longitude: number;
   plantas: Planta[];
 };
