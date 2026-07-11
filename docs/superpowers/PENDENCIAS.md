@@ -24,6 +24,16 @@ este arquivo.
 
 ## Infraestrutura
 
-- [ ] Painel administrativo (depende de Supabase — combinado que entra
-      depois, ainda não conectado)
-- [ ] Deploy em produção (Vercel — combinado que entra depois)
+- [x] Vercel conectado ao repositório (projeto `laddingpage-sandro`, deploy
+      automático a cada push em `main`).
+- [x] Supabase conectado (projeto criado, `NEXT_PUBLIC_SUPABASE_URL` e
+      `NEXT_PUBLIC_SUPABASE_ANON_KEY` em `.env.local`, conectividade
+      verificada via SDK). Ainda **sem nenhuma tabela** — schema entra junto
+      com a spec do painel administrativo.
+- [ ] Adicionar `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+      nas Environment Variables do projeto Vercel (dashboard → Settings →
+      Environment Variables) — sem isso o site em produção não conecta ao
+      Supabase, só o ambiente local.
+- [ ] Painel administrativo: precisa de spec própria (schema de tabelas,
+      RLS, auth do corretor, upload de imagens, importação por planilha).
+      Supabase já está disponível pra isso, mas nada foi modelado ainda.
