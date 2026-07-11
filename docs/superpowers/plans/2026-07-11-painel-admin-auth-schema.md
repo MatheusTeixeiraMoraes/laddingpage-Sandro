@@ -14,7 +14,8 @@
 - **Sem CLI/MCP do Supabase disponível neste projeto** — qualquer SQL é aplicado manualmente pelo usuário no SQL Editor do dashboard. Verificação pós-SQL é feita via script Node com a chave `anon` (leitura) — nunca com a `service_role`.
 - **Eu não tenho a senha do admin** (por design — nunca compartilhada). Não consigo testar login bem-sucedido via Playwright. Verifico tudo mais (redirect quando deslogado, erro com credencial errada); login com sucesso fica pra confirmação manual do usuário.
 - **Validado contra o `types.d.ts` instalado:** `setAll` recebe `(cookiesToSet, headers)` — dois parâmetros — e os `headers` devem ser propagados pra resposta (`Cache-Control` anti-cache em rotas de auth). Não omitir esse passo.
-- **Gotcha de tipo:** colunas Postgres `numeric` (usadas em `preco` e `metragem`) voltam como **string** no JSON do PostgREST/supabase-js, não `number` — precisa de conversão explícita (`Number(...)`) na camada de mapeamento, senão comparações de filtro (`<`, `>`) viram comparação de string, silenciosamente erradas.
+- **Verificado empiricamente (corrige suposição inicial):** ao contrário do gotcha comum de `numeric`→string em outras configurações de PostgREST, neste projeto `preco`/`metragem` voltam como `number` de verdade (`typeof === "number"`, testado via script). `Number(...)` na camada de mapeamento continua no código como salvaguarda barata, mas não é estritamente necessário aqui — não presumir string sem testar de novo se o schema mudar.
+- **Descoberta importante durante a Task 1:** o SQL Editor do dashboard não estava persistindo as mudanças de forma confiável neste projeto (rodou "sem erro" repetidas vezes, mas `information_schema.tables` continuava vazio). A migration acabou sendo aplicada via conexão Postgres direta (`pg` + `DATABASE_URL` em `.env.local`, autorizado explicitamente pelo usuário a desabilitar verificação de certificado nessa conexão pontual, devido a um TLS-intercept local). Scripts usados (`run-migration.mjs`, `run-grants.mjs`, `check-db.mjs`, `check-schema.mjs`) são temporários e não fazem parte do código do projeto.
 - `export const dynamic = "force-dynamic"` nas páginas que leem do banco — sem isso o Next pode gerar estático no build e uma edição no banco não apareceria sem redeploy, o que contradiz o objetivo desta fatia.
 
 ---
@@ -133,8 +134,10 @@ console.log("RLS OK, escrita anonima bloqueada:", writeError.message);
 ```
 
 Run: `node --env-file=.env.local check-schema.mjs`
-Expected: `Leitura OK: 5 empreendimentos`; `Tipo de 'preco'...: string` (confirma o
-gotcha do `numeric`); `RLS OK, escrita anonima bloqueada: ...`.
+Expected: `Leitura OK: 5 empreendimentos`; `RLS OK, escrita anonima bloqueada: ...`.
+Nota: `NEXT_PUBLIC_SUPABASE_ANON_KEY` no snippet acima é o nome original do
+plano — o projeto real usa `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (chave no
+formato novo do Supabase, descoberto durante a execução desta task).
 
 - [ ] **Step 4: Apagar o script temporário e commitar a migration**
 
