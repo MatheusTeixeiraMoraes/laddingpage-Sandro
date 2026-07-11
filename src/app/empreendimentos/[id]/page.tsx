@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { empreendimentos } from "@/data/empreendimentos";
 import { EmpreendimentoDetalhe } from "@/components/EmpreendimentoDetalhe";
+import { MapaEmpreendimento } from "@/components/MapaEmpreendimento";
 
 export function generateStaticParams() {
   return empreendimentos.map((empreendimento) => ({ id: empreendimento.id }));
@@ -25,6 +26,11 @@ export default async function EmpreendimentoPage({
       </h1>
       <p className="text-slate-500">{empreendimento.bairro}</p>
       <EmpreendimentoDetalhe empreendimento={empreendimento} />
+      <MapaEmpreendimento
+        nome={empreendimento.nome}
+        latitude={empreendimento.latitude}
+        longitude={empreendimento.longitude}
+      />
     </div>
   );
 }
