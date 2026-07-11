@@ -30,10 +30,10 @@ este arquivo.
       `NEXT_PUBLIC_SUPABASE_ANON_KEY` em `.env.local`, conectividade
       verificada via SDK). Ainda **sem nenhuma tabela** — schema entra junto
       com a spec do painel administrativo.
-- [ ] Adicionar `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-      nas Environment Variables do projeto Vercel (dashboard → Settings →
-      Environment Variables) — sem isso o site em produção não conecta ao
-      Supabase, só o ambiente local.
+- [x] `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` adicionadas
+      nas Environment Variables do Vercel e redeploy feito. Site em produção
+      responde 200 nas rotas existentes (ainda sem nenhuma chamada real ao
+      Supabase pra confirmar as chaves ponta a ponta em produção).
 - [ ] Painel administrativo: precisa de spec própria (schema de tabelas,
       RLS, auth do corretor, upload de imagens, importação por planilha).
       Supabase já está disponível pra isso, mas nada foi modelado ainda.
