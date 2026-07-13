@@ -5,7 +5,7 @@ import type { TipoEmpreendimento, Zona } from "@/types/empreendimento";
 export type EmpreendimentoInput = {
   nome: string;
   tipo: TipoEmpreendimento;
-  bairro: string;
+  bairro_id: string;
   zona: Zona;
   imagem: string;
   galeria: string[];
@@ -28,7 +28,6 @@ export type EmpreendimentoInput = {
   entrega_com_piso: "" | "completo" | "areas_molhadas";
   documentacao: "" | "gratis" | "pago";
   endereco: string;
-  sobre_bairro: string;
   latitude: number;
   longitude: number;
 };

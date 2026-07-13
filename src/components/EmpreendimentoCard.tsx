@@ -44,7 +44,7 @@ export function EmpreendimentoCard({
         </div>
         <div className="flex flex-1 flex-col gap-1.5 p-4">
           <h3 className="font-heading font-bold text-brand-navy">{empreendimento.nome}</h3>
-          <p className="text-sm text-slate-500">{empreendimento.bairro}</p>
+          <p className="text-sm text-slate-500">{empreendimento.bairro.nome}</p>
           <p className="text-sm text-slate-600">
             {listaDeDormitorios(empreendimento.dormitorios)} dorms ·{" "}
             {faixaDeMetragem(empreendimento)} ·{" "}

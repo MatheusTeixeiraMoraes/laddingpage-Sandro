@@ -48,7 +48,7 @@ export function LancamentoCard({ empreendimento }: { empreendimento: Empreendime
       </div>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <h3 className="font-heading font-bold text-brand-navy">{empreendimento.nome}</h3>
-        <p className="text-sm text-slate-500">{empreendimento.bairro}</p>
+        <p className="text-sm text-slate-500">{empreendimento.bairro.nome}</p>
         <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs text-slate-600">
           <span className="inline-flex items-center gap-1"><IconDorm /> {listaDeDormitorios(empreendimento.dormitorios)} dorms</span>
           <span className="inline-flex items-center gap-1"><IconArea /> {faixaDeMetragem(empreendimento)}</span>

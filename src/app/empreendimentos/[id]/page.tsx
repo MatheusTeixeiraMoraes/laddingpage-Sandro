@@ -72,7 +72,7 @@ export default async function EmpreendimentoPage({
             <h1 className="mt-3 font-heading text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
               {empreendimento.nome}
             </h1>
-            <p className="mt-1 text-sm text-white/80">{empreendimento.bairro} · Sorocaba - SP</p>
+            <p className="mt-1 text-sm text-white/80">{empreendimento.bairro.nome} · Sorocaba - SP</p>
           </div>
         </section>
 

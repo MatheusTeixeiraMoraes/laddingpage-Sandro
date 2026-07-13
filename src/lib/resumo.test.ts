@@ -5,13 +5,14 @@ import { faixaDeMetragem, listaDeDormitorios } from "./resumo.ts";
 
 function comPlantas(metragens: number[]): Empreendimento {
   return {
-    id: "x", nome: "x", tipo: "apartamento", bairro: "", zona: "norte",
+    id: "x", nome: "x", tipo: "apartamento",
+    bairro: { id: "b", nome: "Centro", sobre: "" }, zona: "norte",
     imagem: "", galeria: [], entregaEm: null, precoAPartirDe: 0,
     dormitorios: [], suite: false, varanda: false, quintal: false,
     garagemCoberta: false, vagaDupla: false, pontosAr: null,
     descricao: "", construtora: "", torres: null, andares: "",
     aptosPorAndar: null, elevadores: null, entregaComPiso: "", documentacao: "",
-    endereco: "", sobreBairro: "",
+    endereco: "",
     latitude: 0, longitude: 0,
     plantas: metragens.map((m, i) => ({ id: String(i), metragem: m, preco: null, imagens: [] })),
   };

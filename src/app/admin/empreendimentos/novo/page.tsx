@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { EmpreendimentoForm } from "@/components/admin/EmpreendimentoForm";
+import { getBairros } from "@/lib/bairros";
 
-export default function NovoEmpreendimentoPage() {
+export const dynamic = "force-dynamic";
+
+export default async function NovoEmpreendimentoPage() {
+  const bairros = await getBairros();
+
   return (
     <div className="mx-auto max-w-3xl px-6 py-10">
       <Link
@@ -18,7 +23,7 @@ export default function NovoEmpreendimentoPage() {
       </p>
 
       <div className="mt-6">
-        <EmpreendimentoForm />
+        <EmpreendimentoForm bairros={bairros} />
       </div>
     </div>
   );

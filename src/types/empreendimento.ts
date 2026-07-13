@@ -16,11 +16,21 @@ export type Planta = {
   imagens: string[];
 };
 
+/**
+ * O texto sobre o bairro pertence ao BAIRRO, não ao imóvel: dois apartamentos
+ * na Vila Haro ficam na mesma Vila Haro. Editar o texto muda em todos eles.
+ */
+export type Bairro = {
+  id: string;
+  nome: string;
+  sobre: string;
+};
+
 export type Empreendimento = {
   id: string;
   nome: string;
   tipo: TipoEmpreendimento;
-  bairro: string;
+  bairro: Bairro;
   zona: Zona;
   /** Foto de capa (cards e hero). */
   imagem: string;
@@ -57,8 +67,6 @@ export type Empreendimento = {
 
   /** Endereço escrito ("R. Ramon Haro Martini, 1160 - Vila Haro"). */
   endereco: string;
-  /** Texto do Sandro sobre o bairro (acesso, comércio, escolas, lazer). */
-  sobreBairro: string;
   latitude: number;
   longitude: number;
   plantas: Planta[];

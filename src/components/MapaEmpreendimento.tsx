@@ -9,14 +9,14 @@ export function MapaEmpreendimento({
 }: {
   empreendimento: Empreendimento;
 }) {
-  const { nome, endereco, sobreBairro, latitude, longitude } = empreendimento;
+  const { nome, endereco, bairro, latitude, longitude } = empreendimento;
 
   // t=h = satelite COM nomes de rua (hibrido). So satelite (t=k) fica bonito e
   // inutil: o lead nao consegue se localizar sem os nomes das ruas.
   const mapaEmbedUrl = `https://www.google.com/maps?q=${latitude},${longitude}&z=16&t=h&output=embed`;
   const mapaLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
 
-  const paragrafos = sobreBairro
+  const paragrafos = bairro.sobre
     .split("\n")
     .map((p) => p.trim())
     .filter(Boolean);
@@ -39,7 +39,7 @@ export function MapaEmpreendimento({
         {paragrafos.length > 0 ? (
           <>
             <h3 className="mt-5 font-heading text-xl font-bold text-white sm:text-2xl">
-              Sobre o bairro
+              {bairro.nome}
             </h3>
             <div className="mt-4 flex max-w-xl flex-col gap-3 text-slate-300">
               {paragrafos.map((p) => (

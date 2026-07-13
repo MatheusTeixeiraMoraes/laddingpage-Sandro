@@ -22,7 +22,7 @@ function emp(
     id,
     nome: id,
     tipo: "apartamento",
-    bairro: "",
+    bairro: { id: "b", nome: "Centro", sobre: "" },
     zona: "norte",
     imagem: "",
     galeria: [],
@@ -44,7 +44,6 @@ function emp(
     entregaComPiso: "",
     documentacao: "",
     endereco: "",
-    sobreBairro: "",
     latitude: 0,
     longitude: 0,
     plantas: metragens.map((m, i) => ({

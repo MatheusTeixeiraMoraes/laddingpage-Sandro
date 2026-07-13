@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getEmpreendimentoById } from "@/lib/empreendimentos";
+import { getBairros } from "@/lib/bairros";
 import { EmpreendimentoForm } from "@/components/admin/EmpreendimentoForm";
 import { PlantasManager } from "@/components/admin/PlantasManager";
 
@@ -12,7 +13,10 @@ export default async function EditarEmpreendimentoPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const empreendimento = await getEmpreendimentoById(id);
+  const [empreendimento, bairros] = await Promise.all([
+    getEmpreendimentoById(id),
+    getBairros(),
+  ]);
 
   if (!empreendimento) {
     notFound();
@@ -42,7 +46,7 @@ export default async function EditarEmpreendimentoPage({
       <p className="mt-1 text-sm text-slate-500">{empreendimento.nome}</p>
 
       <div className="mt-6">
-        <EmpreendimentoForm empreendimento={empreendimento} />
+        <EmpreendimentoForm empreendimento={empreendimento} bairros={bairros} />
       </div>
 
       <div className="mt-10">

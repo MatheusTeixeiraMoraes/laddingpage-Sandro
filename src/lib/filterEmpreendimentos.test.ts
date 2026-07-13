@@ -3,11 +3,13 @@ import assert from "node:assert/strict";
 import { filterEmpreendimentos, FILTROS_VAZIOS } from "./filterEmpreendimentos.ts";
 import type { Empreendimento } from "../types/empreendimento";
 
+const bairro = (nome: string) => ({ id: nome, nome, sobre: "" });
+
 function emp(over: Partial<Empreendimento> & { id: string }): Empreendimento {
   return {
     nome: over.id,
     tipo: "apartamento",
-    bairro: "",
+    bairro: bairro("Centro"),
     zona: "norte",
     imagem: "",
     galeria: [],
@@ -29,7 +31,6 @@ function emp(over: Partial<Empreendimento> & { id: string }): Empreendimento {
     entregaComPiso: "",
     documentacao: "",
     endereco: "",
-    sobreBairro: "",
     latitude: 0,
     longitude: 0,
     plantas: [{ id: `${over.id}-a`, metragem: 45, preco: null, imagens: [] }],
@@ -41,7 +42,7 @@ const fixture: Empreendimento[] = [
   emp({
     id: "1",
     nome: "Casa Azul",
-    bairro: "Centro",
+    bairro: bairro("Centro"),
     zona: "leste",
     precoAPartirDe: 500_000,
     dormitorios: [3],
@@ -52,7 +53,7 @@ const fixture: Empreendimento[] = [
   emp({
     id: "2",
     nome: "Predio Duas Plantas",
-    bairro: "Vila Nova",
+    bairro: bairro("Vila Nova"),
     entregaEm: "2027-12-01",
     precoAPartirDe: 180_000,
     dormitorios: [1, 3],

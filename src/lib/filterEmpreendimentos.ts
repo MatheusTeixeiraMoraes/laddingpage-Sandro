@@ -65,7 +65,7 @@ export function filterEmpreendimentos(
 
   return empreendimentos.filter((e) => {
     if (termo) {
-      const alvo = `${e.nome} ${e.bairro}`.toLowerCase();
+      const alvo = `${e.nome} ${e.bairro.nome}`.toLowerCase();
       if (!alvo.includes(termo)) return false;
     }
     if (filtros.tipo !== "todos" && e.tipo !== filtros.tipo) return false;

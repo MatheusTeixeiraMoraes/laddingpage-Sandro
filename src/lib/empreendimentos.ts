@@ -3,7 +3,7 @@ import { isUuid } from "@/lib/uuid";
 import type { Empreendimento, Zona } from "@/types/empreendimento";
 
 const SELECT_EMPREENDIMENTO =
-  "id, nome, tipo, bairro, zona, imagem, galeria, entrega_em, preco_a_partir_de, dormitorios, suite, varanda, quintal, garagem_coberta, vaga_dupla, pontos_ar, descricao, construtora, torres, andares, aptos_por_andar, elevadores, entrega_com_piso, documentacao, endereco, sobre_bairro, latitude, longitude, plantas(id, metragem, preco, imagens)";
+  "id, nome, tipo, zona, imagem, galeria, entrega_em, preco_a_partir_de, dormitorios, suite, varanda, quintal, garagem_coberta, vaga_dupla, pontos_ar, descricao, construtora, torres, andares, aptos_por_andar, elevadores, entrega_com_piso, documentacao, endereco, latitude, longitude, bairros(id, nome, sobre), plantas(id, metragem, preco, imagens)";
 
 type PlantaRow = {
   id: string;
@@ -16,7 +16,8 @@ type EmpreendimentoRow = {
   id: string;
   nome: string;
   tipo: Empreendimento["tipo"];
-  bairro: string;
+  /** Vem do join com bairros. */
+  bairros: { id: string; nome: string; sobre: string };
   zona: Zona;
   imagem: string;
   galeria: string[];
@@ -38,7 +39,6 @@ type EmpreendimentoRow = {
   entrega_com_piso: Empreendimento["entregaComPiso"];
   documentacao: Empreendimento["documentacao"];
   endereco: string;
-  sobre_bairro: string;
   latitude: number;
   longitude: number;
   plantas: PlantaRow[];
@@ -49,7 +49,11 @@ function mapRow(row: EmpreendimentoRow): Empreendimento {
     id: row.id,
     nome: row.nome,
     tipo: row.tipo,
-    bairro: row.bairro,
+    bairro: {
+      id: row.bairros.id,
+      nome: row.bairros.nome,
+      sobre: row.bairros.sobre ?? "",
+    },
     zona: row.zona,
     imagem: row.imagem,
     galeria: row.galeria ?? [],
@@ -71,7 +75,6 @@ function mapRow(row: EmpreendimentoRow): Empreendimento {
     entregaComPiso: row.entrega_com_piso ?? "",
     documentacao: row.documentacao ?? "",
     endereco: row.endereco ?? "",
-    sobreBairro: row.sobre_bairro ?? "",
     latitude: row.latitude,
     longitude: row.longitude,
     plantas: row.plantas

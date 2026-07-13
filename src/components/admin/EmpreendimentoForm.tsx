@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import type { Empreendimento, TipoEmpreendimento, Zona } from "@/types/empreendimento";
+import type { Bairro, Empreendimento, TipoEmpreendimento, Zona } from "@/types/empreendimento";
 import { parseCoordenadas } from "@/lib/coordenadas";
 import {
   criarEmpreendimento,
@@ -11,6 +11,7 @@ import {
   uploadImagem,
   type EmpreendimentoInput,
 } from "@/lib/admin/empreendimentos";
+import { criarBairro, salvarSobreBairro } from "@/lib/admin/bairros";
 import { UploadGaleria } from "@/components/admin/UploadGaleria";
 
 const TIPOS: { value: TipoEmpreendimento; label: string }[] = [
@@ -33,8 +34,10 @@ const rotulo = "block text-xs font-semibold uppercase tracking-wide text-slate-5
 
 export function EmpreendimentoForm({
   empreendimento,
+  bairros: bairrosIniciais,
 }: {
   empreendimento?: Empreendimento;
+  bairros: Bairro[];
 }) {
   const router = useRouter();
   const editando = Boolean(empreendimento);
@@ -42,7 +45,40 @@ export function EmpreendimentoForm({
   const [nome, setNome] = useState(empreendimento?.nome ?? "");
   const [tipo, setTipo] = useState<TipoEmpreendimento>(empreendimento?.tipo ?? "apartamento");
   const [zona, setZona] = useState<Zona>(empreendimento?.zona ?? "norte");
-  const [bairro, setBairro] = useState(empreendimento?.bairro ?? "");
+
+  // O texto do bairro pertence ao BAIRRO: escolher um bairro que ja tem texto
+  // preenche na hora, e editar aqui muda em todos os imoveis daquele bairro.
+  const [bairros, setBairros] = useState<Bairro[]>(bairrosIniciais);
+  const [bairroId, setBairroId] = useState(empreendimento?.bairro.id ?? "");
+  const [sobreBairro, setSobreBairro] = useState(empreendimento?.bairro.sobre ?? "");
+  const [novoBairro, setNovoBairro] = useState("");
+  const [criandoBairro, setCriandoBairro] = useState(false);
+
+  const bairroSelecionado = bairros.find((b) => b.id === bairroId);
+
+  const escolherBairro = (id: string) => {
+    setBairroId(id);
+    setSobreBairro(bairros.find((b) => b.id === id)?.sobre ?? "");
+  };
+
+  const handleNovoBairro = async () => {
+    const nomeLimpo = novoBairro.trim();
+    if (!nomeLimpo) return;
+
+    setCriandoBairro(true);
+    setErro(null);
+    try {
+      const bairro = await criarBairro(nomeLimpo);
+      setBairros((atuais) => [...atuais, bairro].sort((a, b) => a.nome.localeCompare(b.nome)));
+      setBairroId(bairro.id);
+      setSobreBairro("");
+      setNovoBairro("");
+    } catch (e) {
+      setErro(e instanceof Error ? e.message : "Não foi possível criar o bairro.");
+    } finally {
+      setCriandoBairro(false);
+    }
+  };
   // Entrega vira data no banco. Antes era texto livre: dava pra digitar
   // "final de 2026" e o imóvel sumia de qualquer filtro por prazo.
   const [pronto, setPronto] = useState(empreendimento?.entregaEm === null);
@@ -78,7 +114,6 @@ export function EmpreendimentoForm({
     empreendimento?.documentacao ?? "",
   );
   const [endereco, setEndereco] = useState(empreendimento?.endereco ?? "");
-  const [sobreBairro, setSobreBairro] = useState(empreendimento?.sobreBairro ?? "");
 
   const numeroOuNulo = (v: string): number | null => (v === "" ? null : Number(v));
 
@@ -130,6 +165,10 @@ export function EmpreendimentoForm({
       setErro("Informe o preço “a partir de”.");
       return;
     }
+    if (!bairroId) {
+      setErro("Escolha o bairro do empreendimento.");
+      return;
+    }
 
     setSalvando(true);
     try {
@@ -137,11 +176,15 @@ export function EmpreendimentoForm({
         ? await uploadImagem(arquivo)
         : (empreendimento?.imagem ?? "");
 
+      // O texto vive no bairro, nao no imovel: salva na tabela de bairros e
+      // vale para todos os imoveis daquele bairro.
+      await salvarSobreBairro(bairroId, sobreBairro);
+
       const dados: EmpreendimentoInput = {
         nome: nome.trim(),
         tipo,
         zona,
-        bairro: bairro.trim(),
+        bairro_id: bairroId,
         entrega_em: pronto ? null : `${mesEntrega}-01`,
         preco_a_partir_de: preco,
         dormitorios: dorms,
@@ -160,7 +203,6 @@ export function EmpreendimentoForm({
         entrega_com_piso: piso,
         documentacao,
         endereco: endereco.trim(),
-        sobre_bairro: sobreBairro.trim(),
         imagem,
         galeria,
         latitude: coordenadas.latitude,
@@ -216,13 +258,22 @@ export function EmpreendimentoForm({
 
         <label>
           <span className={rotulo}>Bairro</span>
-          <input
+          <select
             className={campo}
-            value={bairro}
-            onChange={(e) => setBairro(e.target.value)}
-            required
-            placeholder="Ex: Zona Leste"
-          />
+            value={bairroId}
+            onChange={(e) => escolherBairro(e.target.value)}
+          >
+            <option value="">Escolha o bairro…</option>
+            {bairros.map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.nome}
+                {b.sobre ? " ✓" : ""}
+              </option>
+            ))}
+          </select>
+          <span className="mt-1 block text-xs text-slate-400">
+            ✓ = o bairro já tem texto escrito.
+          </span>
         </label>
 
         <div>
@@ -468,18 +519,49 @@ export function EmpreendimentoForm({
               />
             </label>
 
-            <label>
-              <span className={rotulo}>Sobre o bairro</span>
+            <div>
+              <span className={rotulo}>Bairro não está na lista?</span>
+              <div className="mt-1 flex gap-2">
+                <input
+                  className={`${campo} mt-0`}
+                  value={novoBairro}
+                  onChange={(e) => setNovoBairro(e.target.value)}
+                  placeholder="Ex: Vila Haro"
+                />
+                <button
+                  type="button"
+                  onClick={handleNovoBairro}
+                  disabled={criandoBairro || novoBairro.trim() === ""}
+                  className="shrink-0 whitespace-nowrap rounded-xl bg-brand-navy px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-navy/90 disabled:opacity-40"
+                >
+                  {criandoBairro ? "Criando..." : "Criar bairro"}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <span className={rotulo}>
+                Sobre o bairro
+                {bairroSelecionado ? ` — ${bairroSelecionado.nome}` : ""}
+              </span>
               <textarea
-                className={`${campo} min-h-28`}
+                className={`${campo} min-h-28 disabled:bg-slate-100`}
                 value={sobreBairro}
                 onChange={(e) => setSobreBairro(e.target.value)}
-                placeholder="O que tem por perto: acesso a rodovias e avenidas, supermercados, escolas, parques, comércio. Uma linha em branco separa os parágrafos."
+                disabled={!bairroId}
+                placeholder={
+                  bairroId
+                    ? "O que tem por perto: acesso a rodovias e avenidas, supermercados, escolas, parques, comércio. Uma linha em branco separa os parágrafos."
+                    : "Escolha o bairro primeiro."
+                }
               />
-              <span className="mt-1 block text-xs text-slate-400">
-                Deixe vazio e o site mostra só o mapa.
-              </span>
-            </label>
+              {bairroId && (
+                <span className="mt-1 block text-xs text-amber-600">
+                  Este texto é do bairro, não deste imóvel: ao salvar, passa a valer
+                  para todos os imóveis de {bairroSelecionado?.nome}.
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
