@@ -1,12 +1,16 @@
-import { empreendimentos } from "@/data/empreendimentos";
+import { getEmpreendimentos } from "@/lib/empreendimentos";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { PropertySearch } from "@/components/PropertySearch";
+
+export const dynamic = "force-dynamic";
 
 const WHATSAPP_GENERICO = buildWhatsAppLink(
   "Olá, vi o site e gostaria de saber mais sobre os imóveis.",
 );
 
-export default function Home() {
+export default async function Home() {
+  const empreendimentos = await getEmpreendimentos();
+
   return (
     <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 px-6 py-16 text-center">
       <h1 className="text-4xl font-bold tracking-tight text-brand-purple sm:text-5xl">

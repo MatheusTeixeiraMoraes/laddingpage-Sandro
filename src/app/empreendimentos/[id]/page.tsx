@@ -1,11 +1,9 @@
 import { notFound } from "next/navigation";
-import { empreendimentos } from "@/data/empreendimentos";
+import { getEmpreendimentoById } from "@/lib/empreendimentos";
 import { EmpreendimentoDetalhe } from "@/components/EmpreendimentoDetalhe";
 import { MapaEmpreendimento } from "@/components/MapaEmpreendimento";
 
-export function generateStaticParams() {
-  return empreendimentos.map((empreendimento) => ({ id: empreendimento.id }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function EmpreendimentoPage({
   params,
@@ -13,7 +11,7 @@ export default async function EmpreendimentoPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const empreendimento = empreendimentos.find((item) => item.id === id);
+  const empreendimento = await getEmpreendimentoById(id);
 
   if (!empreendimento) {
     notFound();
