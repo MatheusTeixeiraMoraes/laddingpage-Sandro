@@ -21,9 +21,11 @@ export function SobreMim() {
             Prazer, eu sou <span className="text-brand-pink">Sandro Higuti</span>
           </h2>
           <p className="mt-4 max-w-md text-slate-600">
-            Consultor imobiliário especializado no programa Minha Casa Minha Vida
-            em Sorocaba e região. Minha missão é te ajudar a encontrar o lar ideal
-            ou o melhor investimento com segurança, clareza e tranquilidade.
+            Acredito que comprar o primeiro imóvel vai muito além de escolher um
+            apartamento. É uma decisão que envolve sonhos, expectativas e uma
+            grande responsabilidade. Por isso, escolhi construir meu trabalho com
+            base na empatia, na transparência e no compromisso de orientar cada
+            cliente como eu gostaria que minha própria família fosse orientada.
           </p>
 
           <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
