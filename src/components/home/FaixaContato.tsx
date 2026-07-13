@@ -90,8 +90,9 @@ export function FaixaContato() {
                 Vamos achar o <span className="text-brand-pink">seu imóvel</span>?
               </h2>
               <p className="mt-3 max-w-md text-slate-300">
-                Sem robô e sem formulário de dez campos. Você me manda uma mensagem
-                e eu te respondo — sou eu do outro lado.
+                Me conta o que você procura e em que momento você está. Eu te
+                respondo pessoalmente, tiro suas dúvidas sobre financiamento e a
+                gente vai no seu tempo — sem pressa e sem compromisso.
               </p>
               <p className="mt-4 font-script text-2xl text-brand-pink">
                 Clientes que se tornam amigos.
