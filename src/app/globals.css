@@ -27,7 +27,7 @@
       transform: translateX(0);
     }
     to {
-      transform: translateX(calc(-50% - 0.5rem)); /* metade + metade do gap */
+      transform: translateX(calc(-50% - 0.625rem)); /* metade + metade do gap (gap-5) */
     }
   }
 }

@@ -55,11 +55,9 @@ export const NUMEROS: { valor: string; label: string }[] = [
   { valor: "+100", label: "Sonhos realizados" },
 ];
 
-/** Fotos reais de clientes (entrega de chaves) em public/clientes/. */
-export const FOTOS_CLIENTES: string[] = Array.from(
-  { length: 11 },
-  (_, i) => `/clientes/cliente-${i + 1}.jpg`,
-);
+// As fotos de clientes saíram daqui: vivem no banco (tabela fotos_clientes,
+// arquivo no Storage) porque o Sandro adiciona e remove sozinho em
+// /admin/depoimentos. Ver src/lib/fotosClientes.ts.
 
 // As redes sociais reais vivem em src/components/home/SocialIcons.tsx
 // (fonte única usada pelo header, footer e pela página /sobre).

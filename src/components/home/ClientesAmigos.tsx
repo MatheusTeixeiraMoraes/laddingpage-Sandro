@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Depoimentos } from "@/components/Depoimentos";
 import { CarrosselClientes } from "@/components/home/CarrosselClientes";
+import type { FotoCliente } from "@/lib/fotosClientes";
 
-export function ClientesAmigos() {
+export function ClientesAmigos({ fotos }: { fotos: FotoCliente[] }) {
   return (
     <section id="depoimentos" className="scroll-mt-20 bg-white py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-6">
@@ -20,24 +21,27 @@ export function ClientesAmigos() {
         </div>
       </div>
 
-      {/* Fora do container: a faixa desliza de borda a borda. */}
-      <div className="mt-10">
-        <CarrosselClientes />
-      </div>
+      {fotos.length > 0 && (
+        <>
+          <div className="mt-10">
+            <CarrosselClientes fotos={fotos} />
+          </div>
+
+          <div className="mt-8 text-center">
+            <Link
+              href="/galeria"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-2.5 text-sm font-semibold text-brand-navy transition-colors hover:border-brand-pink hover:text-brand-pink"
+            >
+              Ir para a galeria de depoimentos
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </Link>
+          </div>
+        </>
+      )}
 
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mt-8 text-center">
-          <Link
-            href="/galeria"
-            className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-5 py-2.5 text-sm font-semibold text-brand-navy transition-colors hover:border-brand-pink hover:text-brand-pink"
-          >
-            Ir para a galeria de depoimentos
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
-          </Link>
-        </div>
-
         <div className="mt-14 empty:mt-0">
           <Depoimentos />
         </div>

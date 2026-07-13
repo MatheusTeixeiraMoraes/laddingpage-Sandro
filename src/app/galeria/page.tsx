@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FOTOS_CLIENTES } from "@/data/sobre";
+import { getFotosClientes } from "@/lib/fotosClientes";
 import { Depoimentos } from "@/components/Depoimentos";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Galeria de depoimentos | Sandro Higuti",
@@ -14,7 +16,9 @@ const WHATSAPP = buildWhatsAppLink(
   "Olá, Sandro! Vi a galeria de clientes no site e gostaria de conversar.",
 );
 
-export default function GaleriaPage() {
+export default async function GaleriaPage() {
+  const fotos = await getFotosClientes();
+
   return (
     <div>
       <section className="bg-gradient-to-b from-brand-blush/40 to-white">
@@ -36,8 +40,8 @@ export default function GaleriaPage() {
             Clientes que se tornam <span className="text-brand-pink">amigos</span>
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-slate-600">
-            {FOTOS_CLIENTES.length} momentos de entrega de chave que viraram
-            amizade de verdade.
+            {fotos.length} momentos de entrega de chave que viraram amizade de
+            verdade.
           </p>
         </div>
       </section>
@@ -45,14 +49,17 @@ export default function GaleriaPage() {
       <section className="bg-white pb-16 sm:pb-20">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {FOTOS_CLIENTES.map((foto, i) => (
+            {fotos.map((foto, i) => (
               <div
-                key={foto}
+                key={foto.id}
                 className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-sm"
               >
                 <Image
-                  src={foto}
-                  alt={`Cliente do Sandro Higuti na entrega das chaves ${i + 1}`}
+                  src={foto.url}
+                  alt={
+                    foto.legenda ||
+                    `Cliente do Sandro Higuti na entrega das chaves ${i + 1}`
+                  }
                   fill
                   sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                   className="object-cover transition-transform duration-300 hover:scale-105"

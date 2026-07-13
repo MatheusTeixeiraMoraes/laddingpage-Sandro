@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Depoimentos } from "@/components/Depoimentos";
 import { SocialIcons } from "@/components/home/SocialIcons";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { getFotosClientes } from "@/lib/fotosClientes";
 import {
   BIO_PARAGRAFOS,
   BIO_REALIZACOES,
@@ -10,8 +12,9 @@ import {
   VALORES,
   DESTAQUES,
   NUMEROS,
-  FOTOS_CLIENTES,
 } from "@/data/sobre";
+
+export const dynamic = "force-dynamic";
 
 const WHATSAPP = buildWhatsAppLink(
   "Olá, Sandro! Li a sua história no site e gostaria de conversar.",
@@ -23,7 +26,9 @@ export const metadata = {
     "A história do Sandro Higuti: atendimento humanizado, especialista em Minha Casa Minha Vida em Sorocaba. CRECI 278922.",
 };
 
-export default function SobrePage() {
+export default async function SobrePage() {
+  const fotos = await getFotosClientes();
+
   return (
     <div>
       {/* Apresentação */}
@@ -175,19 +180,40 @@ export default function SobrePage() {
             </p>
           </div>
 
-          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
-            {FOTOS_CLIENTES.map((foto, i) => (
-              <div key={foto} className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-sm">
-                <Image
-                  src={foto}
-                  alt={`Cliente do Sandro Higuti na entrega das chaves ${i + 1}`}
-                  fill
-                  sizes="(max-width: 640px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-300 hover:scale-105"
-                />
+          {fotos.length > 0 && (
+            <>
+              <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
+                {fotos.slice(0, 6).map((foto, i) => (
+                  <div key={foto.id} className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-sm">
+                    <Image
+                      src={foto.url}
+                      alt={
+                        foto.legenda ||
+                        `Cliente do Sandro Higuti na entrega das chaves ${i + 1}`
+                      }
+                      fill
+                      sizes="(max-width: 640px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-300 hover:scale-105"
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+
+              {fotos.length > 6 && (
+                <div className="mt-8 text-center">
+                  <Link
+                    href="/galeria"
+                    className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-brand-navy transition-colors hover:border-brand-pink hover:text-brand-pink"
+                  >
+                    Ver as {fotos.length} fotos na galeria
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </Link>
+                </div>
+              )}
+            </>
+          )}
 
           <div className="mt-14 empty:mt-0">
             <Depoimentos />

@@ -1,4 +1,5 @@
 import { getEmpreendimentos } from "@/lib/empreendimentos";
+import { getFotosClientes } from "@/lib/fotosClientes";
 import type { Zona } from "@/types/empreendimento";
 import { Hero } from "@/components/home/Hero";
 import { BuscaImoveis } from "@/components/home/BuscaImoveis";
@@ -22,8 +23,9 @@ export default async function Home({
 }: {
   searchParams: Promise<{ zona?: string | string[] }>;
 }) {
-  const [empreendimentos, params] = await Promise.all([
+  const [empreendimentos, fotosClientes, params] = await Promise.all([
     getEmpreendimentos(),
+    getFotosClientes(),
     searchParams,
   ]);
 
@@ -35,7 +37,7 @@ export default async function Home({
         zonaInicial={zonaDaUrl(params.zona)}
       />
       <SobreMim />
-      <ClientesAmigos />
+      <ClientesAmigos fotos={fotosClientes} />
       <LancamentosDestaque empreendimentos={empreendimentos.slice(0, 4)} />
       <FaixaContato />
     </>
