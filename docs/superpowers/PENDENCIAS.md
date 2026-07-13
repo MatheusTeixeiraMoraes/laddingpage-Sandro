@@ -4,10 +4,27 @@ Lista viva de tudo que depende de conteúdo ou credencial externa que ainda
 não temos. Cada pilar novo que gerar uma pendência externa deve atualizar
 este arquivo.
 
+## Painel administrativo — CRUD entregue ✅
+
+O Sandro agora faz sozinho, em `/admin`: listar, **criar** (com upload da foto
+para o Supabase Storage e localização colando o link do Google Maps),
+**editar**, **excluir** empreendimentos e gerenciar as **plantas** (metragem,
+dorms, vagas, suíte, preço, ambientes). Verificado de ponta a ponta, incluindo
+que anônimo e usuário sem `role=admin` **não** conseguem escrever na tabela nem
+no bucket.
+
+Portanto, tudo abaixo marcado como "representativo" **já pode ser corrigido
+pelo próprio painel** — não depende mais de mim.
+
+Ainda pendentes do painel (fatias próprias): **importação por planilha** (do
+briefing original) e **galeria com várias fotos** por empreendimento (hoje é 1
+foto de capa; `fotos` da planta são só rótulos de ambiente).
+
 ## Conteúdo a confirmar — Home no estilo da referência (fase concluída)
 
 A home nova foi montada com assets e empreendimentos reais do material do
-Sandro, mas alguns dados são **representativos** até o Sandro confirmar:
+Sandro, mas alguns dados são **representativos** até o Sandro confirmar
+(agora dá para ajustar tudo pelo `/admin`):
 
 - [ ] **Números das estatísticas** ("+250 famílias atendidas", "+150 sonhos
       realizados", "100% comprometimento" em `SobreMim`) — vieram da
