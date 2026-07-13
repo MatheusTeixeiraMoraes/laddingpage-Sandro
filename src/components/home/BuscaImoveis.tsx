@@ -14,9 +14,11 @@ import {
   anosDeEntrega,
   temProntoParaMorar,
   maxDormitorios,
+  maxPontosAr,
 } from "@/lib/faixas";
 import { PRONTO_PARA_MORAR } from "@/lib/entrega";
 import { RegiaoTabs } from "@/components/home/RegiaoTabs";
+import { MaisFiltros, contarFiltrosExtras } from "@/components/home/MaisFiltros";
 import { EmpreendimentoCard } from "@/components/EmpreendimentoCard";
 
 const selectClass =
@@ -40,6 +42,7 @@ export function BuscaImoveis({
     ...FILTROS_VAZIOS,
     zona: zonaInicial,
   });
+  const [maisAberto, setMaisAberto] = useState(false);
 
   // As opções saem do estoque: nada de faixa que devolve zero imóvel.
   const opcoes = useMemo(
@@ -49,9 +52,12 @@ export function BuscaImoveis({
       anos: anosDeEntrega(empreendimentos),
       temPronto: temProntoParaMorar(empreendimentos),
       dorms: maxDormitorios(empreendimentos),
+      pontosAr: maxPontosAr(empreendimentos),
     }),
     [empreendimentos],
   );
+
+  const extras = contarFiltrosExtras(filtros);
 
   const resultados = useMemo(
     () => filterEmpreendimentos(empreendimentos, filtros, ""),
@@ -70,7 +76,8 @@ export function BuscaImoveis({
     filtros.precoMin !== null ||
     filtros.precoMax !== null ||
     filtros.metragemMin !== null ||
-    filtros.metragemMax !== null;
+    filtros.metragemMax !== null ||
+    extras > 0;
 
   return (
     <section id="imoveis" className="scroll-mt-20 bg-white pb-4">
@@ -190,10 +197,27 @@ export function BuscaImoveis({
             </label>
           </div>
 
-          <div className="mt-5 flex items-center justify-between gap-3">
-            <p className="text-sm text-slate-500">
-              {resultados.length} {resultados.length === 1 ? "imóvel encontrado" : "imóveis encontrados"}
-            </p>
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-4">
+              <button
+                type="button"
+                onClick={() => setMaisAberto(true)}
+                className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-brand-navy transition-colors hover:border-brand-pink hover:text-brand-pink"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 6h18M6 12h12M10 18h4" />
+                </svg>
+                Mais filtros
+                {extras > 0 && (
+                  <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-pink px-1.5 text-xs font-bold text-white">
+                    {extras}
+                  </span>
+                )}
+              </button>
+              <p className="text-sm text-slate-500">
+                {resultados.length} {resultados.length === 1 ? "imóvel encontrado" : "imóveis encontrados"}
+              </p>
+            </div>
             {filtrosAtivos && (
               <button
                 type="button"
@@ -205,6 +229,16 @@ export function BuscaImoveis({
             )}
           </div>
         </div>
+
+        {maisAberto && (
+          <MaisFiltros
+            filtros={filtros}
+            onChange={setFiltros}
+            onFechar={() => setMaisAberto(false)}
+            maxPontosAr={opcoes.pontosAr}
+            resultados={resultados.length}
+          />
+        )}
 
         <div className="mt-8">
           {resultados.length === 0 ? (

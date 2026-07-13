@@ -25,7 +25,7 @@ function faixa(valores: number[], passo: number): { min: number[]; max: number[]
 }
 
 export function faixasDePreco(empreendimentos: Empreendimento[]) {
-  const precos = empreendimentos.flatMap((e) => e.plantas.map((p) => p.preco));
+  const precos = empreendimentos.map((e) => e.precoAPartirDe);
   return faixa(precos, PASSO_PRECO);
 }
 
@@ -50,6 +50,15 @@ export function temProntoParaMorar(empreendimentos: Empreendimento[]): boolean {
 
 /** Maior número de dormitórios do estoque, para não oferecer "4+" sem imóvel. */
 export function maxDormitorios(empreendimentos: Empreendimento[]): number {
-  const dorms = empreendimentos.flatMap((e) => e.plantas.map((p) => p.dormitorios));
+  const dorms = empreendimentos.flatMap((e) => e.dormitorios);
   return dorms.length === 0 ? 0 : Math.max(...dorms);
+}
+
+/** Maior número de pontos de ar-condicionado informado no estoque. */
+export function maxPontosAr(empreendimentos: Empreendimento[]): number {
+  const pontos = empreendimentos
+    .map((e) => e.pontosAr)
+    .filter((p): p is number => p !== null);
+
+  return pontos.length === 0 ? 0 : Math.max(...pontos);
 }

@@ -3,23 +3,14 @@ import Link from "next/link";
 import type { Empreendimento } from "@/types/empreendimento";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { formatarEntrega, PRONTO_PARA_MORAR } from "@/lib/entrega";
+import { formatarPrecoCurto } from "@/lib/preco";
+import { faixaDeMetragem, listaDeDormitorios } from "@/lib/resumo";
 
 const TIPO_LABEL: Record<Empreendimento["tipo"], string> = {
   apartamento: "Apartamento",
   casa: "Casa",
   comercial: "Comercial",
 };
-
-function faixaDeMetragem(empreendimento: Empreendimento): string {
-  const metragens = empreendimento.plantas.map((planta) => planta.metragem);
-  const min = Math.min(...metragens);
-  const max = Math.max(...metragens);
-  return min === max ? `${min} m²` : `${min}–${max} m²`;
-}
-
-function dormitorios(empreendimento: Empreendimento): number {
-  return Math.min(...empreendimento.plantas.map((p) => p.dormitorios));
-}
 
 export function EmpreendimentoCard({
   empreendimento,
@@ -55,10 +46,17 @@ export function EmpreendimentoCard({
           <h3 className="font-heading font-bold text-brand-navy">{empreendimento.nome}</h3>
           <p className="text-sm text-slate-500">{empreendimento.bairro}</p>
           <p className="text-sm text-slate-600">
-            {dormitorios(empreendimento)} dorms · {faixaDeMetragem(empreendimento)} ·{" "}
+            {listaDeDormitorios(empreendimento.dormitorios)} dorms ·{" "}
+            {faixaDeMetragem(empreendimento)} ·{" "}
             {empreendimento.entregaEm
               ? `Entrega: ${formatarEntrega(empreendimento.entregaEm)}`
               : PRONTO_PARA_MORAR}
+          </p>
+          <p className="mt-1">
+            <span className="text-xs text-slate-400">A partir de </span>
+            <span className="font-heading font-bold text-brand-pink">
+              {formatarPrecoCurto(empreendimento.precoAPartirDe)}
+            </span>
           </p>
         </div>
       </Link>

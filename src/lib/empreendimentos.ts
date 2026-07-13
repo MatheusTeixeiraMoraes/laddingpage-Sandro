@@ -3,16 +3,12 @@ import { isUuid } from "@/lib/uuid";
 import type { Empreendimento, Zona } from "@/types/empreendimento";
 
 const SELECT_EMPREENDIMENTO =
-  "id, nome, tipo, bairro, zona, imagem, galeria, entrega_em, latitude, longitude, plantas(id, metragem, com_suite, dormitorios, vagas, preco, ambientes, imagens)";
+  "id, nome, tipo, bairro, zona, imagem, galeria, entrega_em, preco_a_partir_de, dormitorios, suite, varanda, quintal, garagem_coberta, elevador, pontos_ar, latitude, longitude, plantas(id, metragem, preco, imagens)";
 
 type PlantaRow = {
   id: string;
   metragem: number | string;
-  com_suite: boolean;
-  dormitorios: number;
-  vagas: number;
-  preco: number | string;
-  ambientes: string[];
+  preco: number | string | null;
   imagens: string[];
 };
 
@@ -25,6 +21,14 @@ type EmpreendimentoRow = {
   imagem: string;
   galeria: string[];
   entrega_em: string | null;
+  preco_a_partir_de: number | string;
+  dormitorios: number[];
+  suite: boolean;
+  varanda: boolean;
+  quintal: boolean;
+  garagem_coberta: boolean;
+  elevador: boolean;
+  pontos_ar: number | null;
   latitude: number;
   longitude: number;
   plantas: PlantaRow[];
@@ -40,18 +44,24 @@ function mapRow(row: EmpreendimentoRow): Empreendimento {
     imagem: row.imagem,
     galeria: row.galeria ?? [],
     entregaEm: row.entrega_em,
+    precoAPartirDe: Number(row.preco_a_partir_de),
+    dormitorios: row.dormitorios ?? [],
+    suite: row.suite,
+    varanda: row.varanda,
+    quintal: row.quintal,
+    garagemCoberta: row.garagem_coberta,
+    elevador: row.elevador,
+    pontosAr: row.pontos_ar,
     latitude: row.latitude,
     longitude: row.longitude,
-    plantas: row.plantas.map((planta) => ({
-      id: planta.id,
-      metragem: Number(planta.metragem),
-      comSuite: planta.com_suite,
-      dormitorios: planta.dormitorios,
-      vagas: planta.vagas,
-      preco: Number(planta.preco),
-      ambientes: planta.ambientes ?? [],
-      imagens: planta.imagens ?? [],
-    })),
+    plantas: row.plantas
+      .map((planta) => ({
+        id: planta.id,
+        metragem: Number(planta.metragem),
+        preco: planta.preco === null ? null : Number(planta.preco),
+        imagens: planta.imagens ?? [],
+      }))
+      .sort((a, b) => a.metragem - b.metragem),
   };
 }
 

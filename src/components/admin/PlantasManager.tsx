@@ -18,25 +18,9 @@ const rotulo = "block text-xs font-semibold uppercase tracking-wide text-slate-5
 
 const VAZIA: PlantaInput = {
   metragem: 0,
-  comSuite: false,
-  dormitorios: 2,
-  vagas: 1,
-  preco: 0,
-  ambientes: [],
+  preco: null,
   imagens: [],
 };
-
-function paraInput(planta: Planta): PlantaInput {
-  return {
-    metragem: planta.metragem,
-    comSuite: planta.comSuite,
-    dormitorios: planta.dormitorios,
-    vagas: planta.vagas,
-    preco: planta.preco,
-    ambientes: planta.ambientes,
-    imagens: planta.imagens,
-  };
-}
 
 export function PlantasManager({
   empreendimentoId,
@@ -48,7 +32,6 @@ export function PlantasManager({
   const router = useRouter();
   const [editandoId, setEditandoId] = useState<string | null>(null);
   const [form, setForm] = useState<PlantaInput>(VAZIA);
-  const [ambientes, setAmbientes] = useState("");
   const [aberto, setAberto] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
@@ -56,15 +39,13 @@ export function PlantasManager({
   const abrirNova = () => {
     setEditandoId(null);
     setForm(VAZIA);
-    setAmbientes("");
     setErro(null);
     setAberto(true);
   };
 
   const abrirEdicao = (planta: Planta) => {
     setEditandoId(planta.id);
-    setForm(paraInput(planta));
-    setAmbientes(planta.ambientes.join(", "));
+    setForm({ metragem: planta.metragem, preco: planta.preco, imagens: planta.imagens });
     setErro(null);
     setAberto(true);
   };
@@ -74,19 +55,11 @@ export function PlantasManager({
     setErro(null);
     setSalvando(true);
 
-    const dados: PlantaInput = {
-      ...form,
-      ambientes: ambientes
-        .split(",")
-        .map((a) => a.trim())
-        .filter(Boolean),
-    };
-
     try {
       if (editandoId) {
-        await atualizarPlanta(editandoId, dados);
+        await atualizarPlanta(editandoId, form);
       } else {
-        await criarPlanta(empreendimentoId, dados);
+        await criarPlanta(empreendimentoId, form);
       }
       setAberto(false);
       router.refresh();
@@ -115,7 +88,8 @@ export function PlantasManager({
         <div>
           <h2 className="font-heading text-lg font-bold text-brand-navy">Plantas</h2>
           <p className="text-sm text-slate-500">
-            As opções de planta que aparecem na página do imóvel.
+            Os tamanhos disponíveis. Suíte, varanda e quintal são do empreendimento,
+            não da planta — estão no formulário acima.
           </p>
         </div>
         <button
@@ -137,16 +111,12 @@ export function PlantasManager({
               className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-100 p-4"
             >
               <div>
-                <p className="font-semibold text-brand-navy">
-                  {planta.metragem}m² {planta.comSuite ? "com suíte" : "sem suíte"}
-                </p>
+                <p className="font-semibold text-brand-navy">{planta.metragem} m²</p>
                 <p className="text-sm text-slate-500">
-                  {planta.dormitorios} dorms · {planta.vagas} vaga(s) ·{" "}
-                  {formatarPrecoCurto(planta.preco)}
+                  {planta.preco === null
+                    ? "Sem preço próprio (usa o “a partir de” do empreendimento)"
+                    : formatarPrecoCurto(planta.preco)}
                 </p>
-                {planta.ambientes.length > 0 && (
-                  <p className="mt-1 text-xs text-slate-400">{planta.ambientes.join(" · ")}</p>
-                )}
                 {planta.imagens.length > 0 && (
                   <p className="mt-0.5 text-xs text-brand-pink">
                     {planta.imagens.length} imagem(ns) desta planta
@@ -194,66 +164,26 @@ export function PlantasManager({
             </label>
 
             <label>
-              <span className={rotulo}>Preço (R$)</span>
+              <span className={rotulo}>Preço desta planta (opcional)</span>
               <input
                 type="number"
                 min={0}
-                required
                 className={campo}
-                value={form.preco || ""}
-                onChange={(e) => setForm({ ...form, preco: Number(e.target.value) })}
-                placeholder="Ex: 245000"
+                value={form.preco ?? ""}
+                onChange={(e) =>
+                  setForm({ ...form, preco: e.target.value === "" ? null : Number(e.target.value) })
+                }
+                placeholder="Deixe vazio para usar o do empreendimento"
               />
-            </label>
-
-            <label>
-              <span className={rotulo}>Dormitórios</span>
-              <input
-                type="number"
-                min={0}
-                required
-                className={campo}
-                value={form.dormitorios}
-                onChange={(e) => setForm({ ...form, dormitorios: Number(e.target.value) })}
-              />
-            </label>
-
-            <label>
-              <span className={rotulo}>Vagas</span>
-              <input
-                type="number"
-                min={0}
-                required
-                className={campo}
-                value={form.vagas}
-                onChange={(e) => setForm({ ...form, vagas: Number(e.target.value) })}
-              />
-            </label>
-
-            <label className="sm:col-span-2">
-              <span className={rotulo}>Ambientes (separados por vírgula)</span>
-              <input
-                className={campo}
-                value={ambientes}
-                onChange={(e) => setAmbientes(e.target.value)}
-                placeholder="Ex: Sala, Cozinha, Planta baixa"
-              />
-            </label>
-
-            <label className="flex items-center gap-2 sm:col-span-2">
-              <input
-                type="checkbox"
-                checked={form.comSuite}
-                onChange={(e) => setForm({ ...form, comSuite: e.target.checked })}
-                className="h-4 w-4 accent-brand-pink"
-              />
-              <span className="text-sm text-slate-600">Tem suíte</span>
+              <span className="mt-1 block text-xs text-slate-400">
+                Preencha só se esta planta tiver um valor diferente.
+              </span>
             </label>
 
             <div className="sm:col-span-2">
               <UploadGaleria
                 label="Imagens desta planta"
-                ajuda="Planta baixa, decorado. Aparecem na página do imóvel com a legenda da planta."
+                ajuda="Planta baixa, decorado. Aparecem na página do imóvel com a legenda do tamanho."
                 imagens={form.imagens}
                 onChange={(imagens) => setForm({ ...form, imagens })}
               />

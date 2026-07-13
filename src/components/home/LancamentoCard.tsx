@@ -2,12 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Empreendimento } from "@/types/empreendimento";
 import { formatarEntrega } from "@/lib/entrega";
-
-function plantaBase(empreendimento: Empreendimento) {
-  return empreendimento.plantas.reduce((menor, atual) =>
-    atual.metragem < menor.metragem ? atual : menor,
-  );
-}
+import { faixaDeMetragem, listaDeDormitorios } from "@/lib/resumo";
 
 function IconDorm() {
   return (
@@ -32,8 +27,6 @@ function IconEntrega() {
 }
 
 export function LancamentoCard({ empreendimento }: { empreendimento: Empreendimento }) {
-  const base = plantaBase(empreendimento);
-
   return (
     <Link
       href={`/empreendimentos/${empreendimento.id}`}
@@ -57,8 +50,8 @@ export function LancamentoCard({ empreendimento }: { empreendimento: Empreendime
         <h3 className="font-heading font-bold text-brand-navy">{empreendimento.nome}</h3>
         <p className="text-sm text-slate-500">{empreendimento.bairro}</p>
         <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs text-slate-600">
-          <span className="inline-flex items-center gap-1"><IconDorm /> {base.dormitorios} dorms</span>
-          <span className="inline-flex items-center gap-1"><IconArea /> {base.metragem}m²</span>
+          <span className="inline-flex items-center gap-1"><IconDorm /> {listaDeDormitorios(empreendimento.dormitorios)} dorms</span>
+          <span className="inline-flex items-center gap-1"><IconArea /> {faixaDeMetragem(empreendimento)}</span>
           <span className="inline-flex items-center gap-1"><IconEntrega /> {formatarEntrega(empreendimento.entregaEm)}</span>
         </div>
       </div>

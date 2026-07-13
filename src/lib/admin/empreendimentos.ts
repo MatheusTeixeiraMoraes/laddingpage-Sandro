@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/client";
 import type { TipoEmpreendimento, Zona } from "@/types/empreendimento";
 
+/** Nomes em snake_case: o objeto vai direto para o insert/update do Supabase. */
 export type EmpreendimentoInput = {
   nome: string;
   tipo: TipoEmpreendimento;
@@ -8,20 +9,24 @@ export type EmpreendimentoInput = {
   zona: Zona;
   imagem: string;
   galeria: string[];
-  /** 'AAAA-MM-DD' ou null (= pronto para morar). Nome em snake_case porque o
-   *  objeto vai direto para o insert/update, como os demais campos. */
+  /** 'AAAA-MM-DD' ou null (= pronto para morar). */
   entrega_em: string | null;
+  preco_a_partir_de: number;
+  dormitorios: number[];
+  suite: boolean;
+  varanda: boolean;
+  quintal: boolean;
+  garagem_coberta: boolean;
+  elevador: boolean;
+  pontos_ar: number | null;
   latitude: number;
   longitude: number;
 };
 
 export type PlantaInput = {
   metragem: number;
-  comSuite: boolean;
-  dormitorios: number;
-  vagas: number;
-  preco: number;
-  ambientes: string[];
+  /** Opcional. Nulo = usa o "a partir de" do empreendimento. */
+  preco: number | null;
   imagens: string[];
 };
 
@@ -32,11 +37,7 @@ const TIPOS_ACEITOS = ["image/jpeg", "image/png", "image/webp"];
 function paraLinhaPlanta(dados: PlantaInput) {
   return {
     metragem: dados.metragem,
-    com_suite: dados.comSuite,
-    dormitorios: dados.dormitorios,
-    vagas: dados.vagas,
     preco: dados.preco,
-    ambientes: dados.ambientes,
     imagens: dados.imagens,
   };
 }

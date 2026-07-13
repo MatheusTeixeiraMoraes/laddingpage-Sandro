@@ -3,133 +3,117 @@ import assert from "node:assert/strict";
 import { filterEmpreendimentos, FILTROS_VAZIOS } from "./filterEmpreendimentos.ts";
 import type { Empreendimento } from "../types/empreendimento";
 
-const fixture: Empreendimento[] = [
-  {
-    id: "1",
-    nome: "Casa Azul",
-    tipo: "casa",
-    bairro: "Centro",
-    zona: "leste",
-    imagem: "",
-    galeria: [],
-    entregaEm: null, // pronto para morar
-    latitude: -23.5,
-    longitude: -47.45,
-    plantas: [
-      {
-        id: "1-a",
-        metragem: 120,
-        comSuite: true,
-        dormitorios: 3,
-        vagas: 2,
-        preco: 500000,
-        ambientes: [],
-        imagens: [],
-      },
-    ],
-  },
-  {
-    id: "2",
-    nome: "Predio Duas Plantas",
+function emp(over: Partial<Empreendimento> & { id: string }): Empreendimento {
+  return {
+    nome: over.id,
     tipo: "apartamento",
-    bairro: "Vila Nova",
+    bairro: "",
     zona: "norte",
     imagem: "",
     galeria: [],
+    entregaEm: null,
+    precoAPartirDe: 250_000,
+    dormitorios: [2],
+    suite: false,
+    varanda: false,
+    quintal: false,
+    garagemCoberta: false,
+    elevador: false,
+    pontosAr: null,
+    latitude: 0,
+    longitude: 0,
+    plantas: [{ id: `${over.id}-a`, metragem: 45, preco: null, imagens: [] }],
+    ...over,
+  };
+}
+
+const fixture: Empreendimento[] = [
+  emp({
+    id: "1",
+    nome: "Casa Azul",
+    bairro: "Centro",
+    zona: "leste",
+    precoAPartirDe: 500_000,
+    dormitorios: [3],
+    suite: true,
+    varanda: true,
+    plantas: [{ id: "1-a", metragem: 120, preco: null, imagens: [] }],
+  }),
+  emp({
+    id: "2",
+    nome: "Predio Duas Plantas",
+    bairro: "Vila Nova",
     entregaEm: "2027-12-01",
-    latitude: -23.5,
-    longitude: -47.45,
+    precoAPartirDe: 180_000,
+    dormitorios: [1, 3],
+    quintal: true,
+    elevador: true,
+    pontosAr: 2,
     plantas: [
-      {
-        id: "2-a",
-        metragem: 30,
-        comSuite: false,
-        dormitorios: 1,
-        vagas: 0,
-        preco: 180000,
-        ambientes: [],
-        imagens: [],
-      },
-      {
-        id: "2-b",
-        metragem: 90,
-        comSuite: true,
-        dormitorios: 3,
-        vagas: 2,
-        preco: 600000,
-        ambientes: [],
-        imagens: [],
-      },
+      { id: "2-a", metragem: 30, preco: null, imagens: [] },
+      { id: "2-b", metragem: 90, preco: null, imagens: [] },
     ],
-  },
+  }),
 ];
 
+const ids = (r: Empreendimento[]) => r.map((e) => e.id).sort();
+
 test("sem filtros nem busca, retorna todos", () => {
-  const resultado = filterEmpreendimentos(fixture, FILTROS_VAZIOS, "");
-  assert.equal(resultado.length, 2);
+  assert.equal(filterEmpreendimentos(fixture, FILTROS_VAZIOS, "").length, 2);
 });
 
-test("busca por nome", () => {
-  const resultado = filterEmpreendimentos(fixture, FILTROS_VAZIOS, "azul");
-  assert.deepEqual(resultado.map((e) => e.id), ["1"]);
-});
-
-test("busca por bairro", () => {
-  const resultado = filterEmpreendimentos(fixture, FILTROS_VAZIOS, "vila nova");
-  assert.deepEqual(resultado.map((e) => e.id), ["2"]);
-});
-
-test("filtra por tipo", () => {
-  const resultado = filterEmpreendimentos(
-    fixture,
-    { ...FILTROS_VAZIOS, tipo: "apartamento" },
-    "",
-  );
-  assert.deepEqual(resultado.map((e) => e.id), ["2"]);
+test("busca por nome e por bairro", () => {
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, FILTROS_VAZIOS, "azul")), ["1"]);
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, FILTROS_VAZIOS, "vila nova")), ["2"]);
 });
 
 test("filtra por zona", () => {
-  const resultado = filterEmpreendimentos(
-    fixture,
-    { ...FILTROS_VAZIOS, zona: "leste" },
-    "",
-  );
-  assert.deepEqual(resultado.map((e) => e.id), ["1"]);
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, zona: "leste" }, "")), ["1"]);
 });
 
-test("casa se pelo menos uma planta atende aos filtros numericos", () => {
-  const resultado = filterEmpreendimentos(
-    fixture,
-    { ...FILTROS_VAZIOS, dormitoriosMin: 3, metragemMin: 80 },
-    "",
-  );
-  // "Predio Duas Plantas" so tem a planta 2-b (90m2, 3 dorm) atendendo;
-  // a planta 2-a (30m2, 1 dorm) nao atende, mas isso nao exclui o predio.
-  assert.deepEqual(resultado.map((e) => e.id).sort(), ["1", "2"]);
+test("filtra por pronto para morar e por ano", () => {
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, entrega: "pronto" }, "")), ["1"]);
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, entrega: 2027 }, "")), ["2"]);
 });
 
-test("filtra por pronto para morar", () => {
-  const resultado = filterEmpreendimentos(
-    fixture,
-    { ...FILTROS_VAZIOS, entrega: "pronto" },
-    "",
-  );
-  assert.deepEqual(resultado.map((e) => e.id), ["1"]);
+test("preco compara o 'a partir de' do empreendimento", () => {
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, precoMax: 200_000 }, "")), ["2"]);
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, precoMin: 300_000 }, "")), ["1"]);
 });
 
-test("filtra por ano de entrega", () => {
-  const em2027 = filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, entrega: 2027 }, "");
-  assert.deepEqual(em2027.map((e) => e.id), ["2"]);
-
-  const em2030 = filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, entrega: 2030 }, "");
-  assert.equal(em2030.length, 0);
+test("basta UMA planta caber na faixa de metragem", () => {
+  // O predio 2 tem planta de 30 e de 90: a de 90 atende, entao ele entra.
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, metragemMin: 80 }, "")), ["1", "2"]);
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, metragemMax: 40 }, "")), ["2"]);
 });
 
-test("nao casa quando nenhuma planta atende", () => {
-  const resultado = filterEmpreendimentos(
-    fixture,
-    { ...FILTROS_VAZIOS, dormitoriosMin: 5 },
-    "",
+test("basta UMA opcao de dormitorio atender", () => {
+  // O predio 2 oferece 1 e 3 dorms: quem quer 3+ deve ver ele.
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, dormitoriosMin: 3 }, "")), ["1", "2"]);
+  assert.equal(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, dormitoriosMin: 4 }, "").length, 0);
+});
+
+test("caracteristicas: marcado exige ter", () => {
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, suite: true }, "")), ["1"]);
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, varanda: true }, "")), ["1"]);
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, quintal: true }, "")), ["2"]);
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, elevador: true }, "")), ["2"]);
+  assert.equal(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, garagemCoberta: true }, "").length, 0);
+});
+
+test("desmarcado nao filtra nada (ninguem procura 'sem varanda')", () => {
+  assert.equal(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, varanda: false }, "").length, 2);
+});
+
+test("pontos de ar-condicionado: minimo", () => {
+  assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, pontosArMin: 2 }, "")), ["2"]);
+  // O imovel 1 nao informou (null) -- nao pode passar por um minimo.
+  assert.equal(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, pontosArMin: 3 }, "").length, 0);
+});
+
+test("filtros combinam (e o impossivel devolve vazio)", () => {
+  assert.equal(
+    filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, suite: true, precoMax: 200_000 }, "").length,
+    0,
   );
-  assert.equal(resultado.length, 0);
 });

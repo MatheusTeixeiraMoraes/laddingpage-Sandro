@@ -7,12 +7,16 @@ import {
   anosDeEntrega,
   temProntoParaMorar,
   maxDormitorios,
+  maxPontosAr,
 } from "./faixas.ts";
 
 function emp(
   id: string,
   entregaEm: string | null,
-  plantas: { preco: number; metragem: number; dormitorios?: number }[],
+  precoAPartirDe: number,
+  metragens: number[],
+  dormitorios: number[] = [2],
+  pontosAr: number | null = null,
 ): Empreendimento {
   return {
     id,
@@ -23,42 +27,46 @@ function emp(
     imagem: "",
     galeria: [],
     entregaEm,
+    precoAPartirDe,
+    dormitorios,
+    suite: false,
+    varanda: false,
+    quintal: false,
+    garagemCoberta: false,
+    elevador: false,
+    pontosAr,
     latitude: 0,
     longitude: 0,
-    plantas: plantas.map((p, i) => ({
+    plantas: metragens.map((m, i) => ({
       id: `${id}-${i}`,
-      metragem: p.metragem,
-      comSuite: false,
-      dormitorios: p.dormitorios ?? 2,
-      vagas: 1,
-      preco: p.preco,
-      ambientes: [],
+      metragem: m,
+      preco: null,
       imagens: [],
     })),
   };
 }
 
-// Espelha o estoque real de hoje: precos de 219k a 312k, metragens de 44 a 52.
+// Espelha o estoque real: precos de 219k a 312k, metragens de 44 a 52.
 const ESTOQUE = [
-  emp("a", null, [{ preco: 219_000, metragem: 44 }]),
-  emp("b", "2026-12-01", [{ preco: 289_000, metragem: 48 }]),
-  emp("c", "2028-04-01", [{ preco: 312_000, metragem: 52, dormitorios: 3 }]),
+  emp("a", null, 219_000, [44]),
+  emp("b", "2026-12-01", 289_000, [48], [2, 3]),
+  emp("c", "2028-04-01", 312_000, [52], [3], 2),
 ];
 
-test("faixas de preco saem do estoque, de 50 em 50 mil", () => {
+test("faixas de preco saem do 'a partir de' do empreendimento, de 50 em 50 mil", () => {
   const { min, max } = faixasDePreco(ESTOQUE);
   assert.deepEqual(min, [200_000, 250_000, 300_000]);
   assert.deepEqual(max, [250_000, 300_000, 350_000]);
 });
 
-test("faixas de metragem saem do estoque, de 5 em 5", () => {
+test("faixas de metragem saem das plantas, de 5 em 5", () => {
   const { min, max } = faixasDeMetragem(ESTOQUE);
   assert.deepEqual(min, [40, 45, 50]);
   assert.deepEqual(max, [45, 50, 55]);
 });
 
 test("as faixas crescem sozinhas quando entra um imovel mais caro", () => {
-  const comLuxo = [...ESTOQUE, emp("d", null, [{ preco: 800_000, metragem: 120 }])];
+  const comLuxo = [...ESTOQUE, emp("d", null, 800_000, [120])];
   assert.equal(faixasDePreco(comLuxo).max.at(-1), 800_000);
   assert.equal(faixasDeMetragem(comLuxo).max.at(-1), 120);
 });
@@ -76,8 +84,14 @@ test("nao oferece mais dormitorios do que existe", () => {
   assert.equal(maxDormitorios(ESTOQUE), 3);
 });
 
+test("pontos de ar: ignora quem nao informou", () => {
+  assert.equal(maxPontosAr(ESTOQUE), 2);
+  assert.equal(maxPontosAr([ESTOQUE[0]]), 0);
+});
+
 test("estoque vazio nao quebra", () => {
   assert.deepEqual(faixasDePreco([]), { min: [], max: [] });
   assert.deepEqual(anosDeEntrega([]), []);
   assert.equal(maxDormitorios([]), 0);
+  assert.equal(maxPontosAr([]), 0);
 });

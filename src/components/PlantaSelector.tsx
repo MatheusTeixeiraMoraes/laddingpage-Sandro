@@ -2,8 +2,9 @@
 
 import type { Planta } from "@/types/empreendimento";
 
+/** A planta é identificada pelo tamanho — é a única coisa que a distingue. */
 export function labelDaPlanta(planta: Planta): string {
-  return `${planta.metragem}m² ${planta.comSuite ? "com suíte" : "sem suíte"}`;
+  return `${planta.metragem} m²`;
 }
 
 type PlantaSelectorProps = {

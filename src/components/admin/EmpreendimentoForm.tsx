@@ -49,6 +49,22 @@ export function EmpreendimentoForm({
   const [mesEntrega, setMesEntrega] = useState(
     empreendimento?.entregaEm?.slice(0, 7) ?? "",
   );
+
+  // Caracteristicas do PREDIO (a planta guarda so o tamanho).
+  const [preco, setPreco] = useState(empreendimento?.precoAPartirDe ?? 0);
+  const [dorms, setDorms] = useState<number[]>(empreendimento?.dormitorios ?? [2]);
+  const [suite, setSuite] = useState(empreendimento?.suite ?? false);
+  const [varanda, setVaranda] = useState(empreendimento?.varanda ?? false);
+  const [quintal, setQuintal] = useState(empreendimento?.quintal ?? false);
+  const [garagem, setGaragem] = useState(empreendimento?.garagemCoberta ?? false);
+  const [elevador, setElevador] = useState(empreendimento?.elevador ?? false);
+  const [pontosAr, setPontosAr] = useState<number | null>(empreendimento?.pontosAr ?? null);
+
+  const alternarDorm = (n: number) => {
+    setDorms((atuais) =>
+      atuais.includes(n) ? atuais.filter((d) => d !== n) : [...atuais, n].sort((a, b) => a - b),
+    );
+  };
   const [local, setLocal] = useState(
     empreendimento ? `${empreendimento.latitude}, ${empreendimento.longitude}` : "",
   );
@@ -84,6 +100,14 @@ export function EmpreendimentoForm({
       setErro("Informe o mês da entrega ou marque “Pronto para morar”.");
       return;
     }
+    if (dorms.length === 0) {
+      setErro("Escolha ao menos uma opção de dormitórios.");
+      return;
+    }
+    if (preco <= 0) {
+      setErro("Informe o preço “a partir de”.");
+      return;
+    }
 
     setSalvando(true);
     try {
@@ -97,6 +121,14 @@ export function EmpreendimentoForm({
         zona,
         bairro: bairro.trim(),
         entrega_em: pronto ? null : `${mesEntrega}-01`,
+        preco_a_partir_de: preco,
+        dormitorios: dorms,
+        suite,
+        varanda,
+        quintal,
+        garagem_coberta: garagem,
+        elevador,
+        pontos_ar: pontosAr,
         imagem,
         galeria,
         latitude: coordenadas.latitude,
@@ -182,6 +214,89 @@ export function EmpreendimentoForm({
             Pronto para morar
           </label>
         </div>
+
+        <label>
+          <span className={rotulo}>Preço &ldquo;a partir de&rdquo; (R$)</span>
+          <input
+            type="number"
+            min={1}
+            required
+            className={campo}
+            value={preco || ""}
+            onChange={(e) => setPreco(Number(e.target.value))}
+            placeholder="Ex: 245000"
+          />
+          <span className="mt-1 block text-xs text-slate-400">
+            É o valor que aparece no card e na página do imóvel.
+          </span>
+        </label>
+
+        <div>
+          <span className={rotulo}>Dormitórios</span>
+          <div className="mt-1 flex flex-wrap gap-2">
+            {[1, 2, 3, 4].map((n) => (
+              <label
+                key={n}
+                className={`cursor-pointer rounded-xl border px-4 py-2 text-sm font-medium transition-colors ${
+                  dorms.includes(n)
+                    ? "border-brand-pink bg-brand-blush/50 text-brand-navy"
+                    : "border-slate-200 text-slate-600 hover:border-brand-pink"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={dorms.includes(n)}
+                  onChange={() => alternarDorm(n)}
+                  className="sr-only"
+                />
+                {n}
+              </label>
+            ))}
+          </div>
+          <span className="mt-1 block text-xs text-slate-400">
+            Marque todas as opções que o empreendimento oferece.
+          </span>
+        </div>
+
+        <div className="sm:col-span-2">
+          <span className={rotulo}>O que este empreendimento tem</span>
+          <div className="mt-2 grid gap-2 sm:grid-cols-3">
+            {([
+              ["Suíte", suite, setSuite],
+              ["Varanda", varanda, setVaranda],
+              ["Quintal", quintal, setQuintal],
+              ["Garagem coberta", garagem, setGaragem],
+              ["Elevador", elevador, setElevador],
+            ] as const).map(([label, valor, set]) => (
+              <label
+                key={label}
+                className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-700 transition-colors hover:border-brand-pink"
+              >
+                <input
+                  type="checkbox"
+                  checked={valor}
+                  onChange={(e) => set(e.target.checked)}
+                  className="h-4 w-4 accent-brand-pink"
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <label>
+          <span className={rotulo}>Pontos de ar-condicionado</span>
+          <select
+            className={campo}
+            value={pontosAr ?? ""}
+            onChange={(e) => setPontosAr(e.target.value === "" ? null : Number(e.target.value))}
+          >
+            <option value="">Não informado</option>
+            {[1, 2, 3, 4].map((n) => (
+              <option key={n} value={n}>{n}</option>
+            ))}
+          </select>
+        </label>
 
         <label className="sm:col-span-2">
           <span className={rotulo}>Localização</span>
