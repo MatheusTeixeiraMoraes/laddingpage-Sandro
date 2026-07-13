@@ -90,9 +90,9 @@ export function FaixaContato() {
                 Vamos achar o <span className="text-brand-pink">seu imóvel</span>?
               </h2>
               <p className="mt-3 max-w-md text-slate-300">
-                Me conta o que você procura e em que momento você está. Eu te
-                respondo pessoalmente, tiro suas dúvidas sobre financiamento e a
-                gente vai no seu tempo — sem pressa e sem compromisso.
+                Conte o que você procura e em que momento está. O atendimento é
+                pessoal: esclareço as condições de financiamento e conduzo cada
+                etapa no seu tempo, sem pressa e sem compromisso.
               </p>
               <p className="mt-4 font-script text-2xl text-brand-pink">
                 Clientes que se tornam amigos.
