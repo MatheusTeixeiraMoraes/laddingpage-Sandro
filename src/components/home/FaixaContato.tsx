@@ -41,18 +41,18 @@ export function FaixaContato() {
                 placeholder="Seu nome"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
-                className="flex-1 rounded-xl border-none bg-white px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400"
+                className="min-w-0 flex-1 rounded-xl border-none bg-white px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400"
               />
               <input
                 type="tel"
                 placeholder="Seu telefone"
                 value={telefone}
                 onChange={(e) => setTelefone(e.target.value)}
-                className="flex-1 rounded-xl border-none bg-white px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400"
+                className="min-w-0 flex-1 rounded-xl border-none bg-white px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400"
               />
               <button
                 type="submit"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-navy px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-navy/90"
+                className="inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-brand-navy px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-navy/90"
               >
                 Quero atendimento
                 <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
