@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 
 export default function AdminPage() {
@@ -7,6 +8,12 @@ export default function AdminPage() {
       <p className="text-slate-600">
         Painel administrativo em construção — CRUD de empreendimentos entra em breve.
       </p>
+      <Link
+        href="/admin/atualizar-senha"
+        className="text-sm font-medium text-brand-blue hover:underline"
+      >
+        Trocar senha
+      </Link>
       <LogoutButton />
     </div>
   );
