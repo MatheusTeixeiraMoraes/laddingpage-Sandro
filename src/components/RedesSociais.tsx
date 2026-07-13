@@ -3,7 +3,7 @@ import { REDES_SOCIAIS } from "@/data/sobre";
 export function RedesSociais() {
   return (
     <section className="flex flex-col items-center gap-4">
-      <h2 className="text-2xl font-bold text-brand-purple">Redes sociais</h2>
+      <h2 className="font-heading text-2xl font-bold text-brand-navy">Redes sociais</h2>
       <div className="flex flex-wrap justify-center gap-3">
         {REDES_SOCIAIS.map((rede) => (
           <a
