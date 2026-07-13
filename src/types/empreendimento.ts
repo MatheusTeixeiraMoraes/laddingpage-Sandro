@@ -55,6 +55,10 @@ export type Empreendimento = {
   entregaComPiso: "" | "completo" | "areas_molhadas";
   documentacao: "" | "gratis" | "pago";
 
+  /** Endereço escrito ("R. Ramon Haro Martini, 1160 - Vila Haro"). */
+  endereco: string;
+  /** Texto do Sandro sobre o bairro (acesso, comércio, escolas, lazer). */
+  sobreBairro: string;
   latitude: number;
   longitude: number;
   plantas: Planta[];

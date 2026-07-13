@@ -27,6 +27,8 @@ export type EmpreendimentoInput = {
   elevadores: number | null;
   entrega_com_piso: "" | "completo" | "areas_molhadas";
   documentacao: "" | "gratis" | "pago";
+  endereco: string;
+  sobre_bairro: string;
   latitude: number;
   longitude: number;
 };

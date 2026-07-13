@@ -77,6 +77,8 @@ export function EmpreendimentoForm({
   const [documentacao, setDocumentacao] = useState<Empreendimento["documentacao"]>(
     empreendimento?.documentacao ?? "",
   );
+  const [endereco, setEndereco] = useState(empreendimento?.endereco ?? "");
+  const [sobreBairro, setSobreBairro] = useState(empreendimento?.sobreBairro ?? "");
 
   const numeroOuNulo = (v: string): number | null => (v === "" ? null : Number(v));
 
@@ -157,6 +159,8 @@ export function EmpreendimentoForm({
         elevadores,
         entrega_com_piso: piso,
         documentacao,
+        endereco: endereco.trim(),
+        sobre_bairro: sobreBairro.trim(),
         imagem,
         galeria,
         latitude: coordenadas.latitude,
@@ -430,22 +434,54 @@ export function EmpreendimentoForm({
           </div>
         </div>
 
-        <label className="sm:col-span-2">
+        <div className="sm:col-span-2 border-t border-slate-100 pt-4">
           <span className={rotulo}>Localização</span>
-          <input
-            className={campo}
-            value={local}
-            onChange={(e) => setLocal(e.target.value)}
-            placeholder="Cole aqui o link do Google Maps do empreendimento"
-          />
-          {local.trim() !== "" && (
-            <span className={`mt-1 block text-xs ${coordenadas ? "text-emerald-600" : "text-amber-600"}`}>
-              {coordenadas
-                ? `Local reconhecido: ${coordenadas.latitude}, ${coordenadas.longitude}`
-                : "Não reconheci a coordenada. Abra o local no Google Maps e cole o link da barra de endereço."}
-            </span>
-          )}
-        </label>
+          <p className="mt-1 text-xs text-slate-400">
+            Aparece na página do imóvel: mapa à esquerda, este texto à direita.
+          </p>
+
+          <div className="mt-3 grid gap-4">
+            <label>
+              <span className={rotulo}>Link do Google Maps (define o ponto no mapa)</span>
+              <input
+                className={campo}
+                value={local}
+                onChange={(e) => setLocal(e.target.value)}
+                placeholder="Cole aqui o link do Google Maps do empreendimento"
+              />
+              {local.trim() !== "" && (
+                <span className={`mt-1 block text-xs ${coordenadas ? "text-emerald-600" : "text-amber-600"}`}>
+                  {coordenadas
+                    ? `Local reconhecido: ${coordenadas.latitude}, ${coordenadas.longitude}`
+                    : "Não reconheci a coordenada. Abra o local no Google Maps e cole o link da barra de endereço."}
+                </span>
+              )}
+            </label>
+
+            <label>
+              <span className={rotulo}>Endereço (escrito)</span>
+              <input
+                className={campo}
+                value={endereco}
+                onChange={(e) => setEndereco(e.target.value)}
+                placeholder="Ex: R. Ramon Haro Martini, 1160 - Vila Haro"
+              />
+            </label>
+
+            <label>
+              <span className={rotulo}>Sobre o bairro</span>
+              <textarea
+                className={`${campo} min-h-28`}
+                value={sobreBairro}
+                onChange={(e) => setSobreBairro(e.target.value)}
+                placeholder="O que tem por perto: acesso a rodovias e avenidas, supermercados, escolas, parques, comércio. Uma linha em branco separa os parágrafos."
+              />
+              <span className="mt-1 block text-xs text-slate-400">
+                Deixe vazio e o site mostra só o mapa.
+              </span>
+            </label>
+          </div>
+        </div>
 
         <label className="sm:col-span-2">
           <span className={rotulo}>Foto de capa</span>

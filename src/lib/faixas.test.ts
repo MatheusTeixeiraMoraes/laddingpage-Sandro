@@ -43,6 +43,8 @@ function emp(
     elevadores: null,
     entregaComPiso: "",
     documentacao: "",
+    endereco: "",
+    sobreBairro: "",
     latitude: 0,
     longitude: 0,
     plantas: metragens.map((m, i) => ({
