@@ -4,6 +4,18 @@ Lista viva de tudo que depende de conteúdo ou credencial externa que ainda
 não temos. Cada pilar novo que gerar uma pendência externa deve atualizar
 este arquivo.
 
+## 🔴 Segurança (prioridade alta)
+
+- [ ] **Desabilitar cadastro público no Supabase Auth** (Authentication →
+      Sign In / Providers → Email → desmarcar "Allow new users to sign up").
+      Sem isso, qualquer visitante pode criar conta própria via
+      `supabase.auth.signUp()` (a chave `publishable` é pública por design)
+      e, como as policies de `empreendimentos`/`plantas` liberam escrita
+      pra qualquer `authenticated`, ganhar acesso de escrita total ao banco.
+      Achado por revisão de segurança automática nos commits do pilar
+      "Painel administrativo — Auth + Schema + RLS"; usuário confirmou que
+      vai resolver, ainda pendente de confirmação final.
+
 ## Conteúdo real do cliente
 
 - [ ] Logo do Sandro Higuti (fundação — hoje é wordmark em texto)
@@ -26,14 +38,22 @@ este arquivo.
 
 - [x] Vercel conectado ao repositório (projeto `laddingpage-sandro`, deploy
       automático a cada push em `main`).
-- [x] Supabase conectado (projeto criado, `NEXT_PUBLIC_SUPABASE_URL` e
-      `NEXT_PUBLIC_SUPABASE_ANON_KEY` em `.env.local`, conectividade
-      verificada via SDK). Ainda **sem nenhuma tabela** — schema entra junto
-      com a spec do painel administrativo.
-- [x] `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY` adicionadas
-      nas Environment Variables do Vercel e redeploy feito. Site em produção
-      responde 200 nas rotas existentes (ainda sem nenhuma chamada real ao
-      Supabase pra confirmar as chaves ponta a ponta em produção).
-- [ ] Painel administrativo: precisa de spec própria (schema de tabelas,
-      RLS, auth do corretor, upload de imagens, importação por planilha).
-      Supabase já está disponível pra isso, mas nada foi modelado ainda.
+- [x] Supabase conectado. Projeto usa o formato **novo** de chaves
+      (`sb_publishable_...`/`sb_secret_...`, não o JWT legado
+      anon/service_role) — env vars corretas são
+      `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` e `SUPABASE_SECRET_KEY`.
+- [x] Tabelas `empreendimentos`/`plantas` criadas com RLS e seed (pilar
+      "Painel administrativo — Auth + Schema"). O SQL Editor do dashboard
+      não persistia as mudanças de forma confiável neste projeto — migration
+      aplicada via conexão Postgres direta (`DATABASE_URL` em `.env.local`).
+- [x] Login do corretor (Supabase Auth, single-admin) + `/admin` protegida
+      via `src/proxy.ts` + site público lendo do banco.
+- [ ] **Atualizar as Environment Variables do Vercel** com os nomes/valores
+      corretos: `NEXT_PUBLIC_SUPABASE_URL`,
+      `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (as que estavam lá antes tinham
+      o nome antigo/chave errada) — sem isso o site em produção não conecta
+      ao Supabase.
+- [ ] CRUD de empreendimentos no painel (hoje só dá pra editar via Table
+      Editor do Supabase diretamente).
+- [ ] Upload de imagem real (continua legenda de texto em `fotos`).
+- [ ] Importação por planilha.
