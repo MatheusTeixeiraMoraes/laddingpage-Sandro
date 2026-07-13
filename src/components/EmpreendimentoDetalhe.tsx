@@ -78,7 +78,7 @@ export function EmpreendimentoDetalhe({
           <p className="text-xs uppercase tracking-wide text-slate-400">
             {labelDaPlanta(planta)}
           </p>
-          <p className="mt-1 font-heading text-2xl font-extrabold text-brand-pink sm:text-3xl">
+          <p className="mt-1 font-heading text-xl font-extrabold leading-snug text-brand-pink">
             {formatarPrecoAPartirDe(planta.preco)}
           </p>
           <p className="mt-1 text-xs text-slate-400">
