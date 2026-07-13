@@ -1,42 +1,58 @@
 /**
- * Conteúdo da página /sobre.
- *
- * O texto da bio é um RASCUNHO escrito a partir do que já sabemos do Sandro
- * (especialista em MCMV em Sorocaba, atendimento humanizado, CRECI 278922).
- * Ele deve revisar e ajustar — é só editar as strings deste arquivo.
+ * Conteúdo da página /sobre — texto escrito pelo próprio Sandro.
+ * Para editar, basta trocar as strings deste arquivo.
  */
 
+/** Corpo da bio, até a virada "o que mais me realiza não são os números". */
 export const BIO_PARAGRAFOS: string[] = [
-  "Sou Sandro Higuti, consultor imobiliário em Sorocaba e região, especialista em apartamentos na planta e no programa Minha Casa Minha Vida.",
-  "Entrei nesse mercado com uma convicção simples: comprar um imóvel é uma das decisões mais importantes da vida de uma família — e ninguém deveria tomar essa decisão no escuro, com pressa ou com meia informação.",
-  "Por isso atendo do jeito que eu gostaria de ser atendido: explico o financiamento em português claro, mostro o que realmente cabe no seu bolso e acompanho cada etapa até a chave estar na sua mão. Sem promessa que não se cumpre.",
-  "O que mais me orgulha é o resultado disso: a maior parte dos meus clientes vira amigo. Muitos voltam anos depois — agora para investir, ou para indicar um parente. É isso que me faz levantar todo dia.",
+  "Nasci em Londrina (PR), mas cheguei a Sorocaba ainda com dois anos de idade. Cresci aqui, construí minha história aqui e, por isso, posso dizer com orgulho que sou sorocabano de coração.",
+  "Sou filho de mãe nordestina e pai japonês, e acredito que grande parte da pessoa que me tornei nasceu dessa combinação de culturas. Da minha mãe herdei a acolhida, a simplicidade e a empatia características do povo nordestino. Do meu pai aprendi que honestidade, disciplina e respeito não são diferenciais, mas valores inegociáveis.",
+  "Esses princípios sempre nortearam minha vida e hoje também definem a forma como conduzo meu trabalho.",
+  "Sou formado em Publicidade e Propaganda e, em 2022, encontrei no mercado imobiliário uma profissão que uniu duas grandes paixões: comunicar pessoas e transformar vidas.",
+  "Desde o primeiro atendimento percebi que vender um imóvel vai muito além de apresentar plantas, valores ou condições de financiamento. Trata-se de compreender histórias, sonhos, medos e expectativas. Afinal, para muitas famílias, a compra do primeiro imóvel representa uma das decisões mais importantes de suas vidas.",
+  "Ao longo dessa jornada, tive a alegria de conquistar reconhecimento no mercado, alcançar posições de destaque em rankings de vendas e receber premiações pelo meu desempenho profissional. Sou profundamente grato por cada uma dessas conquistas.",
+  "Mas, sinceramente, o que mais me realiza não são os números.",
 ];
 
-export const VALORES: { titulo: string; descricao: string }[] = [
-  {
-    titulo: "Atendimento humanizado",
-    descricao: "Você fala comigo, não com um robô. Do primeiro oi até a entrega das chaves.",
-  },
-  {
-    titulo: "Transparência total",
-    descricao: "Custos, prazos e condições explicados antes de você assinar qualquer coisa.",
-  },
-  {
-    titulo: "Especialista em MCMV",
-    descricao: "Conheço as regras do programa e o que muda de verdade na sua parcela.",
-  },
-  {
-    titulo: "Acompanhamento completo",
-    descricao: "Financiamento, documentação e obra — não te deixo sozinho no meio do caminho.",
-  },
+/** As quatro linhas curtas "É ..." — destacadas em bloco. */
+export const BIO_REALIZACOES: string[] = [
+  "É receber uma mensagem meses depois dizendo que a família está feliz no novo lar.",
+  "É participar da entrega das chaves.",
+  "É ver clientes se transformarem em amigos.",
+  "É saber que fiz parte de um capítulo tão importante da história de alguém.",
 ];
 
-// Números representativos — o Sandro precisa confirmar (ver PENDENCIAS.md).
+/** Fechamento da bio, depois do bloco de realizações. */
+export const BIO_PROPOSITO =
+  "Hoje, meu propósito continua sendo o mesmo do primeiro dia: oferecer um atendimento transparente, humano e responsável, ajudando cada cliente a tomar decisões com segurança e tranquilidade.";
+
+export const BIO_FRASE_FINAL = [
+  "Porque acredito que imóveis são importantes.",
+  "Mas pessoas sempre serão mais.",
+];
+
+export const VALORES: { emoji: string; titulo: string }[] = [
+  { emoji: "❤️", titulo: "Empatia" },
+  { emoji: "🤝", titulo: "Transparência" },
+  { emoji: "🛡️", titulo: "Honestidade" },
+  { emoji: "🎯", titulo: "Comprometimento" },
+  { emoji: "📚", titulo: "Atualização constante" },
+  { emoji: "🏠", titulo: "Especialista em apartamentos na planta" },
+];
+
+/** "Alguns números" — conquistas e alcance, ao lado da bio. */
+export const DESTAQUES: string[] = [
+  "+100 famílias atendidas",
+  "Especialista em Minha Casa Minha Vida",
+  "Entrevistado pela TV TEM",
+  "Melhor Corretor de Imóveis de 2025 (Pesquisa Real Data)",
+  "Atendimento em Sorocaba e Região",
+];
+
+/** Faixa de números (home e /sobre usam a mesma lista). */
 export const NUMEROS: { valor: string; label: string }[] = [
-  { valor: "+250", label: "Famílias atendidas" },
-  { valor: "+150", label: "Sonhos realizados" },
-  { valor: "100%", label: "Comprometimento" },
+  { valor: "+100", label: "Famílias atendidas" },
+  { valor: "+100", label: "Sonhos realizados" },
 ];
 
 /** Fotos reais de clientes (entrega de chaves) em public/clientes/. */

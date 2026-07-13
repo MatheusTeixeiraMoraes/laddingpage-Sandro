@@ -1,18 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
+import { NUMEROS } from "@/data/sobre";
 
 const PILLS = [
   "Atendimento humanizado",
   "Foco no seu objetivo",
   "Acompanhamento completo",
   "Especialista em MCMV",
-];
-
-// Números representativos — confirmar com o Sandro (ver PENDENCIAS.md).
-const STATS = [
-  { valor: "+250", label: "Famílias atendidas" },
-  { valor: "+150", label: "Sonhos realizados" },
-  { valor: "100%", label: "Comprometimento" },
 ];
 
 export function SobreMim() {
@@ -69,7 +63,7 @@ export function SobreMim() {
             className="relative z-10 h-auto w-[280px] object-contain sm:w-[340px]"
           />
           <div className="absolute bottom-4 right-0 z-20 flex flex-col gap-4 rounded-2xl bg-brand-navy px-6 py-5 shadow-xl">
-            {STATS.map((stat) => (
+            {NUMEROS.map((stat) => (
               <div key={stat.label}>
                 <p className="font-heading text-2xl font-extrabold text-brand-pink">{stat.valor}</p>
                 <p className="text-xs text-slate-300">{stat.label}</p>

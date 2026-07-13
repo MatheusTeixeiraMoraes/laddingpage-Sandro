@@ -2,7 +2,16 @@ import Image from "next/image";
 import { GoogleReviews } from "@/components/GoogleReviews";
 import { SocialIcons } from "@/components/home/SocialIcons";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
-import { BIO_PARAGRAFOS, VALORES, NUMEROS, FOTOS_CLIENTES } from "@/data/sobre";
+import {
+  BIO_PARAGRAFOS,
+  BIO_REALIZACOES,
+  BIO_PROPOSITO,
+  BIO_FRASE_FINAL,
+  VALORES,
+  DESTAQUES,
+  NUMEROS,
+  FOTOS_CLIENTES,
+} from "@/data/sobre";
 
 const WHATSAPP = buildWhatsAppLink(
   "Olá, Sandro! Li a sua história no site e gostaria de conversar.",
@@ -25,13 +34,14 @@ export default function SobrePage() {
               Sobre mim
             </p>
             <h1 className="mt-2 font-heading text-4xl font-extrabold tracking-tight text-brand-navy sm:text-5xl">
-              Prazer, eu sou <span className="text-brand-pink">Sandro Higuti</span>
+              Muito prazer, eu sou{" "}
+              <span className="text-brand-pink">Sandro Higuti</span>
             </h1>
-            <div className="mt-5 flex flex-col gap-4 text-slate-600">
-              {BIO_PARAGRAFOS.map((paragrafo) => (
-                <p key={paragrafo.slice(0, 30)}>{paragrafo}</p>
-              ))}
-            </div>
+            <p className="mt-5 max-w-md text-lg text-slate-600">
+              Sorocabano de coração, consultor imobiliário e especialista em
+              apartamentos na planta. Atendo do jeito que eu gostaria de ser
+              atendido.
+            </p>
             <p className="mt-5 font-script text-2xl text-brand-pink">
               Clientes que se tornam amigos.
             </p>
@@ -65,9 +75,80 @@ export default function SobrePage() {
         </div>
       </section>
 
+      {/* História + destaques ao lado */}
+      <section className="bg-white pb-16 sm:pb-20">
+        <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-[1fr_340px]">
+          <article className="max-w-2xl">
+            <div className="flex flex-col gap-4 text-slate-600">
+              {BIO_PARAGRAFOS.map((paragrafo) => (
+                <p key={paragrafo.slice(0, 30)}>{paragrafo}</p>
+              ))}
+            </div>
+
+            <ul className="mt-6 flex flex-col gap-3 rounded-2xl bg-brand-blush/50 p-6">
+              {BIO_REALIZACOES.map((linha) => (
+                <li key={linha.slice(0, 30)} className="flex gap-3 text-brand-navy">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-pink" aria-hidden />
+                  <span>{linha}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-6 text-slate-600">{BIO_PROPOSITO}</p>
+
+            <blockquote className="mt-8 border-l-4 border-brand-pink pl-5">
+              {BIO_FRASE_FINAL.map((linha) => (
+                <p
+                  key={linha}
+                  className="font-heading text-xl font-bold text-brand-navy sm:text-2xl"
+                >
+                  {linha}
+                </p>
+              ))}
+            </blockquote>
+          </article>
+
+          <aside className="flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
+            <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+              <h2 className="font-heading text-lg font-bold text-brand-navy">
+                Meus valores
+              </h2>
+              <ul className="mt-4 flex flex-col gap-3">
+                {VALORES.map((valor) => (
+                  <li key={valor.titulo} className="flex items-start gap-3 text-sm text-slate-700">
+                    <span className="text-lg leading-none" aria-hidden>
+                      {valor.emoji}
+                    </span>
+                    <span className="font-medium">{valor.titulo}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-2xl bg-brand-navy p-6 shadow-sm">
+              <h2 className="font-heading text-lg font-bold text-white">
+                Alguns números
+              </h2>
+              <ul className="mt-4 flex flex-col gap-3">
+                {DESTAQUES.map((destaque) => (
+                  <li key={destaque} className="flex items-start gap-3 text-sm text-slate-300">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-pink/20 text-brand-pink">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-3 w-3">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />
+                      </svg>
+                    </span>
+                    {destaque}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </section>
+
       {/* Números */}
       <section className="bg-brand-navy py-10">
-        <div className="mx-auto grid max-w-4xl grid-cols-3 gap-6 px-6 text-center">
+        <div className="mx-auto grid max-w-3xl grid-cols-2 gap-6 px-6 text-center">
           {NUMEROS.map((n) => (
             <div key={n.label}>
               <p className="font-heading text-3xl font-extrabold text-brand-pink sm:text-4xl">
@@ -76,37 +157,6 @@ export default function SobrePage() {
               <p className="mt-1 text-xs text-slate-300 sm:text-sm">{n.label}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* Valores */}
-      <section className="bg-white py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="text-center">
-            <p className="font-heading text-xs font-semibold uppercase tracking-widest text-brand-pink">
-              Como eu trabalho
-            </p>
-            <h2 className="mt-2 font-heading text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl">
-              O que você pode <span className="text-brand-pink">esperar de mim</span>
-            </h2>
-          </div>
-
-          <div className="mt-10 grid gap-5 sm:grid-cols-2">
-            {VALORES.map((valor) => (
-              <div
-                key={valor.titulo}
-                className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm"
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-blush text-brand-pink">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-5 w-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />
-                  </svg>
-                </span>
-                <h3 className="mt-4 font-heading font-bold text-brand-navy">{valor.titulo}</h3>
-                <p className="mt-1 text-sm text-slate-600">{valor.descricao}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
