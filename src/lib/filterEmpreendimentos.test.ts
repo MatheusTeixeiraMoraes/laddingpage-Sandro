@@ -9,6 +9,9 @@ const fixture: Empreendimento[] = [
     nome: "Casa Azul",
     tipo: "casa",
     bairro: "Centro",
+    zona: "leste",
+    imagem: "",
+    entrega: "",
     latitude: -23.5,
     longitude: -47.45,
     plantas: [
@@ -28,6 +31,9 @@ const fixture: Empreendimento[] = [
     nome: "Predio Duas Plantas",
     tipo: "apartamento",
     bairro: "Vila Nova",
+    zona: "norte",
+    imagem: "",
+    entrega: "",
     latitude: -23.5,
     longitude: -47.45,
     plantas: [
@@ -75,6 +81,15 @@ test("filtra por tipo", () => {
     "",
   );
   assert.deepEqual(resultado.map((e) => e.id), ["2"]);
+});
+
+test("filtra por zona", () => {
+  const resultado = filterEmpreendimentos(
+    fixture,
+    { ...FILTROS_VAZIOS, zona: "leste" },
+    "",
+  );
+  assert.deepEqual(resultado.map((e) => e.id), ["1"]);
 });
 
 test("casa se pelo menos uma planta atende aos filtros numericos", () => {

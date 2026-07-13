@@ -1,7 +1,8 @@
-import type { Empreendimento, Planta, TipoEmpreendimento } from "../types/empreendimento";
+import type { Empreendimento, Planta, TipoEmpreendimento, Zona } from "../types/empreendimento";
 
 export type Filtros = {
   tipo: TipoEmpreendimento | "todos";
+  zona: Zona | "todas";
   dormitoriosMin: number;
   vagasMin: number;
   metragemMin: number | null;
@@ -12,6 +13,7 @@ export type Filtros = {
 
 export const FILTROS_VAZIOS: Filtros = {
   tipo: "todos",
+  zona: "todas",
   dormitoriosMin: 0,
   vagasMin: 0,
   metragemMin: null,
@@ -47,6 +49,8 @@ export function filterEmpreendimentos(
       if (!alvo.includes(termo)) return false;
     }
     if (filtros.tipo !== "todos" && empreendimento.tipo !== filtros.tipo)
+      return false;
+    if (filtros.zona !== "todas" && empreendimento.zona !== filtros.zona)
       return false;
     return empreendimento.plantas.some((planta) =>
       plantaAtendeFiltros(planta, filtros),

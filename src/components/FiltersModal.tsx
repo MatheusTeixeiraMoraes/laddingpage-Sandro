@@ -41,6 +41,7 @@ export function FiltersModal({
     const formData = new FormData(event.currentTarget);
     onApply({
       tipo: formData.get("tipo") as Filtros["tipo"],
+      zona: filtros.zona,
       dormitoriosMin: Number(formData.get("dormitoriosMin")),
       vagasMin: Number(formData.get("vagasMin")),
       metragemMin: parseNumberOrNull(formData.get("metragemMin")),

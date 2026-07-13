@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Empreendimento } from "@/types/empreendimento";
+import type { Empreendimento, Zona } from "@/types/empreendimento";
 
 const SELECT_EMPREENDIMENTO =
-  "id, nome, tipo, bairro, latitude, longitude, plantas(id, metragem, com_suite, dormitorios, vagas, preco, fotos)";
+  "id, nome, tipo, bairro, zona, imagem, entrega, latitude, longitude, plantas(id, metragem, com_suite, dormitorios, vagas, preco, fotos)";
 
 type PlantaRow = {
   id: string;
@@ -19,6 +19,9 @@ type EmpreendimentoRow = {
   nome: string;
   tipo: Empreendimento["tipo"];
   bairro: string;
+  zona: Zona;
+  imagem: string;
+  entrega: string;
   latitude: number;
   longitude: number;
   plantas: PlantaRow[];
@@ -30,6 +33,9 @@ function mapRow(row: EmpreendimentoRow): Empreendimento {
     nome: row.nome,
     tipo: row.tipo,
     bairro: row.bairro,
+    zona: row.zona,
+    imagem: row.imagem,
+    entrega: row.entrega,
     latitude: row.latitude,
     longitude: row.longitude,
     plantas: row.plantas.map((planta) => ({
