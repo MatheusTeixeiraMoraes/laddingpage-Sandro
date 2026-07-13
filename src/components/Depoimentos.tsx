@@ -30,7 +30,9 @@ export function Depoimentos() {
         </a>
       </p>
 
-      <div className="mt-4 grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
+      {/* items-start: cada depoimento tem o tamanho do seu texto -- alguns sao
+          de uma linha, outros de tres paragrafos. */}
+      <div className="mt-4 grid w-full grid-cols-1 items-start gap-4 sm:grid-cols-2">
         {depoimentos.map((depoimento) => (
           <blockquote
             key={depoimento.id}
@@ -39,7 +41,15 @@ export function Depoimentos() {
             <p className="text-brand-pink" aria-label={`${depoimento.nota} de 5 estrelas`}>
               {estrelas(depoimento.nota)}
             </p>
-            <p className="text-sm text-slate-600">&ldquo;{depoimento.texto}&rdquo;</p>
+            <div className="flex flex-col gap-2 text-sm text-slate-600">
+              {depoimento.texto.split("\n").map((paragrafo, i, todos) => (
+                <p key={paragrafo.slice(0, 30)}>
+                  {i === 0 && "“"}
+                  {paragrafo}
+                  {i === todos.length - 1 && "”"}
+                </p>
+              ))}
+            </div>
             <footer className="mt-1 text-sm font-bold text-brand-navy">
               {depoimento.autor}
             </footer>

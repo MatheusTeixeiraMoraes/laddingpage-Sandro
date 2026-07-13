@@ -11,11 +11,24 @@ import type { Depoimento } from "@/types/depoimento";
  * O texto está como o cliente escreveu, inclusive os erros de digitação: é a
  * palavra dele, não a nossa.
  *
- * FALTAM 3 avaliações (ver PENDENCIAS.md): as de Mariele Santos e Daiane Mariano
- * aparecem cortadas no Google ("... Mais") e a de Gabriel Catto não estava
- * visível. Não entram pela metade — ou o texto inteiro, ou nada.
+ * FALTA 1 avaliação (ver PENDENCIAS.md): a de Gabriel Catto, que não estava
+ * visível. Não entra pela metade — ou o texto inteiro, ou nada.
  */
 export const depoimentos: Depoimento[] = [
+  {
+    id: "mariele-santos",
+    autor: "Mariele Santos",
+    nota: 5,
+    texto:
+      "Queria deixar um feedback sobre o Sandro, que nos ajudou na compra do nosso apartamento. Ele foi simplesmente incrível do começo ao fim: super atencioso, paciente e sempre disposto a explicar tudo com calma, o que fez toda diferença nesse processo tão importante.\nAlém de ser um ótimo profissional, ele tem um jeito leve e acolhedor que faz você se sentir à vontade é aquele tipo de pessoa que você já vira amigo logo de cara",
+  },
+  {
+    id: "daiane-mariano",
+    autor: "Daiane Mariano",
+    nota: 5,
+    texto:
+      "O Sandro faz jus ao slogan dele: “Amigos Clientes”, levando a sério o sonho das pessoas.\nO diferencial dele é a transparência e a humanidade no atendimento. Você sente que ele realmente se importa em encontrar o melhor caminho, e não apenas em fechar uma venda. E sei o quanto ele se dedica para que cada pessoa se sinta segura e acolhida, para investir nesse sonho.\nEntão, para quem busca um atendimento humano e de confiança, o conceito “Amigos Clientes” resume perfeitamente a experiência com ele!",
+  },
   {
     id: "guilherme-augusto",
     autor: "Guilherme Augusto",
