@@ -4,6 +4,29 @@ Lista viva de tudo que depende de conteúdo ou credencial externa que ainda
 não temos. Cada pilar novo que gerar uma pendência externa deve atualizar
 este arquivo.
 
+## Conteúdo a confirmar — Home no estilo da referência (fase concluída)
+
+A home nova foi montada com assets e empreendimentos reais do material do
+Sandro, mas alguns dados são **representativos** até o Sandro confirmar:
+
+- [ ] **Números das estatísticas** ("+250 famílias atendidas", "+150 sonhos
+      realizados", "100% comprometimento" em `SobreMim`) — vieram da
+      referência; confirmar os reais ou ajustar.
+- [ ] **Dados dos 7 empreendimentos** semeados (Vila Laredo, Sou Viver,
+      Siver Oasis, Residencial São Paulo, Arena, Residencial Tropical, Gran
+      Campolim): dorms, metragem, **entrega e preço** são representativos de
+      MCMV. Sandro ajusta os reais pelo painel (`/admin`). Nome, zona e
+      fachada são reais.
+- [ ] **Preço na página de detalhe** (`/empreendimentos/[id]`) exibe o valor
+      representativo da planta — os cards da home não mostram preço, mas a
+      página de detalhe sim. Confirmar/ajustar preços reais.
+- [ ] **Links reais das redes sociais** (Instagram/Facebook/YouTube) — hoje
+      `href="#"` no header e footer.
+- [ ] Cadastrar os demais empreendimentos do material (dezenas por zona) pelo
+      painel — só 7 foram semeados como amostra.
+- Bio, fotos e reviews continuam como nas fases anteriores (algumas ainda
+  placeholder na página `/sobre`).
+
 ## Segurança
 
 - [x] **Policies de escrita travadas por `role=admin`** (migration `0003`),
