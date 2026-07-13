@@ -1,0 +1,83 @@
+import Image from "next/image";
+import Link from "next/link";
+
+const PILLS = [
+  "Atendimento humanizado",
+  "Foco no seu objetivo",
+  "Acompanhamento completo",
+  "Especialista em MCMV",
+];
+
+// Números representativos — confirmar com o Sandro (ver PENDENCIAS.md).
+const STATS = [
+  { valor: "+250", label: "Famílias atendidas" },
+  { valor: "+150", label: "Sonhos realizados" },
+  { valor: "100%", label: "Comprometimento" },
+];
+
+export function SobreMim() {
+  return (
+    <section id="sobre" className="scroll-mt-20 bg-white py-16 sm:py-20">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-2">
+        <div>
+          <p className="font-heading text-xs font-semibold uppercase tracking-widest text-brand-pink">
+            Sobre mim
+          </p>
+          <h2 className="mt-2 font-heading text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl">
+            Prazer, eu sou <span className="text-brand-pink">Sandro Higuti</span>
+          </h2>
+          <p className="mt-4 max-w-md text-slate-600">
+            Consultor imobiliário especializado no programa Minha Casa Minha Vida
+            em Sorocaba e região. Minha missão é te ajudar a encontrar o lar ideal
+            ou o melhor investimento com segurança, clareza e tranquilidade.
+          </p>
+
+          <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {PILLS.map((pill) => (
+              <span
+                key={pill}
+                className="inline-flex items-center gap-2 rounded-xl bg-brand-blush/60 px-4 py-2.5 text-sm font-medium text-brand-navy"
+              >
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-pink/15 text-brand-pink">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-3.5 w-3.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />
+                  </svg>
+                </span>
+                {pill}
+              </span>
+            ))}
+          </div>
+
+          <Link
+            href="/sobre"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-navy px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-navy/90"
+          >
+            Me conhecer melhor
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </Link>
+        </div>
+
+        <div className="relative flex justify-center">
+          <div className="absolute right-4 top-6 h-72 w-72 rounded-[45%] bg-brand-pink/20 blur-2xl" aria-hidden />
+          <Image
+            src="/sandro-recorte.png"
+            alt="Sandro Higuti"
+            width={460}
+            height={560}
+            className="relative z-10 h-auto w-[280px] object-contain sm:w-[340px]"
+          />
+          <div className="absolute bottom-4 right-0 z-20 flex flex-col gap-4 rounded-2xl bg-brand-navy px-6 py-5 shadow-xl">
+            {STATS.map((stat) => (
+              <div key={stat.label}>
+                <p className="font-heading text-2xl font-extrabold text-brand-pink">{stat.valor}</p>
+                <p className="text-xs text-slate-300">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
