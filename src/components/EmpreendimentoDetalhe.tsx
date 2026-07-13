@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Empreendimento } from "@/types/empreendimento";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
-import { formatarPrecoAPartirDe } from "@/lib/preco";
+import { formatarPrecoCurto } from "@/lib/preco";
 import { PlantaSelector, labelDaPlanta } from "@/components/PlantaSelector";
 
 function Spec({ label, valor }: { label: string; valor: string }) {
@@ -78,10 +78,11 @@ export function EmpreendimentoDetalhe({
           <p className="text-xs uppercase tracking-wide text-slate-400">
             {labelDaPlanta(planta)}
           </p>
-          <p className="mt-1 font-heading text-xl font-extrabold leading-snug text-brand-pink">
-            {formatarPrecoAPartirDe(planta.preco)}
+          <p className="mt-3 text-sm font-medium text-slate-500">A partir de</p>
+          <p className="font-heading text-3xl font-extrabold leading-tight text-brand-pink">
+            {formatarPrecoCurto(planta.preco)}
           </p>
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1.5 text-xs text-slate-400">
             Valores e condições sujeitos a confirmação.
           </p>
 

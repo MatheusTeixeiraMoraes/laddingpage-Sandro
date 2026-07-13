@@ -1,14 +1,15 @@
 /**
- * Formata o preço no padrão do mercado imobiliário: "A partir de R$ 289 mil".
- * Valores em milhões viram "A partir de R$ 1,25 milhões".
+ * Formata o preço no padrão curto do mercado imobiliário: "R$ 289 mil".
+ * Valores em milhões viram "R$ 1,25 milhões".
+ * O rótulo "A partir de" é responsabilidade de quem exibe.
  */
-export function formatarPrecoAPartirDe(preco: number): string {
+export function formatarPrecoCurto(preco: number): string {
   if (preco >= 1_000_000) {
     const milhoes = preco / 1_000_000;
     const texto = milhoes.toLocaleString("pt-BR", { maximumFractionDigits: 2 });
-    return `A partir de R$ ${texto} ${milhoes === 1 ? "milhão" : "milhões"}`;
+    return `R$ ${texto} ${milhoes === 1 ? "milhão" : "milhões"}`;
   }
 
   const mil = Math.round(preco / 1000);
-  return `A partir de R$ ${mil} mil`;
+  return `R$ ${mil} mil`;
 }
