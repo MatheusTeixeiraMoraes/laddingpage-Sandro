@@ -13,7 +13,7 @@ export default async function Home() {
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 px-6 py-16 text-center">
-      <h1 className="text-4xl font-bold tracking-tight text-brand-purple sm:text-5xl">
+      <h1 className="font-heading text-4xl font-bold tracking-tight text-brand-navy sm:text-5xl">
         Sandro Higuti Consultor Imobiliário
       </h1>
       <p className="max-w-xl text-lg text-slate-600">
@@ -23,7 +23,7 @@ export default async function Home() {
         href={WHATSAPP_GENERICO}
         target="_blank"
         rel="noopener noreferrer"
-        className="rounded-full bg-brand-blue px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
+        className="rounded-full bg-brand-pink px-6 py-3 font-medium text-white transition-colors hover:bg-pink-700"
       >
         Falar no WhatsApp
       </a>

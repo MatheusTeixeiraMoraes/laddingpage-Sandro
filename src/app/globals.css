@@ -2,17 +2,19 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #151527;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-brand-white: #ffffff;
-  --color-brand-blue: #2563eb;
+  --color-brand-navy: #151527;
   --color-brand-pink: #ec4899;
-  --color-brand-purple: #8a05be;
-  --font-sans: var(--font-manrope);
+  --color-brand-blush: #fce7f3;
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-poppins);
+  --font-script: var(--font-caveat);
 }
 
 body {

@@ -38,7 +38,7 @@ export function EmpreendimentoDetalhe({
         {planta.fotos.map((foto, index) => (
           <div
             key={index}
-            className="flex h-32 items-center justify-center rounded-xl bg-brand-purple/10 p-2 text-center text-xs font-medium text-brand-purple"
+            className="flex h-32 items-center justify-center rounded-xl bg-brand-blush p-2 text-center text-xs font-medium text-brand-pink"
           >
             Planta {labelDaPlanta(planta)} — {foto}
           </div>
@@ -49,7 +49,7 @@ export function EmpreendimentoDetalhe({
         <p>
           {planta.dormitorios} dorm. · {planta.vagas} vaga(s) · {planta.metragem} m²
         </p>
-        <p className="text-2xl font-bold text-brand-blue">
+        <p className="text-2xl font-bold text-brand-pink">
           {formatarPreco(planta.preco)}
         </p>
       </div>
@@ -58,7 +58,7 @@ export function EmpreendimentoDetalhe({
         href={whatsappLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="rounded-full bg-brand-purple px-6 py-3 font-medium text-white hover:bg-purple-700"
+        className="rounded-full bg-brand-pink px-6 py-3 font-medium text-white hover:bg-pink-700"
       >
         Falar no WhatsApp sobre esta planta
       </a>

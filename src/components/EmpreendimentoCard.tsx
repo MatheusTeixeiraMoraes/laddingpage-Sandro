@@ -41,14 +41,14 @@ export function EmpreendimentoCard({
         href={`/empreendimentos/${empreendimento.id}`}
         className="flex flex-1 flex-col"
       >
-        <div className="flex h-36 items-center justify-center bg-brand-purple/10 text-sm font-medium text-brand-purple">
+        <div className="flex h-36 items-center justify-center bg-brand-blush text-sm font-medium text-brand-pink">
           {TIPO_LABEL[empreendimento.tipo]}
         </div>
         <div className="flex flex-1 flex-col gap-2 p-4">
           <h3 className="font-bold text-slate-800">{empreendimento.nome}</h3>
           <p className="text-sm text-slate-500">{empreendimento.bairro}</p>
           <p className="text-sm text-slate-600">{faixaDeMetragem(empreendimento)}</p>
-          <p className="text-lg font-bold text-brand-blue">
+          <p className="text-lg font-bold text-brand-pink">
             A partir de {formatarPreco(precoAPartirDe(empreendimento))}
           </p>
         </div>
@@ -58,7 +58,7 @@ export function EmpreendimentoCard({
           href={whatsappLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="block rounded-full bg-brand-purple px-4 py-2 text-center text-sm font-medium text-white hover:bg-purple-700"
+          className="block rounded-full bg-brand-pink px-4 py-2 text-center text-sm font-medium text-white hover:bg-pink-700"
         >
           Falar no WhatsApp
         </a>

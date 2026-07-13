@@ -9,6 +9,8 @@ const fixture: Empreendimento[] = [
     nome: "Casa Azul",
     tipo: "casa",
     bairro: "Centro",
+    latitude: -23.5,
+    longitude: -47.45,
     plantas: [
       {
         id: "1-a",
@@ -26,6 +28,8 @@ const fixture: Empreendimento[] = [
     nome: "Predio Duas Plantas",
     tipo: "apartamento",
     bairro: "Vila Nova",
+    latitude: -23.5,
+    longitude: -47.45,
     plantas: [
       {
         id: "2-a",

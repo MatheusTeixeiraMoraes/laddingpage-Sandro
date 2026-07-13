@@ -65,7 +65,7 @@ export function FiltersModal({
         onClick={(event) => event.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-brand-purple">Filtros</h2>
+          <h2 className="font-heading text-lg font-bold text-brand-navy">Filtros</h2>
           <button
             type="button"
             onClick={onClose}
@@ -172,7 +172,7 @@ export function FiltersModal({
             </button>
             <button
               type="submit"
-              className="rounded-full bg-brand-blue px-5 py-2 text-sm font-medium text-white hover:bg-blue-700"
+              className="rounded-full bg-brand-pink px-5 py-2 text-sm font-medium text-white hover:bg-pink-700"
             >
               Aplicar filtros
             </button>

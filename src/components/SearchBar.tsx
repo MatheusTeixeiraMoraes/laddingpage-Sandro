@@ -20,7 +20,7 @@ export function SearchBar({ value, onChange, onOpenFilters }: SearchBarProps) {
         type="button"
         onClick={onOpenFilters}
         aria-label="Abrir filtros"
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-purple text-white transition-colors hover:bg-purple-700"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-pink text-white transition-colors hover:bg-pink-700"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

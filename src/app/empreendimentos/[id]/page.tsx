@@ -19,7 +19,7 @@ export default async function EmpreendimentoPage({
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 px-6 py-16 text-center">
-      <h1 className="text-3xl font-bold tracking-tight text-brand-purple sm:text-4xl">
+      <h1 className="font-heading text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl">
         {empreendimento.nome}
       </h1>
       <p className="text-slate-500">{empreendimento.bairro}</p>
