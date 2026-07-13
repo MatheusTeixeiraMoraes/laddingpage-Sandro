@@ -49,14 +49,5 @@ export const FOTOS_CLIENTES: string[] = [
   "/clientes/cliente-6.jpg",
 ];
 
-export type RedeSocial = {
-  nome: string;
-  href: string;
-};
-
-// Links reais ainda não fornecidos (ver PENDENCIAS.md).
-export const REDES_SOCIAIS: RedeSocial[] = [
-  { nome: "Instagram", href: "#" },
-  { nome: "Facebook", href: "#" },
-  { nome: "YouTube", href: "#" },
-];
+// As redes sociais reais vivem em src/components/home/SocialIcons.tsx
+// (fonte única usada pelo header, footer e pela página /sobre).
