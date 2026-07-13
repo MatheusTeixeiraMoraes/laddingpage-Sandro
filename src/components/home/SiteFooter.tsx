@@ -21,13 +21,23 @@ export function SiteFooter() {
     <footer className="bg-brand-navy text-slate-300">
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="lg:col-span-2">
-          <Image
-            src="/logo-sandro.png"
-            alt="Sandro Higuti Consultor Imobiliário"
-            width={150}
-            height={48}
-            className="h-12 w-auto rounded-lg bg-white/95 p-2"
-          />
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo-marca.png"
+              alt=""
+              width={400}
+              height={322}
+              className="h-11 w-auto"
+            />
+            <span className="flex flex-col leading-none">
+              <span className="font-heading text-base font-extrabold tracking-tight text-white">
+                SANDRO HIGUTI
+              </span>
+              <span className="mt-1 text-[10px] font-medium uppercase tracking-widest text-slate-400">
+                Consultor Imobiliário
+              </span>
+            </span>
+          </div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
             Atendimento humanizado e transparente para realizar o seu sonho do
             primeiro lar ou do melhor investimento.
