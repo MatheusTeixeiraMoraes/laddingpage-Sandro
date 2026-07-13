@@ -43,3 +43,6 @@ next-env.d.ts
 
 # superpowers brainstorming companion (mockups locais, nao versionar)
 .superpowers/
+
+# screenshots do Playwright MCP (verificacao visual)
+.playwright-mcp/
