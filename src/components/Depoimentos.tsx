@@ -1,4 +1,5 @@
 import { depoimentos } from "@/data/depoimentos";
+import { tempoRelativo } from "@/lib/tempoRelativo";
 
 /** Perfil dele no Google (CID extraído do próprio link do perfil). */
 const PERFIL_GOOGLE = "https://www.google.com/maps?cid=385263710104307775";
@@ -37,8 +38,13 @@ export function Depoimentos() {
             key={depoimento.id}
             className="flex flex-col gap-1 rounded-2xl border border-slate-100 p-5 text-left shadow-sm"
           >
-            <p className="text-brand-pink" aria-label={`${depoimento.nota} de 5 estrelas`}>
-              {estrelas(depoimento.nota)}
+            <p className="flex items-center gap-2">
+              <span className="text-brand-pink" aria-label={`${depoimento.nota} de 5 estrelas`}>
+                {estrelas(depoimento.nota)}
+              </span>
+              <span className="text-xs text-slate-400">
+                {tempoRelativo(depoimento.quando)}
+              </span>
             </p>
             <div className="flex flex-col gap-2 text-sm text-slate-600">
               {depoimento.texto.split("\n").map((paragrafo, i, todos) => (
