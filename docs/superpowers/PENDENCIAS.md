@@ -4,6 +4,25 @@ Lista viva de tudo que depende de conteúdo ou credencial externa que ainda
 não temos. Cada pilar novo que gerar uma pendência externa deve atualizar
 este arquivo.
 
+## Galeria e página /sobre — entregues ✅
+
+- **Galeria**: cada imóvel tem galeria de fotos (com lightbox) e **imagens por
+  planta com legenda explícita** ("Planta 45m² sem suíte") — resolve o pedido
+  do briefing de nunca deixar o lead em dúvida sobre qual planta está vendo.
+  Sandro sobe as fotos pelo painel.
+- **/sobre**: foto real do Sandro, bio, valores, fotos reais de clientes e
+  Google Reviews.
+
+Pendências que sobraram destas duas:
+
+- [ ] **Revisar o texto da bio** em `src/data/sobre.ts` — é um **rascunho** que
+      escrevi a partir do que sei do Sandro. Ele precisa ler e ajustar (basta
+      editar as strings do arquivo).
+- [ ] **Google Reviews ainda são mock** (`src/data/googleReviews.ts`) — trocar
+      pelos reais exige a Google Places API (API key + Place ID do negócio).
+- [ ] Fotos de planta baixa: só o Sou Viver tem o arquivo no material. Os
+      outros 6 empreendimentos podem receber as plantas pelo painel.
+
 ## Painel administrativo — CRUD entregue ✅
 
 O Sandro agora faz sozinho, em `/admin`: listar, **criar** (com upload da foto
