@@ -17,16 +17,16 @@ este arquivo.
       de quem não é admin, mas cadastro público continua permitindo criar
       contas à toa. Usuário não achou a opção no dashboard ainda; retomar
       quando puder.
-- [ ] **Configurar o template de e-mail "Reset Password"** no Supabase
-      (Authentication → Emails → Reset Password) pra usar
-      `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/admin/atualizar-senha`
-      em vez do link padrão — sem isso, o e-mail de reset não usa a rota
-      `/auth/confirm` que já foi construída (pilar "Painel administrativo"),
-      e o self-service de troca de senha não funciona ponta a ponta.
-- [ ] Trocar a senha temporária da conta admin (gerada via API — convite por
-      e-mail e "Site URL" antigos redirecionavam pro projeto local errado do
-      usuário, já corrigido) por uma senha própria, assim que o item acima
-      estiver configurado.
+- [ ] Trocar a senha temporária da conta admin: logar em `/admin/login` com
+      a senha temporária mais recente, ir em `/admin` → "Trocar senha" →
+      definir senha própria. Não depende de e-mail (o formulário funciona
+      com qualquer sessão logada) — ainda pendente do usuário fazer.
+- Personalizar o template de e-mail "Reset Password" pra usar
+  `/auth/confirm` (rota já construída) exige SMTP customizado, que é
+  recurso pago do Supabase (plano Pro). Não é bloqueio: a troca de senha
+  logada acima cobre o caso de uso sem custo. Revisitar só se algum dia
+  precisar de recuperação de senha **sem** sessão ativa (esqueceu a senha
+  de verdade, sem estar logado em lugar nenhum).
 
 ## Conteúdo real do cliente
 
