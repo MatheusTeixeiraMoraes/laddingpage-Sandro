@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { enviarLead } from "@/lib/enviarLead";
 
@@ -144,7 +145,18 @@ export function FaixaContato() {
                     onChange={(e) => setConsentimento(e.target.checked)}
                     className="mt-0.5 h-4 w-4 shrink-0 accent-brand-pink"
                   />
-                  Autorizo o Sandro a guardar meu contato e falar comigo sobre imóveis.
+                  <span>
+                    Autorizo o Sandro a guardar meu contato e falar comigo sobre
+                    imóveis. Leia a{" "}
+                    <Link
+                      href="/privacidade"
+                      target="_blank"
+                      className="font-semibold text-brand-pink hover:underline"
+                    >
+                      Política de Privacidade
+                    </Link>
+                    .
+                  </span>
                 </label>
 
                 {erro && <p className="text-sm font-medium text-red-600">{erro}</p>}

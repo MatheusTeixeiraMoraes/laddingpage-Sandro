@@ -1,8 +1,7 @@
 import { depoimentos } from "@/data/depoimentos";
 
-/** Busca o perfil dele no Maps. Trocar pelo link direto quando tivermos. */
-const PERFIL_GOOGLE =
-  "https://www.google.com/maps/search/?api=1&query=Sandro+Higuti+Consultor+Imobili%C3%A1rio+R.+Justiniano+de+Souza+145+Sorocaba";
+/** Perfil dele no Google (CID extraído do próprio link do perfil). */
+const PERFIL_GOOGLE = "https://www.google.com/maps?cid=385263710104307775";
 
 function estrelas(nota: number): string {
   return "★".repeat(nota) + "☆".repeat(5 - nota);

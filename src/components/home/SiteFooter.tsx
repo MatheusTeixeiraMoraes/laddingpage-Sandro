@@ -9,6 +9,7 @@ const NAVEGACAO = [
   { label: "Sobre", href: "/sobre" },
   { label: "Depoimentos", href: "/#depoimentos" },
   { label: "Contato", href: "/#contato" },
+  { label: "Política de Privacidade", href: "/privacidade" },
 ];
 
 // Cada região leva para a busca já filtrada por ela.
