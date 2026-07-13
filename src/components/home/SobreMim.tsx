@@ -55,16 +55,20 @@ export function SobreMim() {
           </Link>
         </div>
 
-        <div className="relative flex justify-center">
-          <div className="absolute right-4 top-6 h-72 w-72 rounded-[45%] bg-brand-pink/20 blur-2xl" aria-hidden />
-          <Image
-            src="/sandro-recorte.png"
-            alt="Sandro Higuti"
-            width={460}
-            height={560}
-            className="relative z-10 h-auto w-[280px] object-contain sm:w-[340px]"
-          />
-          <div className="absolute bottom-4 right-0 z-20 flex flex-col gap-4 rounded-2xl bg-brand-navy px-6 py-5 shadow-xl">
+        {/* Foto diferente da do hero: o mesmo recorte tres vezes na home
+            cansava a vista e fazia o site parecer que so tinha uma imagem. */}
+        <div className="relative mx-auto w-full max-w-sm">
+          <div className="absolute -right-6 -top-6 h-56 w-56 rounded-[45%] bg-brand-pink/20 blur-3xl" aria-hidden />
+          <div className="relative aspect-[3/4] overflow-hidden rounded-3xl shadow-xl">
+            <Image
+              src="/sandro-sobre.jpg"
+              alt="Sandro Higuti, consultor imobiliário"
+              fill
+              sizes="(max-width: 1024px) 100vw, 400px"
+              className="object-cover"
+            />
+          </div>
+          <div className="absolute -bottom-4 -right-4 z-20 flex flex-col gap-4 rounded-2xl bg-brand-navy px-6 py-5 shadow-xl">
             {NUMEROS.map((stat) => (
               <div key={stat.label}>
                 <p className="font-heading text-2xl font-extrabold text-brand-pink">{stat.valor}</p>

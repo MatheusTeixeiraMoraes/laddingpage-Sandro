@@ -72,13 +72,15 @@ export function FaixaContato() {
           />
 
           <div className="relative grid items-center gap-8 px-6 py-10 sm:px-10 sm:py-12 lg:grid-cols-[280px_1fr_360px] lg:gap-10 lg:px-12">
-            <div className="hidden justify-center lg:flex">
+            {/* Terceira foto diferente: hero, "sobre mim" e aqui nao podem ser
+                a mesma imagem repetida. */}
+            <div className="relative hidden aspect-[3/4] overflow-hidden rounded-2xl shadow-lg lg:block">
               <Image
-                src="/sandro-recorte.png"
-                alt="Sandro Higuti"
-                width={280}
-                height={360}
-                className="h-auto w-[260px] object-contain"
+                src="/sandro-contato.jpg"
+                alt="Sandro Higuti, consultor imobiliário"
+                fill
+                sizes="280px"
+                className="object-cover"
               />
             </div>
 

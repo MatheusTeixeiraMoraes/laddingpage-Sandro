@@ -63,7 +63,7 @@ export default function SobrePage() {
             <div className="absolute -right-4 -top-4 h-40 w-40 rounded-[40%] bg-brand-pink/20 blur-2xl" aria-hidden />
             <div className="relative aspect-[3/4] overflow-hidden rounded-3xl shadow-xl">
               <Image
-                src="/sobre/sandro-retrato.jpg"
+                src="/sobre/sandro-sentado.jpg"
                 alt="Sandro Higuti, consultor imobiliário"
                 fill
                 priority
