@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { Empreendimento } from "@/types/empreendimento";
+import type { Empreendimento, Zona } from "@/types/empreendimento";
 import {
   filterEmpreendimentos,
   FILTROS_VAZIOS,
@@ -24,8 +24,17 @@ const selectClass =
   "mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-pink";
 const labelClass = "flex flex-col text-xs font-medium uppercase tracking-wide text-slate-500";
 
-export function BuscaImoveis({ empreendimentos }: { empreendimentos: Empreendimento[] }) {
-  const [filtros, setFiltros] = useState<Filtros>(FILTROS_VAZIOS);
+export function BuscaImoveis({
+  empreendimentos,
+  zonaInicial = "todas",
+}: {
+  empreendimentos: Empreendimento[];
+  zonaInicial?: Zona | "todas";
+}) {
+  const [filtros, setFiltros] = useState<Filtros>({
+    ...FILTROS_VAZIOS,
+    zona: zonaInicial,
+  });
 
   const resultados = useMemo(
     () => filterEmpreendimentos(empreendimentos, filtros, ""),

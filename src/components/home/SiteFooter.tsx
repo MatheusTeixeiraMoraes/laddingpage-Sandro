@@ -6,12 +6,19 @@ import { SocialIcons } from "@/components/home/SocialIcons";
 const NAVEGACAO = [
   { label: "Início", href: "/" },
   { label: "Imóveis", href: "/#imoveis" },
-  { label: "Sobre", href: "/#sobre" },
+  { label: "Sobre", href: "/sobre" },
   { label: "Depoimentos", href: "/#depoimentos" },
   { label: "Contato", href: "/#contato" },
 ];
 
-const REGIOES = ["Norte", "Sul", "Leste", "Oeste", "Central"];
+// Cada região leva para a busca já filtrada por ela.
+const REGIOES = [
+  { label: "Norte", href: "/?zona=norte#imoveis" },
+  { label: "Sul", href: "/?zona=sul#imoveis" },
+  { label: "Leste", href: "/?zona=leste#imoveis" },
+  { label: "Oeste", href: "/?zona=oeste#imoveis" },
+  { label: "Central", href: "/?zona=central#imoveis" },
+];
 
 const WHATSAPP = buildWhatsAppLink(
   "Olá, Sandro! Vi o seu site e gostaria de conversar sobre os imóveis.",
@@ -52,9 +59,9 @@ export function SiteFooter() {
           <h3 className="font-heading text-sm font-semibold text-white">Regiões</h3>
           <ul className="mt-4 space-y-2 text-sm">
             {REGIOES.map((regiao) => (
-              <li key={regiao}>
-                <Link href="/#imoveis" className="transition-colors hover:text-brand-pink">
-                  {regiao}
+              <li key={regiao.label}>
+                <Link href={regiao.href} className="transition-colors hover:text-brand-pink">
+                  {regiao.label}
                 </Link>
               </li>
             ))}
