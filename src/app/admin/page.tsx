@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { getEmpreendimentos } from "@/lib/empreendimentos";
+import { getLeads } from "@/lib/leads";
 import { LogoutButton } from "@/components/admin/LogoutButton";
 import { ListaEmpreendimentos } from "@/components/admin/ListaEmpreendimentos";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
-  const empreendimentos = await getEmpreendimentos();
+  const [empreendimentos, leads] = await Promise.all([
+    getEmpreendimentos(),
+    getLeads(),
+  ]);
+  const leadsNovos = leads.filter((l) => !l.atendido).length;
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-10">
@@ -21,6 +26,17 @@ export default async function AdminPage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/admin/leads"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-brand-pink hover:text-brand-pink"
+          >
+            Leads
+            {leadsNovos > 0 && (
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-pink px-1.5 text-xs font-bold text-white">
+                {leadsNovos}
+              </span>
+            )}
+          </Link>
           <Link
             href="/admin/atualizar-senha"
             className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-brand-pink hover:text-brand-pink"
