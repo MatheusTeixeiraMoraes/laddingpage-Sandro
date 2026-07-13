@@ -4,17 +4,23 @@ Lista viva de tudo que depende de conteúdo ou credencial externa que ainda
 não temos. Cada pilar novo que gerar uma pendência externa deve atualizar
 este arquivo.
 
-## 🔴 Segurança (prioridade alta)
+## Segurança
 
+- [x] **Policies de escrita travadas por `role=admin`** (migration `0003`),
+      não mais "qualquer `authenticated`". Verificado com script descartável:
+      usuário autenticado sem a claim `app_metadata.role=admin` é bloqueado
+      na escrita, igual ao anônimo. Corrige o achado da revisão automática
+      no pilar "Painel administrativo — Auth + Schema + RLS".
 - [ ] **Desabilitar cadastro público no Supabase Auth** (Authentication →
-      Sign In / Providers → Email → desmarcar "Allow new users to sign up").
-      Sem isso, qualquer visitante pode criar conta própria via
-      `supabase.auth.signUp()` (a chave `publishable` é pública por design)
-      e, como as policies de `empreendimentos`/`plantas` liberam escrita
-      pra qualquer `authenticated`, ganhar acesso de escrita total ao banco.
-      Achado por revisão de segurança automática nos commits do pilar
-      "Painel administrativo — Auth + Schema + RLS"; usuário confirmou que
-      vai resolver, ainda pendente de confirmação final.
+      Sign In / Providers → Email → desmarcar "Allow new users to sign up")
+      como defesa em profundidade adicional — a policy já bloqueia escrita
+      de quem não é admin, mas cadastro público continua permitindo criar
+      contas à toa. Usuário não achou a opção no dashboard ainda; retomar
+      quando puder.
+- [ ] Trocar a senha temporária da conta admin (gerada via API porque o
+      convite por e-mail redirecionava para outro projeto local do
+      usuário) por uma senha própria — Authentication → Users → conta →
+      Reset Password no dashboard do Supabase.
 
 ## Conteúdo real do cliente
 
