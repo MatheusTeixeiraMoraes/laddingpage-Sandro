@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { GoogleReviews } from "@/components/GoogleReviews";
+import { Depoimentos } from "@/components/Depoimentos";
 
 const FOTOS = [1, 2, 3, 4, 5, 6];
 
@@ -34,8 +34,8 @@ export function ClientesAmigos() {
           ))}
         </div>
 
-        <div className="mt-14">
-          <GoogleReviews />
+        <div className="mt-14 empty:mt-0">
+          <Depoimentos />
         </div>
       </div>
     </section>
