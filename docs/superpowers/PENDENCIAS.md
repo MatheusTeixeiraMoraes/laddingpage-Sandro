@@ -17,10 +17,16 @@ este arquivo.
       de quem não é admin, mas cadastro público continua permitindo criar
       contas à toa. Usuário não achou a opção no dashboard ainda; retomar
       quando puder.
-- [ ] Trocar a senha temporária da conta admin (gerada via API porque o
-      convite por e-mail redirecionava para outro projeto local do
-      usuário) por uma senha própria — Authentication → Users → conta →
-      Reset Password no dashboard do Supabase.
+- [ ] **Configurar o template de e-mail "Reset Password"** no Supabase
+      (Authentication → Emails → Reset Password) pra usar
+      `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/admin/atualizar-senha`
+      em vez do link padrão — sem isso, o e-mail de reset não usa a rota
+      `/auth/confirm` que já foi construída (pilar "Painel administrativo"),
+      e o self-service de troca de senha não funciona ponta a ponta.
+- [ ] Trocar a senha temporária da conta admin (gerada via API — convite por
+      e-mail e "Site URL" antigos redirecionavam pro projeto local errado do
+      usuário, já corrigido) por uma senha própria, assim que o item acima
+      estiver configurado.
 
 ## Conteúdo real do cliente
 
@@ -54,11 +60,11 @@ este arquivo.
       aplicada via conexão Postgres direta (`DATABASE_URL` em `.env.local`).
 - [x] Login do corretor (Supabase Auth, single-admin) + `/admin` protegida
       via `src/proxy.ts` + site público lendo do banco.
-- [ ] **Atualizar as Environment Variables do Vercel** com os nomes/valores
-      corretos: `NEXT_PUBLIC_SUPABASE_URL`,
-      `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (as que estavam lá antes tinham
-      o nome antigo/chave errada) — sem isso o site em produção não conecta
-      ao Supabase.
+- [x] Environment Variables do Vercel atualizadas com os nomes corretos
+      (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`) e
+      redeploy feito. Confirmado em produção: home mostra os 5
+      empreendimentos vindos do banco, `/admin` redireciona pra
+      `/admin/login`.
 - [ ] CRUD de empreendimentos no painel (hoje só dá pra editar via Table
       Editor do Supabase diretamente).
 - [ ] Upload de imagem real (continua legenda de texto em `fotos`).
