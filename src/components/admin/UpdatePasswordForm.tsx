@@ -46,7 +46,7 @@ export function UpdatePasswordForm() {
       <button
         type="submit"
         disabled={carregando}
-        className="rounded-full bg-brand-purple px-5 py-2 text-sm font-medium text-white hover:bg-purple-700 disabled:opacity-50"
+        className="rounded-full bg-brand-pink px-5 py-2 text-sm font-medium text-white hover:bg-pink-700 disabled:opacity-50"
       >
         {carregando ? "Salvando..." : "Salvar nova senha"}
       </button>
