@@ -56,14 +56,10 @@ export const NUMEROS: { valor: string; label: string }[] = [
 ];
 
 /** Fotos reais de clientes (entrega de chaves) em public/clientes/. */
-export const FOTOS_CLIENTES: string[] = [
-  "/clientes/cliente-1.jpg",
-  "/clientes/cliente-2.jpg",
-  "/clientes/cliente-3.jpg",
-  "/clientes/cliente-4.jpg",
-  "/clientes/cliente-5.jpg",
-  "/clientes/cliente-6.jpg",
-];
+export const FOTOS_CLIENTES: string[] = Array.from(
+  { length: 11 },
+  (_, i) => `/clientes/cliente-${i + 1}.jpg`,
+);
 
 // As redes sociais reais vivem em src/components/home/SocialIcons.tsx
 // (fonte única usada pelo header, footer e pela página /sobre).

@@ -15,6 +15,21 @@
   --font-sans: var(--font-inter);
   --font-heading: var(--font-poppins);
   --font-script: var(--font-caveat);
+
+  /* Carrossel de clientes: a faixa tem duas copias da lista lado a lado e
+     desliza exatamente metade da propria largura. No fim do ciclo a segunda
+     copia esta onde a primeira comecou -- a volta ao inicio e invisivel.
+     60s = devagar de proposito: e um pano de fundo, nao um anuncio piscando. */
+  --animate-desliza: desliza 60s linear infinite;
+
+  @keyframes desliza {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-50% - 0.5rem)); /* metade + metade do gap */
+    }
+  }
 }
 
 body {
