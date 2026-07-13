@@ -5,7 +5,6 @@ import { ClientesAmigos } from "@/components/home/ClientesAmigos";
 import { SobreMim } from "@/components/home/SobreMim";
 import { LancamentosDestaque } from "@/components/home/LancamentosDestaque";
 import { FaixaContato } from "@/components/home/FaixaContato";
-import { AvisoValores } from "@/components/home/AvisoValores";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +19,6 @@ export default async function Home() {
       <ClientesAmigos />
       <LancamentosDestaque empreendimentos={empreendimentos.slice(0, 4)} />
       <FaixaContato />
-      <AvisoValores />
     </>
   );
 }

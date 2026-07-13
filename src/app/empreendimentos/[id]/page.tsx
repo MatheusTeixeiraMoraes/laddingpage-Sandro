@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getEmpreendimentoById } from "@/lib/empreendimentos";
 import { EmpreendimentoDetalhe } from "@/components/EmpreendimentoDetalhe";
 import { MapaEmpreendimento } from "@/components/MapaEmpreendimento";
+import { AvisoValores } from "@/components/AvisoValores";
 import type { Zona } from "@/types/empreendimento";
 
 export const dynamic = "force-dynamic";
@@ -80,6 +81,10 @@ export default async function EmpreendimentoPage({
           latitude={empreendimento.latitude}
           longitude={empreendimento.longitude}
         />
+      </div>
+
+      <div className="mt-12">
+        <AvisoValores />
       </div>
     </div>
   );
