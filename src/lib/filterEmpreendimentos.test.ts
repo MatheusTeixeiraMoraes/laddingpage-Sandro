@@ -18,8 +18,16 @@ function emp(over: Partial<Empreendimento> & { id: string }): Empreendimento {
     varanda: false,
     quintal: false,
     garagemCoberta: false,
-    elevador: false,
+    vagaDupla: false,
     pontosAr: null,
+    descricao: "",
+    construtora: "",
+    torres: null,
+    andares: "",
+    aptosPorAndar: null,
+    elevadores: null,
+    entregaComPiso: "",
+    documentacao: "",
     latitude: 0,
     longitude: 0,
     plantas: [{ id: `${over.id}-a`, metragem: 45, preco: null, imagens: [] }],
@@ -47,7 +55,7 @@ const fixture: Empreendimento[] = [
     precoAPartirDe: 180_000,
     dormitorios: [1, 3],
     quintal: true,
-    elevador: true,
+    elevadores: 2,
     pontosAr: 2,
     plantas: [
       { id: "2-a", metragem: 30, preco: null, imagens: [] },
@@ -99,6 +107,18 @@ test("caracteristicas: marcado exige ter", () => {
   assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, quintal: true }, "")), ["2"]);
   assert.deepEqual(ids(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, elevador: true }, "")), ["2"]);
   assert.equal(filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, garagemCoberta: true }, "").length, 0);
+});
+
+test("elevador: 0 e um sobrado (nao entra), null e 'nao informado' (nao entra)", () => {
+  const comSobrado = [
+    emp({ id: "sobrado", elevadores: 0 }),
+    emp({ id: "predio", elevadores: 2 }),
+    emp({ id: "naoinformado", elevadores: null }),
+  ];
+  assert.deepEqual(
+    ids(filterEmpreendimentos(comSobrado, { ...FILTROS_VAZIOS, elevador: true }, "")),
+    ["predio"],
+  );
 });
 
 test("desmarcado nao filtra nada (ninguem procura 'sem varanda')", () => {

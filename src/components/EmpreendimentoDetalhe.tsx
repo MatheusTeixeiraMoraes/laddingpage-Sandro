@@ -5,6 +5,7 @@ import Image from "next/image";
 import type { Empreendimento } from "@/types/empreendimento";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { formatarPrecoCurto } from "@/lib/preco";
+import { faixaDeMetragem, listaDeDormitorios } from "@/lib/resumo";
 import { PlantaSelector, labelDaPlanta } from "@/components/PlantaSelector";
 
 function Spec({ label, valor }: { label: string; valor: string }) {
@@ -16,19 +17,46 @@ function Spec({ label, valor }: { label: string; valor: string }) {
   );
 }
 
-/** "2" ou "2 e 3" ou "1, 2 e 3" — como o Sandro escreve na planilha. */
-function listaDeDormitorios(dorms: number[]): string {
-  if (dorms.length === 0) return "—";
-  if (dorms.length === 1) return String(dorms[0]);
-  return `${dorms.slice(0, -1).join(", ")} e ${dorms.at(-1)}`;
-}
+const PISO: Record<Empreendimento["entregaComPiso"], string> = {
+  "": "",
+  completo: "Completo",
+  areas_molhadas: "Só áreas molhadas",
+};
 
-function faixaDeMetragem(empreendimento: Empreendimento): string {
-  const m = empreendimento.plantas.map((p) => p.metragem);
-  if (m.length === 0) return "—";
-  const min = Math.min(...m);
-  const max = Math.max(...m);
-  return min === max ? `${min} m²` : `${min}–${max} m²`;
+const DOCUMENTACAO: Record<Empreendimento["documentacao"], string> = {
+  "": "",
+  gratis: "Grátis",
+  pago: "Por conta do comprador",
+};
+
+/** Só entra na ficha o que foi informado — campo vazio não vira card vazio. */
+function fichaTecnica(e: Empreendimento): { label: string; valor: string }[] {
+  const linhas: { label: string; valor: string | null }[] = [
+    { label: "Dormitórios", valor: listaDeDormitorios(e.dormitorios) },
+    { label: "Metragem", valor: faixaDeMetragem(e) },
+    { label: "Plantas", valor: e.plantas.length > 0 ? String(e.plantas.length) : null },
+    { label: "Construtora", valor: e.construtora || null },
+    { label: "Torres", valor: e.torres !== null ? String(e.torres) : null },
+    { label: "Andares", valor: e.andares || null },
+    {
+      label: "Aptos. por andar",
+      valor: e.aptosPorAndar !== null ? String(e.aptosPorAndar) : null,
+    },
+    {
+      label: "Elevadores",
+      valor: e.elevadores !== null ? String(e.elevadores) : null,
+    },
+    {
+      label: "Ar-condicionado",
+      valor: e.pontosAr
+        ? `${e.pontosAr} ${e.pontosAr === 1 ? "ponto" : "pontos"}`
+        : null,
+    },
+    { label: "Piso", valor: PISO[e.entregaComPiso] || null },
+    { label: "Documentação", valor: DOCUMENTACAO[e.documentacao] || null },
+  ];
+
+  return linhas.filter((l): l is { label: string; valor: string } => l.valor !== null);
 }
 
 export function EmpreendimentoDetalhe({
@@ -51,30 +79,30 @@ export function EmpreendimentoDetalhe({
   // O preço da planta é opcional; o oficial é o "a partir de" do empreendimento.
   const preco = planta?.preco ?? empreendimento.precoAPartirDe;
 
-  const CARACTERISTICAS: { label: string; tem: boolean }[] = [
+  const presentes = [
     { label: "Suíte", tem: empreendimento.suite },
     { label: "Varanda", tem: empreendimento.varanda },
     { label: "Quintal", tem: empreendimento.quintal },
     { label: "Garagem coberta", tem: empreendimento.garagemCoberta },
-    { label: "Elevador", tem: empreendimento.elevador },
-  ];
-  const presentes = CARACTERISTICAS.filter((c) => c.tem);
+    { label: "Vaga dupla", tem: empreendimento.vagaDupla },
+  ].filter((c) => c.tem);
+
+  const ficha = fichaTecnica(empreendimento);
+  const paragrafos = empreendimento.descricao
+    .split("\n")
+    .map((p) => p.trim())
+    .filter(Boolean);
 
   return (
     <div className="mt-10 grid gap-8 lg:grid-cols-3">
       <div className="lg:col-span-2">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Spec label="Dormitórios" valor={listaDeDormitorios(empreendimento.dormitorios)} />
-          <Spec label="Metragem" valor={faixaDeMetragem(empreendimento)} />
-          <Spec label="Plantas" valor={String(empreendimento.plantas.length)} />
-          <Spec
-            label="Ar-condicionado"
-            valor={
-              empreendimento.pontosAr
-                ? `${empreendimento.pontosAr} ${empreendimento.pontosAr === 1 ? "ponto" : "pontos"}`
-                : "—"
-            }
-          />
+        <h2 className="font-heading text-xl font-extrabold text-brand-navy">
+          Ficha técnica
+        </h2>
+        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          {ficha.map((item) => (
+            <Spec key={item.label} label={item.label} valor={item.valor} />
+          ))}
         </div>
 
         {presentes.length > 0 && (
@@ -93,6 +121,19 @@ export function EmpreendimentoDetalhe({
                   </svg>
                   {c.label}
                 </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {paragrafos.length > 0 && (
+          <div className="mt-10">
+            <h2 className="font-heading text-xl font-extrabold text-brand-navy">
+              Sobre o empreendimento
+            </h2>
+            <div className="mt-4 flex flex-col gap-3 text-slate-600">
+              {paragrafos.map((p) => (
+                <p key={p.slice(0, 40)}>{p}</p>
               ))}
             </div>
           </div>

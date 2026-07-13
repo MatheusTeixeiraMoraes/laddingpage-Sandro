@@ -3,7 +3,7 @@ import { isUuid } from "@/lib/uuid";
 import type { Empreendimento, Zona } from "@/types/empreendimento";
 
 const SELECT_EMPREENDIMENTO =
-  "id, nome, tipo, bairro, zona, imagem, galeria, entrega_em, preco_a_partir_de, dormitorios, suite, varanda, quintal, garagem_coberta, elevador, pontos_ar, latitude, longitude, plantas(id, metragem, preco, imagens)";
+  "id, nome, tipo, bairro, zona, imagem, galeria, entrega_em, preco_a_partir_de, dormitorios, suite, varanda, quintal, garagem_coberta, vaga_dupla, pontos_ar, descricao, construtora, torres, andares, aptos_por_andar, elevadores, entrega_com_piso, documentacao, latitude, longitude, plantas(id, metragem, preco, imagens)";
 
 type PlantaRow = {
   id: string;
@@ -27,8 +27,16 @@ type EmpreendimentoRow = {
   varanda: boolean;
   quintal: boolean;
   garagem_coberta: boolean;
-  elevador: boolean;
+  vaga_dupla: boolean;
   pontos_ar: number | null;
+  descricao: string;
+  construtora: string;
+  torres: number | null;
+  andares: string;
+  aptos_por_andar: number | null;
+  elevadores: number | null;
+  entrega_com_piso: Empreendimento["entregaComPiso"];
+  documentacao: Empreendimento["documentacao"];
   latitude: number;
   longitude: number;
   plantas: PlantaRow[];
@@ -50,8 +58,16 @@ function mapRow(row: EmpreendimentoRow): Empreendimento {
     varanda: row.varanda,
     quintal: row.quintal,
     garagemCoberta: row.garagem_coberta,
-    elevador: row.elevador,
+    vagaDupla: row.vaga_dupla,
     pontosAr: row.pontos_ar,
+    descricao: row.descricao ?? "",
+    construtora: row.construtora ?? "",
+    torres: row.torres,
+    andares: row.andares ?? "",
+    aptosPorAndar: row.aptos_por_andar,
+    elevadores: row.elevadores,
+    entregaComPiso: row.entrega_com_piso ?? "",
+    documentacao: row.documentacao ?? "",
     latitude: row.latitude,
     longitude: row.longitude,
     plantas: row.plantas

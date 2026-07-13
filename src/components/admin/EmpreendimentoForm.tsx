@@ -57,8 +57,28 @@ export function EmpreendimentoForm({
   const [varanda, setVaranda] = useState(empreendimento?.varanda ?? false);
   const [quintal, setQuintal] = useState(empreendimento?.quintal ?? false);
   const [garagem, setGaragem] = useState(empreendimento?.garagemCoberta ?? false);
-  const [elevador, setElevador] = useState(empreendimento?.elevador ?? false);
+  const [vagaDupla, setVagaDupla] = useState(empreendimento?.vagaDupla ?? false);
   const [pontosAr, setPontosAr] = useState<number | null>(empreendimento?.pontosAr ?? null);
+
+  // Descricao (escrita pelo Sandro) + ficha tecnica (vem da planilha).
+  const [descricao, setDescricao] = useState(empreendimento?.descricao ?? "");
+  const [construtora, setConstrutora] = useState(empreendimento?.construtora ?? "");
+  const [torres, setTorres] = useState<number | null>(empreendimento?.torres ?? null);
+  const [andares, setAndares] = useState(empreendimento?.andares ?? "");
+  const [aptosPorAndar, setAptosPorAndar] = useState<number | null>(
+    empreendimento?.aptosPorAndar ?? null,
+  );
+  const [elevadores, setElevadores] = useState<number | null>(
+    empreendimento?.elevadores ?? null,
+  );
+  const [piso, setPiso] = useState<Empreendimento["entregaComPiso"]>(
+    empreendimento?.entregaComPiso ?? "",
+  );
+  const [documentacao, setDocumentacao] = useState<Empreendimento["documentacao"]>(
+    empreendimento?.documentacao ?? "",
+  );
+
+  const numeroOuNulo = (v: string): number | null => (v === "" ? null : Number(v));
 
   const alternarDorm = (n: number) => {
     setDorms((atuais) =>
@@ -127,8 +147,16 @@ export function EmpreendimentoForm({
         varanda,
         quintal,
         garagem_coberta: garagem,
-        elevador,
+        vaga_dupla: vagaDupla,
         pontos_ar: pontosAr,
+        descricao: descricao.trim(),
+        construtora: construtora.trim(),
+        torres,
+        andares: andares.trim(),
+        aptos_por_andar: aptosPorAndar,
+        elevadores,
+        entrega_com_piso: piso,
+        documentacao,
         imagem,
         galeria,
         latitude: coordenadas.latitude,
@@ -266,7 +294,7 @@ export function EmpreendimentoForm({
               ["Varanda", varanda, setVaranda],
               ["Quintal", quintal, setQuintal],
               ["Garagem coberta", garagem, setGaragem],
-              ["Elevador", elevador, setElevador],
+              ["Vaga dupla", vagaDupla, setVagaDupla],
             ] as const).map(([label, valor, set]) => (
               <label
                 key={label}
@@ -289,7 +317,7 @@ export function EmpreendimentoForm({
           <select
             className={campo}
             value={pontosAr ?? ""}
-            onChange={(e) => setPontosAr(e.target.value === "" ? null : Number(e.target.value))}
+            onChange={(e) => setPontosAr(numeroOuNulo(e.target.value))}
           >
             <option value="">Não informado</option>
             {[1, 2, 3, 4].map((n) => (
@@ -297,6 +325,110 @@ export function EmpreendimentoForm({
             ))}
           </select>
         </label>
+
+        <label className="sm:col-span-2">
+          <span className={rotulo}>Descrição</span>
+          <textarea
+            className={`${campo} min-h-32`}
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+            placeholder="Conte a história do empreendimento: lazer, localização, o que ele tem de diferente. Uma linha em branco separa os parágrafos."
+          />
+          <span className="mt-1 block text-xs text-slate-400">
+            Aparece na página do imóvel, em &ldquo;Sobre o empreendimento&rdquo;. Deixe vazio para não publicar.
+          </span>
+        </label>
+
+        <div className="sm:col-span-2 border-t border-slate-100 pt-4">
+          <span className={rotulo}>Ficha técnica</span>
+          <p className="mt-1 text-xs text-slate-400">
+            O que ficar vazio simplesmente não aparece na página.
+          </p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-3">
+            <label>
+              <span className={rotulo}>Construtora</span>
+              <input
+                className={campo}
+                value={construtora}
+                onChange={(e) => setConstrutora(e.target.value)}
+                placeholder="Ex: BONELLI"
+              />
+            </label>
+
+            <label>
+              <span className={rotulo}>Torres</span>
+              <input
+                type="number"
+                min={0}
+                className={campo}
+                value={torres ?? ""}
+                onChange={(e) => setTorres(numeroOuNulo(e.target.value))}
+                placeholder="Ex: 3"
+              />
+            </label>
+
+            <label>
+              <span className={rotulo}>Andares</span>
+              <input
+                className={campo}
+                value={andares}
+                onChange={(e) => setAndares(e.target.value)}
+                placeholder="Ex: T + 16"
+              />
+            </label>
+
+            <label>
+              <span className={rotulo}>Aptos. por andar</span>
+              <input
+                type="number"
+                min={0}
+                className={campo}
+                value={aptosPorAndar ?? ""}
+                onChange={(e) => setAptosPorAndar(numeroOuNulo(e.target.value))}
+                placeholder="Ex: 8"
+              />
+            </label>
+
+            <label>
+              <span className={rotulo}>Elevadores</span>
+              <input
+                type="number"
+                min={0}
+                className={campo}
+                value={elevadores ?? ""}
+                onChange={(e) => setElevadores(numeroOuNulo(e.target.value))}
+                placeholder="Ex: 2"
+              />
+              <span className="mt-1 block text-xs text-slate-400">0 = sem elevador.</span>
+            </label>
+
+            <label>
+              <span className={rotulo}>Entrega com piso</span>
+              <select
+                className={campo}
+                value={piso}
+                onChange={(e) => setPiso(e.target.value as Empreendimento["entregaComPiso"])}
+              >
+                <option value="">Não informado</option>
+                <option value="completo">Completo</option>
+                <option value="areas_molhadas">Só áreas molhadas</option>
+              </select>
+            </label>
+
+            <label>
+              <span className={rotulo}>Documentação</span>
+              <select
+                className={campo}
+                value={documentacao}
+                onChange={(e) => setDocumentacao(e.target.value as Empreendimento["documentacao"])}
+              >
+                <option value="">Não informado</option>
+                <option value="gratis">Grátis</option>
+                <option value="pago">Por conta do comprador</option>
+              </select>
+            </label>
+          </div>
+        </div>
 
         <label className="sm:col-span-2">
           <span className={rotulo}>Localização</span>

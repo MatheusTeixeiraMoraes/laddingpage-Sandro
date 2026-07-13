@@ -17,8 +17,16 @@ export type EmpreendimentoInput = {
   varanda: boolean;
   quintal: boolean;
   garagem_coberta: boolean;
-  elevador: boolean;
+  vaga_dupla: boolean;
   pontos_ar: number | null;
+  descricao: string;
+  construtora: string;
+  torres: number | null;
+  andares: string;
+  aptos_por_andar: number | null;
+  elevadores: number | null;
+  entrega_com_piso: "" | "completo" | "areas_molhadas";
+  documentacao: "" | "gratis" | "pago";
   latitude: number;
   longitude: number;
 };

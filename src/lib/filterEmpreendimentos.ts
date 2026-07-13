@@ -87,7 +87,8 @@ export function filterEmpreendimentos(
     if (filtros.varanda && !e.varanda) return false;
     if (filtros.quintal && !e.quintal) return false;
     if (filtros.garagemCoberta && !e.garagemCoberta) return false;
-    if (filtros.elevador && !e.elevador) return false;
+    // A planilha guarda a QUANTIDADE de elevadores; "com elevador" é ter algum.
+    if (filtros.elevador && (e.elevadores ?? 0) === 0) return false;
     if (filtros.pontosArMin > 0 && (e.pontosAr ?? 0) < filtros.pontosArMin) return false;
 
     return true;

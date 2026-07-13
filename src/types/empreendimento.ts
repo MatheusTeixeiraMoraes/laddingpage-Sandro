@@ -37,9 +37,24 @@ export type Empreendimento = {
   varanda: boolean;
   quintal: boolean;
   garagemCoberta: boolean;
-  elevador: boolean;
+  vagaDupla: boolean;
   /** Pontos de ar-condicionado (1, 2, 3). Nulo = não informado. */
   pontosAr: number | null;
+  /** Texto escrito pelo Sandro no painel. Vazio = não publicada. */
+  descricao: string;
+
+  // Ficha técnica (vem da planilha). Vazio/nulo = não informado, e o campo
+  // simplesmente não aparece na página.
+  construtora: string;
+  torres: number | null;
+  /** Como o Sandro escreve: "T + 19", "T+3". */
+  andares: string;
+  aptosPorAndar: number | null;
+  /** Quantidade. Nulo = não informado; 0 = prédio sem elevador (sobrado). */
+  elevadores: number | null;
+  entregaComPiso: "" | "completo" | "areas_molhadas";
+  documentacao: "" | "gratis" | "pago";
+
   latitude: number;
   longitude: number;
   plantas: Planta[];
