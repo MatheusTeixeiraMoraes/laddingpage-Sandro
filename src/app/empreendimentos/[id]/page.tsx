@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getEmpreendimentoById } from "@/lib/empreendimentos";
 import { EmpreendimentoDetalhe } from "@/components/EmpreendimentoDetalhe";
 import { MapaEmpreendimento } from "@/components/MapaEmpreendimento";
+import { GaleriaEmpreendimento } from "@/components/GaleriaEmpreendimento";
 import { AvisoValores } from "@/components/AvisoValores";
 import type { Zona } from "@/types/empreendimento";
 
@@ -74,6 +75,13 @@ export default async function EmpreendimentoPage({
       </section>
 
       <EmpreendimentoDetalhe empreendimento={empreendimento} />
+
+      <div className="mt-12">
+        <GaleriaEmpreendimento
+          nome={empreendimento.nome}
+          fotos={empreendimento.galeria}
+        />
+      </div>
 
       <div className="mt-12">
         <MapaEmpreendimento

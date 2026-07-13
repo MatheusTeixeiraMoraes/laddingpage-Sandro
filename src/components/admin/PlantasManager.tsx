@@ -10,6 +10,7 @@ import {
   type PlantaInput,
 } from "@/lib/admin/empreendimentos";
 import { formatarPrecoCurto } from "@/lib/preco";
+import { UploadGaleria } from "@/components/admin/UploadGaleria";
 
 const campo =
   "mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-pink";
@@ -21,7 +22,8 @@ const VAZIA: PlantaInput = {
   dormitorios: 2,
   vagas: 1,
   preco: 0,
-  fotos: [],
+  ambientes: [],
+  imagens: [],
 };
 
 function paraInput(planta: Planta): PlantaInput {
@@ -31,7 +33,8 @@ function paraInput(planta: Planta): PlantaInput {
     dormitorios: planta.dormitorios,
     vagas: planta.vagas,
     preco: planta.preco,
-    fotos: planta.fotos,
+    ambientes: planta.ambientes,
+    imagens: planta.imagens,
   };
 }
 
@@ -61,7 +64,7 @@ export function PlantasManager({
   const abrirEdicao = (planta: Planta) => {
     setEditandoId(planta.id);
     setForm(paraInput(planta));
-    setAmbientes(planta.fotos.join(", "));
+    setAmbientes(planta.ambientes.join(", "));
     setErro(null);
     setAberto(true);
   };
@@ -73,7 +76,7 @@ export function PlantasManager({
 
     const dados: PlantaInput = {
       ...form,
-      fotos: ambientes
+      ambientes: ambientes
         .split(",")
         .map((a) => a.trim())
         .filter(Boolean),
@@ -141,8 +144,13 @@ export function PlantasManager({
                   {planta.dormitorios} dorms · {planta.vagas} vaga(s) ·{" "}
                   {formatarPrecoCurto(planta.preco)}
                 </p>
-                {planta.fotos.length > 0 && (
-                  <p className="mt-1 text-xs text-slate-400">{planta.fotos.join(" · ")}</p>
+                {planta.ambientes.length > 0 && (
+                  <p className="mt-1 text-xs text-slate-400">{planta.ambientes.join(" · ")}</p>
+                )}
+                {planta.imagens.length > 0 && (
+                  <p className="mt-0.5 text-xs text-brand-pink">
+                    {planta.imagens.length} imagem(ns) desta planta
+                  </p>
                 )}
               </div>
               <div className="flex gap-2">
@@ -241,6 +249,15 @@ export function PlantasManager({
               />
               <span className="text-sm text-slate-600">Tem suíte</span>
             </label>
+
+            <div className="sm:col-span-2">
+              <UploadGaleria
+                label="Imagens desta planta"
+                ajuda="Planta baixa, decorado. Aparecem na página do imóvel com a legenda da planta."
+                imagens={form.imagens}
+                onChange={(imagens) => setForm({ ...form, imagens })}
+              />
+            </div>
           </div>
 
           {erro && <p className="mt-4 text-sm text-red-600">{erro}</p>}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import type { Empreendimento } from "@/types/empreendimento";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { formatarPrecoCurto } from "@/lib/preco";
@@ -54,13 +55,42 @@ export function EmpreendimentoDetalhe({
           <Spec label="Suíte" valor={planta.comSuite ? "Sim" : "Não"} />
         </div>
 
-        {planta.fotos.length > 0 && (
+        {planta.imagens.length > 0 && (
+          <div className="mt-8">
+            <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-slate-500">
+              Imagens da planta {labelDaPlanta(planta)}
+            </h3>
+            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {planta.imagens.map((img, i) => (
+                <figure
+                  key={img}
+                  className="overflow-hidden rounded-2xl border border-slate-100 shadow-sm"
+                >
+                  <div className="relative h-64 w-full bg-white">
+                    <Image
+                      src={img}
+                      alt={`Planta ${labelDaPlanta(planta)} — imagem ${i + 1}`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className="object-contain"
+                    />
+                  </div>
+                  <figcaption className="border-t border-slate-100 bg-slate-50 px-4 py-2 text-center text-xs font-medium text-brand-navy">
+                    Planta {labelDaPlanta(planta)}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {planta.ambientes.length > 0 && (
           <div className="mt-8">
             <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-slate-500">
               Ambientes desta planta
             </h3>
             <div className="mt-3 flex flex-wrap gap-2">
-              {planta.fotos.map((ambiente) => (
+              {planta.ambientes.map((ambiente) => (
                 <span
                   key={ambiente}
                   className="rounded-full bg-brand-blush px-4 py-2 text-sm font-medium text-brand-navy"

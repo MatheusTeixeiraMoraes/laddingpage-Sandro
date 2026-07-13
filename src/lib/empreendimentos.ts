@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Empreendimento, Zona } from "@/types/empreendimento";
 
 const SELECT_EMPREENDIMENTO =
-  "id, nome, tipo, bairro, zona, imagem, entrega, latitude, longitude, plantas(id, metragem, com_suite, dormitorios, vagas, preco, fotos)";
+  "id, nome, tipo, bairro, zona, imagem, galeria, entrega, latitude, longitude, plantas(id, metragem, com_suite, dormitorios, vagas, preco, ambientes, imagens)";
 
 type PlantaRow = {
   id: string;
@@ -11,7 +11,8 @@ type PlantaRow = {
   dormitorios: number;
   vagas: number;
   preco: number | string;
-  fotos: string[];
+  ambientes: string[];
+  imagens: string[];
 };
 
 type EmpreendimentoRow = {
@@ -21,6 +22,7 @@ type EmpreendimentoRow = {
   bairro: string;
   zona: Zona;
   imagem: string;
+  galeria: string[];
   entrega: string;
   latitude: number;
   longitude: number;
@@ -35,6 +37,7 @@ function mapRow(row: EmpreendimentoRow): Empreendimento {
     bairro: row.bairro,
     zona: row.zona,
     imagem: row.imagem,
+    galeria: row.galeria ?? [],
     entrega: row.entrega,
     latitude: row.latitude,
     longitude: row.longitude,
@@ -45,7 +48,8 @@ function mapRow(row: EmpreendimentoRow): Empreendimento {
       dormitorios: planta.dormitorios,
       vagas: planta.vagas,
       preco: Number(planta.preco),
-      fotos: planta.fotos,
+      ambientes: planta.ambientes ?? [],
+      imagens: planta.imagens ?? [],
     })),
   };
 }

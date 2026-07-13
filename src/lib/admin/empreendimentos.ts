@@ -7,6 +7,7 @@ export type EmpreendimentoInput = {
   bairro: string;
   zona: Zona;
   imagem: string;
+  galeria: string[];
   entrega: string;
   latitude: number;
   longitude: number;
@@ -18,7 +19,8 @@ export type PlantaInput = {
   dormitorios: number;
   vagas: number;
   preco: number;
-  fotos: string[];
+  ambientes: string[];
+  imagens: string[];
 };
 
 const BUCKET = "imoveis";
@@ -32,7 +34,8 @@ function paraLinhaPlanta(dados: PlantaInput) {
     dormitorios: dados.dormitorios,
     vagas: dados.vagas,
     preco: dados.preco,
-    fotos: dados.fotos,
+    ambientes: dados.ambientes,
+    imagens: dados.imagens,
   };
 }
 
@@ -52,6 +55,15 @@ export async function uploadImagem(arquivo: File): Promise<string> {
   if (error) throw new Error("Não foi possível enviar a imagem. Tente novamente.");
 
   return supabase.storage.from(BUCKET).getPublicUrl(nome).data.publicUrl;
+}
+
+/** Sobe várias imagens e devolve as URLs na mesma ordem. */
+export async function uploadImagens(arquivos: File[]): Promise<string[]> {
+  const urls: string[] = [];
+  for (const arquivo of arquivos) {
+    urls.push(await uploadImagem(arquivo));
+  }
+  return urls;
 }
 
 export async function criarEmpreendimento(

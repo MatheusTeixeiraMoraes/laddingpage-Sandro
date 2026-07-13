@@ -11,6 +11,7 @@ import {
   uploadImagem,
   type EmpreendimentoInput,
 } from "@/lib/admin/empreendimentos";
+import { UploadGaleria } from "@/components/admin/UploadGaleria";
 
 const TIPOS: { value: TipoEmpreendimento; label: string }[] = [
   { value: "apartamento", label: "Apartamento" },
@@ -48,6 +49,7 @@ export function EmpreendimentoForm({
   );
   const [arquivo, setArquivo] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(empreendimento?.imagem ?? null);
+  const [galeria, setGaleria] = useState<string[]>(empreendimento?.galeria ?? []);
 
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
@@ -87,6 +89,7 @@ export function EmpreendimentoForm({
         bairro: bairro.trim(),
         entrega: entrega.trim(),
         imagem,
+        galeria,
         latitude: coordenadas.latitude,
         longitude: coordenadas.longitude,
       };
@@ -192,6 +195,15 @@ export function EmpreendimentoForm({
             </span>
           )}
         </label>
+
+        <div className="sm:col-span-2">
+          <UploadGaleria
+            label="Galeria do empreendimento"
+            ajuda="Fachada, piscina, lazer, decorado. Pode escolher várias de uma vez."
+            imagens={galeria}
+            onChange={setGaleria}
+          />
+        </div>
       </div>
 
       {erro && <p className="mt-4 text-sm text-red-600">{erro}</p>}
