@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { isUuid } from "@/lib/uuid";
 import type { Empreendimento, Zona } from "@/types/empreendimento";
 
 const SELECT_EMPREENDIMENTO =
@@ -68,6 +69,8 @@ export async function getEmpreendimentos(): Promise<Empreendimento[]> {
 export async function getEmpreendimentoById(
   id: string,
 ): Promise<Empreendimento | null> {
+  if (!isUuid(id)) return null;
+
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("empreendimentos")
