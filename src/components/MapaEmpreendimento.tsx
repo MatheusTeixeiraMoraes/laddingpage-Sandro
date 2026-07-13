@@ -1,8 +1,8 @@
 import type { Empreendimento } from "@/types/empreendimento";
 
 /**
- * Mapa sangrando na metade esquerda e o texto do bairro na direita.
- * A seção é full-bleed: quem usa precisa colocá-la FORA do container central.
+ * Mapa à esquerda e o texto do bairro à direita, dentro de um card — como o
+ * resto da página. Sangrar até a borda destoava de todos os outros blocos.
  */
 export function MapaEmpreendimento({
   empreendimento,
@@ -20,17 +20,17 @@ export function MapaEmpreendimento({
     .filter(Boolean);
 
   return (
-    <section className="grid lg:grid-cols-2">
+    <section className="grid overflow-hidden rounded-3xl shadow-md lg:grid-cols-2">
       <iframe
         src={mapaEmbedUrl}
         title={`Mapa de localização de ${nome}`}
-        className="h-80 w-full border-0 sm:h-[420px] lg:h-full lg:min-h-[460px]"
+        className="h-72 w-full border-0 sm:h-96 lg:h-full lg:min-h-[420px]"
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
       />
 
-      <div className="flex flex-col justify-center bg-brand-navy px-6 py-12 sm:px-12 lg:px-16 lg:py-16">
-        <h2 className="font-heading text-4xl font-extrabold tracking-tight text-brand-pink sm:text-5xl">
+      <div className="flex flex-col justify-center bg-brand-navy px-6 py-10 sm:px-10 sm:py-12">
+        <h2 className="font-heading text-3xl font-extrabold tracking-tight text-brand-pink sm:text-4xl">
           Localização
         </h2>
 

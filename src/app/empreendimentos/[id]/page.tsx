@@ -84,15 +84,14 @@ export default async function EmpreendimentoPage({
             fotos={empreendimento.galeria}
           />
         </div>
-      </div>
 
-      {/* Full-bleed: sai do container para o mapa sangrar ate a borda. */}
-      <div className="mt-12">
-        <MapaEmpreendimento empreendimento={empreendimento} />
-      </div>
+        <div className="mt-12">
+          <MapaEmpreendimento empreendimento={empreendimento} />
+        </div>
 
-      <div className="mx-auto max-w-6xl px-6 py-12">
-        <AvisoValores />
+        <div className="mt-12">
+          <AvisoValores />
+        </div>
       </div>
     </>
   );
