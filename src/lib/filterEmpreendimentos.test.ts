@@ -12,7 +12,7 @@ const fixture: Empreendimento[] = [
     zona: "leste",
     imagem: "",
     galeria: [],
-    entrega: "",
+    entregaEm: null, // pronto para morar
     latitude: -23.5,
     longitude: -47.45,
     plantas: [
@@ -36,7 +36,7 @@ const fixture: Empreendimento[] = [
     zona: "norte",
     imagem: "",
     galeria: [],
-    entrega: "",
+    entregaEm: "2027-12-01",
     latitude: -23.5,
     longitude: -47.45,
     plantas: [
@@ -106,6 +106,23 @@ test("casa se pelo menos uma planta atende aos filtros numericos", () => {
   // "Predio Duas Plantas" so tem a planta 2-b (90m2, 3 dorm) atendendo;
   // a planta 2-a (30m2, 1 dorm) nao atende, mas isso nao exclui o predio.
   assert.deepEqual(resultado.map((e) => e.id).sort(), ["1", "2"]);
+});
+
+test("filtra por pronto para morar", () => {
+  const resultado = filterEmpreendimentos(
+    fixture,
+    { ...FILTROS_VAZIOS, entrega: "pronto" },
+    "",
+  );
+  assert.deepEqual(resultado.map((e) => e.id), ["1"]);
+});
+
+test("filtra por ano de entrega", () => {
+  const em2027 = filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, entrega: 2027 }, "");
+  assert.deepEqual(em2027.map((e) => e.id), ["2"]);
+
+  const em2030 = filterEmpreendimentos(fixture, { ...FILTROS_VAZIOS, entrega: 2030 }, "");
+  assert.equal(em2030.length, 0);
 });
 
 test("nao casa quando nenhuma planta atende", () => {

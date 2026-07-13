@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Empreendimento } from "@/types/empreendimento";
+import { formatarEntrega } from "@/lib/entrega";
 
 function plantaBase(empreendimento: Empreendimento) {
   return empreendimento.plantas.reduce((menor, atual) =>
@@ -58,7 +59,7 @@ export function LancamentoCard({ empreendimento }: { empreendimento: Empreendime
         <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-xs text-slate-600">
           <span className="inline-flex items-center gap-1"><IconDorm /> {base.dormitorios} dorms</span>
           <span className="inline-flex items-center gap-1"><IconArea /> {base.metragem}m²</span>
-          <span className="inline-flex items-center gap-1"><IconEntrega /> {empreendimento.entrega}</span>
+          <span className="inline-flex items-center gap-1"><IconEntrega /> {formatarEntrega(empreendimento.entregaEm)}</span>
         </div>
       </div>
     </Link>

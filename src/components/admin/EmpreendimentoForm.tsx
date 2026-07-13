@@ -43,7 +43,12 @@ export function EmpreendimentoForm({
   const [tipo, setTipo] = useState<TipoEmpreendimento>(empreendimento?.tipo ?? "apartamento");
   const [zona, setZona] = useState<Zona>(empreendimento?.zona ?? "norte");
   const [bairro, setBairro] = useState(empreendimento?.bairro ?? "");
-  const [entrega, setEntrega] = useState(empreendimento?.entrega ?? "");
+  // Entrega vira data no banco. Antes era texto livre: dava pra digitar
+  // "final de 2026" e o imóvel sumia de qualquer filtro por prazo.
+  const [pronto, setPronto] = useState(empreendimento?.entregaEm === null);
+  const [mesEntrega, setMesEntrega] = useState(
+    empreendimento?.entregaEm?.slice(0, 7) ?? "",
+  );
   const [local, setLocal] = useState(
     empreendimento ? `${empreendimento.latitude}, ${empreendimento.longitude}` : "",
   );
@@ -75,6 +80,10 @@ export function EmpreendimentoForm({
       setErro("Escolha uma foto de capa para o empreendimento.");
       return;
     }
+    if (!pronto && !mesEntrega) {
+      setErro("Informe o mês da entrega ou marque “Pronto para morar”.");
+      return;
+    }
 
     setSalvando(true);
     try {
@@ -87,7 +96,7 @@ export function EmpreendimentoForm({
         tipo,
         zona,
         bairro: bairro.trim(),
-        entrega: entrega.trim(),
+        entrega_em: pronto ? null : `${mesEntrega}-01`,
         imagem,
         galeria,
         latitude: coordenadas.latitude,
@@ -152,16 +161,27 @@ export function EmpreendimentoForm({
           />
         </label>
 
-        <label>
+        <div>
           <span className={rotulo}>Entrega</span>
           <input
-            className={campo}
-            value={entrega}
-            onChange={(e) => setEntrega(e.target.value)}
-            required
-            placeholder="Ex: Dez/2026 ou Pronto para morar"
+            type="month"
+            className={`${campo} disabled:bg-slate-100 disabled:text-slate-400`}
+            value={mesEntrega}
+            onChange={(e) => setMesEntrega(e.target.value)}
+            disabled={pronto}
+            min="2020-01"
+            aria-label="Mês e ano da entrega"
           />
-        </label>
+          <label className="mt-2 flex items-center gap-2 text-sm text-slate-600">
+            <input
+              type="checkbox"
+              checked={pronto}
+              onChange={(e) => setPronto(e.target.checked)}
+              className="h-4 w-4 rounded border-slate-300 text-brand-pink focus:ring-brand-pink"
+            />
+            Pronto para morar
+          </label>
+        </div>
 
         <label className="sm:col-span-2">
           <span className={rotulo}>Localização</span>

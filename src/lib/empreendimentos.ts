@@ -3,7 +3,7 @@ import { isUuid } from "@/lib/uuid";
 import type { Empreendimento, Zona } from "@/types/empreendimento";
 
 const SELECT_EMPREENDIMENTO =
-  "id, nome, tipo, bairro, zona, imagem, galeria, entrega, latitude, longitude, plantas(id, metragem, com_suite, dormitorios, vagas, preco, ambientes, imagens)";
+  "id, nome, tipo, bairro, zona, imagem, galeria, entrega_em, latitude, longitude, plantas(id, metragem, com_suite, dormitorios, vagas, preco, ambientes, imagens)";
 
 type PlantaRow = {
   id: string;
@@ -24,7 +24,7 @@ type EmpreendimentoRow = {
   zona: Zona;
   imagem: string;
   galeria: string[];
-  entrega: string;
+  entrega_em: string | null;
   latitude: number;
   longitude: number;
   plantas: PlantaRow[];
@@ -39,7 +39,7 @@ function mapRow(row: EmpreendimentoRow): Empreendimento {
     zona: row.zona,
     imagem: row.imagem,
     galeria: row.galeria ?? [],
-    entrega: row.entrega,
+    entregaEm: row.entrega_em,
     latitude: row.latitude,
     longitude: row.longitude,
     plantas: row.plantas.map((planta) => ({

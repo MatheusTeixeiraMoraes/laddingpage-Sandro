@@ -8,7 +8,9 @@ export type EmpreendimentoInput = {
   zona: Zona;
   imagem: string;
   galeria: string[];
-  entrega: string;
+  /** 'AAAA-MM-DD' ou null (= pronto para morar). Nome em snake_case porque o
+   *  objeto vai direto para o insert/update, como os demais campos. */
+  entrega_em: string | null;
   latitude: number;
   longitude: number;
 };

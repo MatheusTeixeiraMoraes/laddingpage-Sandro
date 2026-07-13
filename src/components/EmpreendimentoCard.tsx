@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Empreendimento } from "@/types/empreendimento";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { formatarEntrega, PRONTO_PARA_MORAR } from "@/lib/entrega";
 
 const TIPO_LABEL: Record<Empreendimento["tipo"], string> = {
   apartamento: "Apartamento",
@@ -54,7 +55,10 @@ export function EmpreendimentoCard({
           <h3 className="font-heading font-bold text-brand-navy">{empreendimento.nome}</h3>
           <p className="text-sm text-slate-500">{empreendimento.bairro}</p>
           <p className="text-sm text-slate-600">
-            {dormitorios(empreendimento)} dorms · {faixaDeMetragem(empreendimento)} · Entrega: {empreendimento.entrega}
+            {dormitorios(empreendimento)} dorms · {faixaDeMetragem(empreendimento)} ·{" "}
+            {empreendimento.entregaEm
+              ? `Entrega: ${formatarEntrega(empreendimento.entregaEm)}`
+              : PRONTO_PARA_MORAR}
           </p>
         </div>
       </Link>

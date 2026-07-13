@@ -6,6 +6,7 @@ import { EmpreendimentoDetalhe } from "@/components/EmpreendimentoDetalhe";
 import { MapaEmpreendimento } from "@/components/MapaEmpreendimento";
 import { GaleriaEmpreendimento } from "@/components/GaleriaEmpreendimento";
 import { AvisoValores } from "@/components/AvisoValores";
+import { formatarEntrega, PRONTO_PARA_MORAR } from "@/lib/entrega";
 import type { Zona } from "@/types/empreendimento";
 
 export const dynamic = "force-dynamic";
@@ -61,11 +62,11 @@ export default async function EmpreendimentoPage({
             <span className="rounded-full bg-brand-pink px-3 py-1 text-xs font-semibold text-white">
               {ZONA_LABEL[empreendimento.zona]}
             </span>
-            {empreendimento.entrega && (
-              <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-brand-navy">
-                Entrega: {empreendimento.entrega}
-              </span>
-            )}
+            <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-brand-navy">
+              {empreendimento.entregaEm
+                ? `Entrega: ${formatarEntrega(empreendimento.entregaEm)}`
+                : PRONTO_PARA_MORAR}
+            </span>
           </div>
           <h1 className="mt-3 font-heading text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
             {empreendimento.nome}

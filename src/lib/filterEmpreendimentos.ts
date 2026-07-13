@@ -1,8 +1,13 @@
 import type { Empreendimento, Planta, TipoEmpreendimento, Zona } from "../types/empreendimento";
+import { anoDeEntrega } from "./entrega.ts";
+
+/** "todos" = qualquer prazo; "pronto" = já pronto para morar; número = ano. */
+export type PrazoEntrega = "todos" | "pronto" | number;
 
 export type Filtros = {
   tipo: TipoEmpreendimento | "todos";
   zona: Zona | "todas";
+  entrega: PrazoEntrega;
   dormitoriosMin: number;
   vagasMin: number;
   metragemMin: number | null;
@@ -14,6 +19,7 @@ export type Filtros = {
 export const FILTROS_VAZIOS: Filtros = {
   tipo: "todos",
   zona: "todas",
+  entrega: "todos",
   dormitoriosMin: 0,
   vagasMin: 0,
   metragemMin: null,
@@ -36,6 +42,12 @@ function plantaAtendeFiltros(planta: Planta, filtros: Filtros): boolean {
   return true;
 }
 
+function atendeEntrega(empreendimento: Empreendimento, prazo: PrazoEntrega): boolean {
+  if (prazo === "todos") return true;
+  if (prazo === "pronto") return empreendimento.entregaEm === null;
+  return anoDeEntrega(empreendimento.entregaEm) === prazo;
+}
+
 export function filterEmpreendimentos(
   empreendimentos: Empreendimento[],
   filtros: Filtros,
@@ -52,6 +64,8 @@ export function filterEmpreendimentos(
       return false;
     if (filtros.zona !== "todas" && empreendimento.zona !== filtros.zona)
       return false;
+    if (!atendeEntrega(empreendimento, filtros.entrega)) return false;
+
     return empreendimento.plantas.some((planta) =>
       plantaAtendeFiltros(planta, filtros),
     );

@@ -6,23 +6,28 @@ import {
   filterEmpreendimentos,
   FILTROS_VAZIOS,
   type Filtros,
+  type PrazoEntrega,
 } from "@/lib/filterEmpreendimentos";
+import {
+  faixasDePreco,
+  faixasDeMetragem,
+  anosDeEntrega,
+  temProntoParaMorar,
+  maxDormitorios,
+} from "@/lib/faixas";
+import { PRONTO_PARA_MORAR } from "@/lib/entrega";
 import { RegiaoTabs } from "@/components/home/RegiaoTabs";
 import { EmpreendimentoCard } from "@/components/EmpreendimentoCard";
-
-const TIPOS: { value: Filtros["tipo"]; label: string }[] = [
-  { value: "todos", label: "Todos" },
-  { value: "apartamento", label: "Apartamento" },
-  { value: "casa", label: "Casa" },
-  { value: "comercial", label: "Comercial" },
-];
-
-const DORMS = [0, 1, 2, 3];
-const VAGAS = [0, 1, 2];
 
 const selectClass =
   "mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-pink";
 const labelClass = "flex flex-col text-xs font-medium uppercase tracking-wide text-slate-500";
+
+function precoCurto(valor: number): string {
+  return valor >= 1_000_000
+    ? `${(valor / 1_000_000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} mi`
+    : `${valor / 1000} mil`;
+}
 
 export function BuscaImoveis({
   empreendimentos,
@@ -36,12 +41,36 @@ export function BuscaImoveis({
     zona: zonaInicial,
   });
 
+  // As opções saem do estoque: nada de faixa que devolve zero imóvel.
+  const opcoes = useMemo(
+    () => ({
+      preco: faixasDePreco(empreendimentos),
+      metragem: faixasDeMetragem(empreendimentos),
+      anos: anosDeEntrega(empreendimentos),
+      temPronto: temProntoParaMorar(empreendimentos),
+      dorms: maxDormitorios(empreendimentos),
+    }),
+    [empreendimentos],
+  );
+
   const resultados = useMemo(
     () => filterEmpreendimentos(empreendimentos, filtros, ""),
     [empreendimentos, filtros],
   );
 
   const parseOrNull = (v: string): number | null => (v === "" ? null : Number(v));
+
+  const prazoParaValor = (v: string): PrazoEntrega =>
+    v === "todos" || v === "pronto" ? v : Number(v);
+
+  const filtrosAtivos =
+    filtros.zona !== "todas" ||
+    filtros.entrega !== "todos" ||
+    filtros.dormitoriosMin !== 0 ||
+    filtros.precoMin !== null ||
+    filtros.precoMax !== null ||
+    filtros.metragemMin !== null ||
+    filtros.metragemMax !== null;
 
   return (
     <section id="imoveis" className="scroll-mt-20 bg-white pb-4">
@@ -61,16 +90,21 @@ export function BuscaImoveis({
             />
           </div>
 
-          <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            <label className={labelClass}>
-              Tipo
+          <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            {/* "Pronto para morar" nao cabe em meia largura no celular. */}
+            <label className={`${labelClass} col-span-2 sm:col-span-1`}>
+              Entrega
               <select
                 className={selectClass}
-                value={filtros.tipo}
-                onChange={(e) => setFiltros((f) => ({ ...f, tipo: e.target.value as Filtros["tipo"] }))}
+                value={String(filtros.entrega)}
+                onChange={(e) =>
+                  setFiltros((f) => ({ ...f, entrega: prazoParaValor(e.target.value) }))
+                }
               >
-                {TIPOS.map((t) => (
-                  <option key={t.value} value={t.value}>{t.label}</option>
+                <option value="todos">Qualquer</option>
+                {opcoes.temPronto && <option value="pronto">{PRONTO_PARA_MORAR}</option>}
+                {opcoes.anos.map((ano) => (
+                  <option key={ano} value={ano}>{ano}</option>
                 ))}
               </select>
             </label>
@@ -80,49 +114,79 @@ export function BuscaImoveis({
               <select
                 className={selectClass}
                 value={filtros.dormitoriosMin}
-                onChange={(e) => setFiltros((f) => ({ ...f, dormitoriosMin: Number(e.target.value) }))}
+                onChange={(e) =>
+                  setFiltros((f) => ({ ...f, dormitoriosMin: Number(e.target.value) }))
+                }
               >
-                {DORMS.map((d) => (
-                  <option key={d} value={d}>{d === 0 ? "Qualquer" : `${d}+`}</option>
+                <option value={0}>Qualquer</option>
+                {Array.from({ length: opcoes.dorms }, (_, i) => i + 1).map((d) => (
+                  <option key={d} value={d}>{d}+</option>
                 ))}
               </select>
             </label>
 
             <label className={labelClass}>
-              Vagas
+              Valor mín.
               <select
                 className={selectClass}
-                value={filtros.vagasMin}
-                onChange={(e) => setFiltros((f) => ({ ...f, vagasMin: Number(e.target.value) }))}
+                value={filtros.precoMin ?? ""}
+                onChange={(e) =>
+                  setFiltros((f) => ({ ...f, precoMin: parseOrNull(e.target.value) }))
+                }
               >
-                {VAGAS.map((v) => (
-                  <option key={v} value={v}>{v === 0 ? "Qualquer" : `${v}+`}</option>
+                <option value="">Qualquer</option>
+                {opcoes.preco.min.map((v) => (
+                  <option key={v} value={v}>R$ {precoCurto(v)}</option>
                 ))}
               </select>
             </label>
 
             <label className={labelClass}>
-              Metragem mín.
-              <input
-                type="number"
-                min={0}
-                placeholder="m²"
+              Valor máx.
+              <select
                 className={selectClass}
-                value={filtros.metragemMin ?? ""}
-                onChange={(e) => setFiltros((f) => ({ ...f, metragemMin: parseOrNull(e.target.value) }))}
-              />
+                value={filtros.precoMax ?? ""}
+                onChange={(e) =>
+                  setFiltros((f) => ({ ...f, precoMax: parseOrNull(e.target.value) }))
+                }
+              >
+                <option value="">Qualquer</option>
+                {opcoes.preco.max.map((v) => (
+                  <option key={v} value={v}>R$ {precoCurto(v)}</option>
+                ))}
+              </select>
             </label>
 
             <label className={labelClass}>
-              Metragem máx.
-              <input
-                type="number"
-                min={0}
-                placeholder="m²"
+              Área mín.
+              <select
+                className={selectClass}
+                value={filtros.metragemMin ?? ""}
+                onChange={(e) =>
+                  setFiltros((f) => ({ ...f, metragemMin: parseOrNull(e.target.value) }))
+                }
+              >
+                <option value="">Qualquer</option>
+                {opcoes.metragem.min.map((v) => (
+                  <option key={v} value={v}>{v} m²</option>
+                ))}
+              </select>
+            </label>
+
+            <label className={labelClass}>
+              Área máx.
+              <select
                 className={selectClass}
                 value={filtros.metragemMax ?? ""}
-                onChange={(e) => setFiltros((f) => ({ ...f, metragemMax: parseOrNull(e.target.value) }))}
-              />
+                onChange={(e) =>
+                  setFiltros((f) => ({ ...f, metragemMax: parseOrNull(e.target.value) }))
+                }
+              >
+                <option value="">Qualquer</option>
+                {opcoes.metragem.max.map((v) => (
+                  <option key={v} value={v}>{v} m²</option>
+                ))}
+              </select>
             </label>
           </div>
 
@@ -130,21 +194,30 @@ export function BuscaImoveis({
             <p className="text-sm text-slate-500">
               {resultados.length} {resultados.length === 1 ? "imóvel encontrado" : "imóveis encontrados"}
             </p>
-            <button
-              type="button"
-              onClick={() => setFiltros(FILTROS_VAZIOS)}
-              className="text-sm font-medium text-slate-500 transition-colors hover:text-brand-pink"
-            >
-              Limpar filtros
-            </button>
+            {filtrosAtivos && (
+              <button
+                type="button"
+                onClick={() => setFiltros(FILTROS_VAZIOS)}
+                className="text-sm font-medium text-slate-500 transition-colors hover:text-brand-pink"
+              >
+                Limpar filtros
+              </button>
+            )}
           </div>
         </div>
 
         <div className="mt-8">
           {resultados.length === 0 ? (
-            <p className="py-8 text-center text-slate-500">
-              Nenhum imóvel encontrado com esses filtros.
-            </p>
+            <div className="py-10 text-center">
+              <p className="text-slate-500">Nenhum imóvel encontrado com esses filtros.</p>
+              <button
+                type="button"
+                onClick={() => setFiltros(FILTROS_VAZIOS)}
+                className="mt-3 rounded-full bg-brand-pink px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-pink-600"
+              >
+                Limpar filtros
+              </button>
+            </div>
           ) : (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {resultados.map((emp) => (

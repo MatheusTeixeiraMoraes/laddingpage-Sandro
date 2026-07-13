@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Empreendimento, Zona } from "@/types/empreendimento";
 import { excluirEmpreendimento } from "@/lib/admin/empreendimentos";
+import { formatarEntrega } from "@/lib/entrega";
 
 const ZONA_LABEL: Record<Zona, string> = {
   norte: "Zona Norte",
@@ -76,7 +77,7 @@ export function ListaEmpreendimentos({
               <p className="truncate font-heading font-bold text-brand-navy">{emp.nome}</p>
               <p className="text-sm text-slate-500">
                 {ZONA_LABEL[emp.zona]} · {emp.plantas.length} planta(s) ·{" "}
-                {emp.entrega || "sem entrega definida"}
+                {formatarEntrega(emp.entregaEm)}
               </p>
             </div>
 

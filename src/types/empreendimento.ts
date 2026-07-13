@@ -25,7 +25,9 @@ export type Empreendimento = {
   imagem: string;
   /** Fotos do empreendimento (fachada, lazer, decorado). */
   galeria: string[];
-  entrega: string;
+  /** Data de entrega ('AAAA-MM-DD'); nulo = pronto para morar. O rótulo
+   *  exibido ('Dez/2026') é derivado por src/lib/entrega.ts. */
+  entregaEm: string | null;
   latitude: number;
   longitude: number;
   plantas: Planta[];
