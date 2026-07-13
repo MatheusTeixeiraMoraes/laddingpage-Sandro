@@ -109,6 +109,17 @@ Sandro, mas alguns dados são **representativos** até o Sandro confirmar
 
 - [x] Vercel conectado ao repositório (projeto `laddingpage-sandro`, deploy
       automático a cada push em `main`).
+- [x] **Repositório tornado público** (13/07/2026). Motivo: o projeto Vercel
+      é da conta do Sandro (plano Hobby) e os commits são assinados pelo dev.
+      No Hobby, repo **privado** só aceita deploy automático de commit do
+      dono da conta — todo push do dev era barrado antes de compilar
+      ("Deployment was blocked", status `UNKNOWN`, duração `?`, zero log).
+      Repo público remove a checagem de autor e devolve o deploy automático.
+      Auditado antes de abrir: nenhuma chave real no histórico do git
+      (`.env.example` só tem campos vazios). As credenciais continuam apenas
+      nas env vars do Vercel e do Supabase.
+      Alternativas descartadas: mover o projeto pra conta do dev (o site
+      deve morar na conta do cliente) e plano Pro (US$ 20/mês).
 - [x] Supabase conectado. Projeto usa o formato **novo** de chaves
       (`sb_publishable_...`/`sb_secret_...`, não o JWT legado
       anon/service_role) — env vars corretas são
