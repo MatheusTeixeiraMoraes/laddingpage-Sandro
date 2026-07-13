@@ -12,15 +12,6 @@ const NAVEGACAO = [
   { label: "Política de Privacidade", href: "/privacidade" },
 ];
 
-// Cada região leva para a busca já filtrada por ela.
-const REGIOES = [
-  { label: "Norte", href: "/?zona=norte#imoveis" },
-  { label: "Sul", href: "/?zona=sul#imoveis" },
-  { label: "Leste", href: "/?zona=leste#imoveis" },
-  { label: "Oeste", href: "/?zona=oeste#imoveis" },
-  { label: "Central", href: "/?zona=central#imoveis" },
-];
-
 const WHATSAPP = buildWhatsAppLink(
   "Olá, Sandro! Vi o seu site e gostaria de conversar sobre os imóveis.",
 );
@@ -28,7 +19,7 @@ const WHATSAPP = buildWhatsAppLink(
 export function SiteFooter() {
   return (
     <footer className="bg-brand-navy text-slate-300">
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="lg:col-span-2">
           <Image
             src="/logo-sandro.png"
@@ -50,19 +41,6 @@ export function SiteFooter() {
               <li key={item.label}>
                 <Link href={item.href} className="transition-colors hover:text-brand-pink">
                   {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="font-heading text-sm font-semibold text-white">Regiões</h3>
-          <ul className="mt-4 space-y-2 text-sm">
-            {REGIOES.map((regiao) => (
-              <li key={regiao.label}>
-                <Link href={regiao.href} className="transition-colors hover:text-brand-pink">
-                  {regiao.label}
                 </Link>
               </li>
             ))}
