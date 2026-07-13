@@ -3,15 +3,8 @@
 import { useState } from "react";
 import type { Empreendimento } from "@/types/empreendimento";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { formatarPrecoAPartirDe } from "@/lib/preco";
 import { PlantaSelector, labelDaPlanta } from "@/components/PlantaSelector";
-
-function formatarPreco(preco: number): string {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    maximumFractionDigits: 0,
-  }).format(preco);
-}
 
 function Spec({ label, valor }: { label: string; valor: string }) {
   return (
@@ -85,8 +78,8 @@ export function EmpreendimentoDetalhe({
           <p className="text-xs uppercase tracking-wide text-slate-400">
             {labelDaPlanta(planta)}
           </p>
-          <p className="mt-1 font-heading text-3xl font-extrabold text-brand-pink">
-            {formatarPreco(planta.preco)}
+          <p className="mt-1 font-heading text-2xl font-extrabold text-brand-pink sm:text-3xl">
+            {formatarPrecoAPartirDe(planta.preco)}
           </p>
           <p className="mt-1 text-xs text-slate-400">
             Valores e condições sujeitos a confirmação.
