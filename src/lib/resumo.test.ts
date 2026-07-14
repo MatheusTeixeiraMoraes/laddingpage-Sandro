@@ -12,7 +12,7 @@ function comPlantas(metragens: number[]): Empreendimento {
     garagemCoberta: false, vagaDupla: false, pontosAr: null,
     descricao: "", construtora: "", torres: null, andares: "",
     aptosPorAndar: null, elevadores: null, entregaComPiso: "", documentacao: "",
-    endereco: "",
+    endereco: "", destaque: false,
     latitude: 0, longitude: 0,
     plantas: metragens.map((m, i) => ({ id: String(i), metragem: m, preco: null, imagens: [] })),
   };

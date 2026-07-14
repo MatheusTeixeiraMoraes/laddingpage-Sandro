@@ -28,6 +28,7 @@ export type EmpreendimentoInput = {
   entrega_com_piso: "" | "completo" | "areas_molhadas";
   documentacao: "" | "gratis" | "pago";
   endereco: string;
+  destaque: boolean;
   latitude: number;
   longitude: number;
 };

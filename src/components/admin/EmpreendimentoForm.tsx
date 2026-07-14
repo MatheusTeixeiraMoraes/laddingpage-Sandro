@@ -114,6 +114,7 @@ export function EmpreendimentoForm({
     empreendimento?.documentacao ?? "",
   );
   const [endereco, setEndereco] = useState(empreendimento?.endereco ?? "");
+  const [destaque, setDestaque] = useState(empreendimento?.destaque ?? false);
 
   const numeroOuNulo = (v: string): number | null => (v === "" ? null : Number(v));
 
@@ -203,6 +204,7 @@ export function EmpreendimentoForm({
         entrega_com_piso: piso,
         documentacao,
         endereco: endereco.trim(),
+        destaque,
         imagem,
         galeria,
         latitude: coordenadas.latitude,
@@ -589,6 +591,24 @@ export function EmpreendimentoForm({
             onChange={setGaleria}
           />
         </div>
+
+        <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-brand-pink/30 bg-brand-blush/30 p-4 sm:col-span-2">
+          <input
+            type="checkbox"
+            checked={destaque}
+            onChange={(e) => setDestaque(e.target.checked)}
+            className="mt-0.5 h-4 w-4 accent-brand-pink"
+          />
+          <span>
+            <span className="block text-sm font-semibold text-brand-navy">
+              Destacar na home
+            </span>
+            <span className="mt-0.5 block text-xs text-slate-500">
+              Aparece em &ldquo;Lançamentos em destaque&rdquo;, na página inicial. Sem
+              nenhum imóvel marcado, a seção mostra os mais recentes.
+            </span>
+          </span>
+        </label>
       </div>
 
       {erro && <p className="mt-4 text-sm text-red-600">{erro}</p>}

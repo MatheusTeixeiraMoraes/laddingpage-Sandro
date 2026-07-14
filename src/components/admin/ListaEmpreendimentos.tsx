@@ -74,7 +74,14 @@ export function ListaEmpreendimentos({
             </div>
 
             <div className="min-w-0 flex-1">
-              <p className="truncate font-heading font-bold text-brand-navy">{emp.nome}</p>
+              <p className="flex items-center gap-2 truncate font-heading font-bold text-brand-navy">
+                {emp.nome}
+                {emp.destaque && (
+                  <span className="shrink-0 rounded-full bg-brand-pink px-2 py-0.5 text-[10px] font-bold uppercase text-white">
+                    Destaque
+                  </span>
+                )}
+              </p>
               <p className="text-sm text-slate-500">
                 {ZONA_LABEL[emp.zona]} · {emp.plantas.length} planta(s) ·{" "}
                 {formatarEntrega(emp.entregaEm)}

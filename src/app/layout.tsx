@@ -21,6 +21,9 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
+  // Sem isso, o og:image de cada página vira caminho relativo e o WhatsApp
+  // não consegue buscar a imagem para montar o card de compartilhamento.
+  metadataBase: new URL("https://laddingpage-sandro.vercel.app"),
   title: "Sandro Higuti | Consultor Imobiliário",
   description: "Encontre o imóvel ideal com a consultoria de Sandro Higuti.",
 };

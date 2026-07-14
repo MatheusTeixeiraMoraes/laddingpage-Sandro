@@ -1,5 +1,6 @@
 import { getEmpreendimentos } from "@/lib/empreendimentos";
 import { getFotosClientes } from "@/lib/fotosClientes";
+import { empreendimentosEmDestaque } from "@/lib/destaques";
 import type { Zona } from "@/types/empreendimento";
 import { Hero } from "@/components/home/Hero";
 import { BuscaImoveis } from "@/components/home/BuscaImoveis";
@@ -38,7 +39,7 @@ export default async function Home({
       />
       <SobreMim />
       <ClientesAmigos fotos={fotosClientes} />
-      <LancamentosDestaque empreendimentos={empreendimentos.slice(0, 4)} />
+      <LancamentosDestaque empreendimentos={empreendimentosEmDestaque(empreendimentos)} />
       <FaixaContato />
     </>
   );

@@ -44,6 +44,7 @@ function emp(
     entregaComPiso: "",
     documentacao: "",
     endereco: "",
+    destaque: false,
     latitude: 0,
     longitude: 0,
     plantas: metragens.map((m, i) => ({

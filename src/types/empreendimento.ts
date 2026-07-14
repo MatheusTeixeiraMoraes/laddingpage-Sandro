@@ -67,6 +67,8 @@ export type Empreendimento = {
 
   /** Endereço escrito ("R. Ramon Haro Martini, 1160 - Vila Haro"). */
   endereco: string;
+  /** Marcado pelo Sandro no painel para aparecer em "Lançamentos em destaque". */
+  destaque: boolean;
   latitude: number;
   longitude: number;
   plantas: Planta[];

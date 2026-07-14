@@ -1,9 +1,10 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { isUuid } from "@/lib/uuid";
 import type { Empreendimento, Zona } from "@/types/empreendimento";
 
 const SELECT_EMPREENDIMENTO =
-  "id, nome, tipo, zona, imagem, galeria, entrega_em, preco_a_partir_de, dormitorios, suite, varanda, quintal, garagem_coberta, vaga_dupla, pontos_ar, descricao, construtora, torres, andares, aptos_por_andar, elevadores, entrega_com_piso, documentacao, endereco, latitude, longitude, bairros(id, nome, sobre), plantas(id, metragem, preco, imagens)";
+  "id, nome, tipo, zona, imagem, galeria, entrega_em, preco_a_partir_de, dormitorios, suite, varanda, quintal, garagem_coberta, vaga_dupla, pontos_ar, descricao, construtora, torres, andares, aptos_por_andar, elevadores, entrega_com_piso, documentacao, endereco, destaque, latitude, longitude, bairros(id, nome, sobre), plantas(id, metragem, preco, imagens)";
 
 type PlantaRow = {
   id: string;
@@ -39,6 +40,7 @@ type EmpreendimentoRow = {
   entrega_com_piso: Empreendimento["entregaComPiso"];
   documentacao: Empreendimento["documentacao"];
   endereco: string;
+  destaque: boolean;
   latitude: number;
   longitude: number;
   plantas: PlantaRow[];
@@ -75,6 +77,7 @@ function mapRow(row: EmpreendimentoRow): Empreendimento {
     entregaComPiso: row.entrega_com_piso ?? "",
     documentacao: row.documentacao ?? "",
     endereco: row.endereco ?? "",
+    destaque: row.destaque,
     latitude: row.latitude,
     longitude: row.longitude,
     plantas: row.plantas
@@ -92,16 +95,22 @@ export async function getEmpreendimentos(): Promise<Empreendimento[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("empreendimentos")
-    .select(SELECT_EMPREENDIMENTO);
+    .select(SELECT_EMPREENDIMENTO)
+    .order("created_at", { ascending: false });
 
   if (error) throw new Error(`Falha ao buscar empreendimentos: ${error.message}`);
 
   return (data as unknown as EmpreendimentoRow[]).map(mapRow);
 }
 
-export async function getEmpreendimentoById(
+/**
+ * cache(): a página de imóvel usa isso duas vezes por requisição (uma vez em
+ * generateMetadata, outra no componente da página) — sem isso seria uma
+ * consulta ao banco a mais em toda visita, só para gerar o <title>.
+ */
+export const getEmpreendimentoById = cache(async (
   id: string,
-): Promise<Empreendimento | null> {
+): Promise<Empreendimento | null> => {
   if (!isUuid(id)) return null;
 
   const supabase = await createClient();
@@ -115,4 +124,4 @@ export async function getEmpreendimentoById(
   if (!data) return null;
 
   return mapRow(data as unknown as EmpreendimentoRow);
-}
+});

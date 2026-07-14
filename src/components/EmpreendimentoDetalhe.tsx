@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import type { Empreendimento } from "@/types/empreendimento";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { formatarPrecoCurto } from "@/lib/preco";
 import { faixaDeMetragem, listaDeDormitorios } from "@/lib/resumo";
+import { enviarLead } from "@/lib/enviarLead";
 import { PlantaSelector, labelDaPlanta } from "@/components/PlantaSelector";
 
 type CampoFicha =
@@ -117,6 +119,43 @@ export function EmpreendimentoDetalhe({
 
   // O preço da planta é opcional; o oficial é o "a partir de" do empreendimento.
   const preco = planta?.preco ?? empreendimento.precoAPartirDe;
+
+  // Captura o lead ANTES de abrir o WhatsApp: é o clique de maior intenção da
+  // página (quem leu a ficha inteira e clicou aqui), e sem isso não ficava
+  // registro nenhum se a conversa não avançasse no WhatsApp.
+  const [nome, setNome] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [consentimento, setConsentimento] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
+
+  const interesse = planta
+    ? `${empreendimento.nome} — planta de ${labelDaPlanta(planta)}`
+    : empreendimento.nome;
+
+  const handleFalar = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setErro(null);
+
+    const digitos = telefone.replace(/\D/g, "");
+    if (digitos.length < 10) {
+      setErro("Digite o WhatsApp com DDD.");
+      return;
+    }
+
+    setEnviando(true);
+    try {
+      await enviarLead({ nome, telefone, interesse, consentimento });
+      window.open(whatsappLink, "_blank", "noopener,noreferrer");
+      setNome("");
+      setTelefone("");
+      setConsentimento(false);
+    } catch (e) {
+      setErro(e instanceof Error ? e.message : "Não foi possível enviar.");
+    } finally {
+      setEnviando(false);
+    }
+  };
 
   const presentes = [
     { label: "Suíte", tem: empreendimento.suite },
@@ -258,17 +297,59 @@ export function EmpreendimentoDetalhe({
             Valores e condições sujeitos a confirmação.
           </p>
 
-          <a
-            href={whatsappLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-5 flex items-center justify-center gap-2 rounded-full bg-brand-pink px-6 py-3 font-semibold text-white transition-colors hover:bg-pink-600"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
-              <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.64-2.05-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.5l-.57-.01c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" />
-            </svg>
-            {temPlantas ? "Falar sobre esta planta" : "Falar sobre este imóvel"}
-          </a>
+          <form onSubmit={handleFalar} className="mt-5 flex flex-col gap-2.5">
+            <input
+              type="text"
+              required
+              placeholder="Seu nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition-colors placeholder:text-slate-400 focus:border-brand-pink"
+            />
+            <input
+              type="tel"
+              required
+              placeholder="Seu WhatsApp com DDD"
+              value={telefone}
+              onChange={(e) => setTelefone(e.target.value)}
+              className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition-colors placeholder:text-slate-400 focus:border-brand-pink"
+            />
+
+            <label className="flex cursor-pointer items-start gap-2 text-xs text-slate-500">
+              <input
+                type="checkbox"
+                required
+                checked={consentimento}
+                onChange={(e) => setConsentimento(e.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 accent-brand-pink"
+              />
+              <span>
+                Autorizo o Sandro a guardar meu contato e falar comigo sobre
+                imóveis. Leia a{" "}
+                <Link
+                  href="/privacidade"
+                  target="_blank"
+                  className="font-semibold text-brand-pink hover:underline"
+                >
+                  Política de Privacidade
+                </Link>
+                .
+              </span>
+            </label>
+
+            {erro && <p className="text-sm font-medium text-red-600">{erro}</p>}
+
+            <button
+              type="submit"
+              disabled={enviando}
+              className="mt-1 flex items-center justify-center gap-2 rounded-full bg-brand-pink px-6 py-3 font-semibold text-white transition-colors hover:bg-pink-600 disabled:opacity-60"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
+                <path d="M17.47 14.38c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.64-2.05-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.6-.92-2.2-.24-.58-.49-.5-.67-.5l-.57-.01c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.75-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35Z" />
+              </svg>
+              {enviando ? "Enviando..." : temPlantas ? "Falar sobre esta planta" : "Falar sobre este imóvel"}
+            </button>
+          </form>
 
           <p className="mt-4 text-center text-xs text-slate-400">
             Atendimento direto com Sandro Higuti · CRECI 278922

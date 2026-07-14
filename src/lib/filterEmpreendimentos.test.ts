@@ -31,6 +31,7 @@ function emp(over: Partial<Empreendimento> & { id: string }): Empreendimento {
     entregaComPiso: "",
     documentacao: "",
     endereco: "",
+    destaque: false,
     latitude: 0,
     longitude: 0,
     plantas: [{ id: `${over.id}-a`, metragem: 45, preco: null, imagens: [] }],
