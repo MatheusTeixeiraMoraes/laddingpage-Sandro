@@ -8,11 +8,40 @@ import { formatarPrecoCurto } from "@/lib/preco";
 import { faixaDeMetragem, listaDeDormitorios } from "@/lib/resumo";
 import { PlantaSelector, labelDaPlanta } from "@/components/PlantaSelector";
 
-function Spec({ label, valor }: { label: string; valor: string }) {
+type CampoFicha =
+  | "dormitorios" | "metragem" | "plantas" | "construtora" | "torres"
+  | "andares" | "aptosPorAndar" | "elevadores" | "ar" | "piso" | "documentacao";
+
+/** Um traço por campo — mesma linguagem de ícone (stroke, 24x24) do resto do site. */
+const TRACOS: Record<CampoFicha, string> = {
+  dormitorios: "M3 18v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5M3 18v2M21 18v2M3 13V9a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2",
+  metragem: "M4 4h6M4 4v6M4 4l6 6M20 20h-6M20 20v-6M20 20l-6-6",
+  plantas: "m12 3 9 5-9 5-9-5 9-5ZM3 13l9 5 9-5",
+  construtora: "M4 21V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v15M12 21V10a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v11M8 8h.01M8 12h.01M16 13h.01",
+  torres: "M6 21V9l3-3 3 3v12M12 21V13l3-2 3 2v8M6 21h14",
+  andares: "M4 6h16M4 12h16M4 18h16",
+  aptosPorAndar: "M4 4h6v6H4V4ZM14 4h6v6h-6V4ZM4 14h6v6H4v-6ZM14 14h6v6h-6v-6Z",
+  elevadores: "M8 7l4-4 4 4M8 17l4 4 4-4M12 3v18",
+  ar: "M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h8a2 2 0 1 1-2 2",
+  piso: "M4 4h16v16H4V4ZM4 12h16M12 4v16",
+  documentacao: "M8 3h5l5 5v13a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1ZM13 3v5h5M9 13h6M9 17h6",
+};
+
+function Spec({ campo, label, valor }: { campo: CampoFicha; label: string; valor: string }) {
   return (
-    <div className="rounded-xl border border-slate-100 bg-white p-4">
-      <p className="text-xs uppercase tracking-wide text-slate-400">{label}</p>
-      <p className="mt-1 font-heading text-lg font-bold text-brand-navy">{valor}</p>
+    <div className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-4 transition-colors hover:border-brand-pink/30 hover:bg-brand-blush/20">
+      <span
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-blush text-brand-pink"
+        aria-hidden
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-5 w-5">
+          <path strokeLinecap="round" strokeLinejoin="round" d={TRACOS[campo]} />
+        </svg>
+      </span>
+      <div className="min-w-0">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{label}</p>
+        <p className="truncate font-heading text-base font-bold text-brand-navy">{valor}</p>
+      </div>
     </div>
   );
 }
@@ -30,33 +59,38 @@ const DOCUMENTACAO: Record<Empreendimento["documentacao"], string> = {
 };
 
 /** Só entra na ficha o que foi informado — campo vazio não vira card vazio. */
-function fichaTecnica(e: Empreendimento): { label: string; valor: string }[] {
-  const linhas: { label: string; valor: string | null }[] = [
-    { label: "Dormitórios", valor: listaDeDormitorios(e.dormitorios) },
-    { label: "Metragem", valor: faixaDeMetragem(e) },
-    { label: "Plantas", valor: e.plantas.length > 0 ? String(e.plantas.length) : null },
-    { label: "Construtora", valor: e.construtora || null },
-    { label: "Torres", valor: e.torres !== null ? String(e.torres) : null },
-    { label: "Andares", valor: e.andares || null },
+function fichaTecnica(e: Empreendimento): { campo: CampoFicha; label: string; valor: string }[] {
+  const linhas: { campo: CampoFicha; label: string; valor: string | null }[] = [
+    { campo: "dormitorios", label: "Dormitórios", valor: listaDeDormitorios(e.dormitorios) },
+    { campo: "metragem", label: "Metragem", valor: faixaDeMetragem(e) },
+    { campo: "plantas", label: "Plantas", valor: e.plantas.length > 0 ? String(e.plantas.length) : null },
+    { campo: "construtora", label: "Construtora", valor: e.construtora || null },
+    { campo: "torres", label: "Torres", valor: e.torres !== null ? String(e.torres) : null },
+    { campo: "andares", label: "Andares", valor: e.andares || null },
     {
+      campo: "aptosPorAndar",
       label: "Aptos. por andar",
       valor: e.aptosPorAndar !== null ? String(e.aptosPorAndar) : null,
     },
     {
+      campo: "elevadores",
       label: "Elevadores",
       valor: e.elevadores !== null ? String(e.elevadores) : null,
     },
     {
+      campo: "ar",
       label: "Ar-condicionado",
       valor: e.pontosAr
         ? `${e.pontosAr} ${e.pontosAr === 1 ? "ponto" : "pontos"}`
         : null,
     },
-    { label: "Piso", valor: PISO[e.entregaComPiso] || null },
-    { label: "Documentação", valor: DOCUMENTACAO[e.documentacao] || null },
+    { campo: "piso", label: "Piso", valor: PISO[e.entregaComPiso] || null },
+    { campo: "documentacao", label: "Documentação", valor: DOCUMENTACAO[e.documentacao] || null },
   ];
 
-  return linhas.filter((l): l is { label: string; valor: string } => l.valor !== null);
+  return linhas.filter(
+    (l): l is { campo: CampoFicha; label: string; valor: string } => l.valor !== null,
+  );
 }
 
 export function EmpreendimentoDetalhe({
@@ -96,35 +130,50 @@ export function EmpreendimentoDetalhe({
   return (
     <div className="mt-10 grid gap-8 lg:grid-cols-3">
       <div className="lg:col-span-2">
-        <h2 className="font-heading text-xl font-extrabold text-brand-navy">
-          Ficha técnica
-        </h2>
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {ficha.map((item) => (
-            <Spec key={item.label} label={item.label} valor={item.valor} />
-          ))}
-        </div>
-
-        {presentes.length > 0 && (
-          <div className="mt-6">
-            <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-slate-500">
-              O que este empreendimento tem
-            </h3>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {presentes.map((c) => (
-                <span
-                  key={c.label}
-                  className="inline-flex items-center gap-2 rounded-full bg-brand-blush px-4 py-2 text-sm font-medium text-brand-navy"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-3.5 w-3.5 text-brand-pink">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />
-                  </svg>
-                  {c.label}
-                </span>
-              ))}
+        <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm sm:p-8">
+          <div className="flex items-center gap-3">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-navy text-white" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-5 w-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 3h6l1 3h2a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h2l1-3ZM9 12h6M9 16h4" />
+              </svg>
+            </span>
+            <div>
+              <p className="font-heading text-xs font-semibold uppercase tracking-widest text-brand-pink">
+                Detalhes do imóvel
+              </p>
+              <h2 className="font-heading text-xl font-extrabold text-brand-navy">
+                Ficha técnica
+              </h2>
             </div>
           </div>
-        )}
+
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {ficha.map((item) => (
+              <Spec key={item.label} campo={item.campo} label={item.label} valor={item.valor} />
+            ))}
+          </div>
+
+          {presentes.length > 0 && (
+            <div className="mt-6 border-t border-slate-100 pt-6">
+              <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-slate-500">
+                O que este empreendimento tem
+              </h3>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {presentes.map((c) => (
+                  <span
+                    key={c.label}
+                    className="inline-flex items-center gap-2 rounded-full bg-brand-blush px-4 py-2 text-sm font-medium text-brand-navy"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-3.5 w-3.5 text-brand-pink">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />
+                    </svg>
+                    {c.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
 
         {paragrafos.length > 0 && (
           <div className="mt-10">
