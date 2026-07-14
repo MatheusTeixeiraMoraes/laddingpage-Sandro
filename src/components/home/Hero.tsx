@@ -9,7 +9,7 @@ const WHATSAPP = buildWhatsAppLink(
 
 function Check() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-4 w-4">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="h-5 w-5">
       <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />
     </svg>
   );
@@ -30,11 +30,11 @@ export function Hero() {
             humanizado, transparente e focado em você.
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
             {BADGES.map((badge) => (
               <span
                 key={badge}
-                className="inline-flex items-center gap-2 rounded-full border border-brand-pink/20 bg-white px-4 py-2 text-sm font-medium text-brand-navy shadow-sm"
+                className="inline-flex items-center gap-2 text-base font-semibold text-brand-navy sm:text-lg"
               >
                 <span className="text-brand-pink">
                   <Check />
@@ -44,24 +44,18 @@ export function Hero() {
             ))}
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4">
+          <div className="mt-8">
             <a
               href={WHATSAPP}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-brand-pink px-6 py-3 font-semibold text-white shadow-md transition-colors hover:bg-pink-600"
+              className="inline-flex items-center gap-2 rounded-full bg-brand-pink px-9 py-4 text-lg font-semibold text-white shadow-md transition-colors hover:bg-pink-600"
             >
               Fale comigo
             </a>
-            <a
-              href="#imoveis"
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-6 py-3 font-semibold text-brand-navy transition-colors hover:border-brand-pink hover:text-brand-pink"
-            >
-              Ver imóveis
-            </a>
           </div>
 
-          <p className="mt-6 font-script text-2xl text-brand-pink">
+          <p className="mt-6 font-script text-3xl text-brand-pink sm:text-4xl">
             Clientes que se tornam amigos.
           </p>
         </div>
