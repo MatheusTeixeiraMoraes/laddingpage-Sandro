@@ -33,7 +33,7 @@ export default async function SobrePage() {
     <div>
       {/* Apresentação */}
       <section className="bg-gradient-to-b from-brand-blush/40 to-white">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-14 lg:grid-cols-2 lg:py-20">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 pt-8 pb-14 lg:grid-cols-2 lg:pt-12 lg:pb-20">
           <div>
             <p className="font-heading text-xs font-semibold uppercase tracking-widest text-brand-pink">
               Sobre mim
@@ -42,25 +42,27 @@ export default async function SobrePage() {
               Muito prazer, eu sou{" "}
               <span className="text-brand-pink">Sandro Higuti</span>
             </h1>
-            <p className="mt-5 max-w-md text-lg text-slate-600">
+            <p className="mt-3 max-w-md text-lg text-slate-600">
               Sorocabano de coração, consultor imobiliário e especialista em
               apartamentos na planta. Atendo do jeito que eu gostaria de ser
               atendido.
             </p>
-            <p className="mt-5 font-script text-2xl text-brand-pink">
+            <p className="mt-5 font-script text-3xl text-brand-pink sm:text-4xl">
               Clientes que se tornam amigos.
             </p>
 
-            <div className="mt-7 flex flex-wrap items-center gap-4">
+            <div className="mt-6">
               <a
                 href={WHATSAPP}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full bg-brand-pink px-6 py-3 font-semibold text-white shadow-md transition-colors hover:bg-pink-600"
+                className="inline-flex rounded-full bg-brand-pink px-9 py-4 text-lg font-semibold text-white shadow-md transition-colors hover:bg-pink-600"
               >
                 Falar com o Sandro
               </a>
-              <SocialIcons iconClassName="text-slate-500 hover:bg-brand-blush hover:text-brand-pink" />
+              <div className="mt-5">
+                <SocialIcons iconClassName="border border-slate-200 bg-white text-slate-500 shadow-sm hover:border-brand-pink hover:text-brand-pink" />
+              </div>
             </div>
           </div>
 
