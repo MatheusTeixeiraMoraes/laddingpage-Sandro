@@ -29,18 +29,23 @@ const TRACOS: Record<CampoFicha, string> = {
 
 function Spec({ campo, label, valor }: { campo: CampoFicha; label: string; valor: string }) {
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-slate-100 bg-white p-4 transition-colors hover:border-brand-pink/30 hover:bg-brand-blush/20">
+    <div className="flex items-center gap-2 rounded-xl border border-slate-100 bg-white p-2.5 transition-colors hover:border-brand-pink/30 hover:bg-brand-blush/20 sm:gap-3 sm:rounded-2xl sm:p-4">
       <span
-        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-blush text-brand-pink"
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-blush text-brand-pink sm:h-10 sm:w-10 sm:rounded-xl"
         aria-hidden
       >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-5 w-5">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-4 w-4 sm:h-5 sm:w-5">
           <path strokeLinecap="round" strokeLinejoin="round" d={TRACOS[campo]} />
         </svg>
       </span>
-      <div className="min-w-0">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">{label}</p>
-        <p className="truncate font-heading text-base font-bold text-brand-navy">{valor}</p>
+      {/* Sem truncate: cortar "Bonelli" em "BON..." é pior do que quebrar a linha. */}
+      <div className="min-w-0 flex-1">
+        <p className="text-[9px] font-semibold uppercase leading-tight tracking-normal text-slate-400 sm:text-[11px] sm:tracking-wide">
+          {label}
+        </p>
+        <p className="font-heading text-xs font-bold leading-snug text-brand-navy sm:text-base">
+          {valor}
+        </p>
       </div>
     </div>
   );
@@ -130,7 +135,7 @@ export function EmpreendimentoDetalhe({
   return (
     <div className="mt-10 grid gap-8 lg:grid-cols-3">
       <div className="lg:col-span-2">
-        <div className="rounded-3xl border border-slate-100 bg-white p-6 shadow-sm sm:p-8">
+        <div className="rounded-3xl border border-slate-100 bg-white p-4 shadow-sm sm:p-8">
           <div className="flex items-center gap-3">
             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-navy text-white" aria-hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="h-5 w-5">
@@ -147,14 +152,14 @@ export function EmpreendimentoDetalhe({
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div className="mt-5 grid grid-cols-2 gap-2 sm:mt-6 sm:grid-cols-3 sm:gap-3">
             {ficha.map((item) => (
               <Spec key={item.label} campo={item.campo} label={item.label} valor={item.valor} />
             ))}
           </div>
 
           {presentes.length > 0 && (
-            <div className="mt-6 border-t border-slate-100 pt-6">
+            <div className="mt-5 border-t border-slate-100 pt-5 sm:mt-6 sm:pt-6">
               <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-slate-500">
                 O que este empreendimento tem
               </h3>
