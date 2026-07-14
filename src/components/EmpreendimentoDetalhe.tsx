@@ -8,6 +8,7 @@ import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { formatarPrecoCurto } from "@/lib/preco";
 import { faixaDeMetragem, listaDeDormitorios } from "@/lib/resumo";
 import { enviarLead } from "@/lib/enviarLead";
+import { registrarClique } from "@/lib/registrarClique";
 import { PlantaSelector, labelDaPlanta } from "@/components/PlantaSelector";
 
 type CampoFicha =
@@ -146,6 +147,7 @@ export function EmpreendimentoDetalhe({
     setEnviando(true);
     try {
       await enviarLead({ nome, telefone, interesse, consentimento });
+      void registrarClique(empreendimento.id);
       window.open(whatsappLink, "_blank", "noopener,noreferrer");
       setNome("");
       setTelefone("");

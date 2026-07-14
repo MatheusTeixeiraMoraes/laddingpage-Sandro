@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Empreendimento } from "@/types/empreendimento";
-import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { BotaoWhatsappCard } from "@/components/BotaoWhatsappCard";
 import { formatarEntrega, PRONTO_PARA_MORAR } from "@/lib/entrega";
 import { formatarPrecoCurto } from "@/lib/preco";
 import { faixaDeMetragem, listaDeDormitorios } from "@/lib/resumo";
@@ -17,10 +17,6 @@ export function EmpreendimentoCard({
 }: {
   empreendimento: Empreendimento;
 }) {
-  const whatsappLink = buildWhatsAppLink(
-    `Olá, vi o imóvel ${empreendimento.nome} no site e gostaria de saber mais informações.`,
-  );
-
   return (
     <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition-shadow hover:shadow-lg">
       <Link href={`/empreendimentos/${empreendimento.id}`} className="flex flex-1 flex-col">
@@ -61,14 +57,7 @@ export function EmpreendimentoCard({
         </div>
       </Link>
       <div className="p-4 pt-0">
-        <a
-          href={whatsappLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block rounded-full bg-brand-pink px-4 py-2 text-center text-sm font-medium text-white transition-colors hover:bg-pink-600"
-        >
-          Falar no WhatsApp
-        </a>
+        <BotaoWhatsappCard id={empreendimento.id} nome={empreendimento.nome} />
       </div>
     </div>
   );

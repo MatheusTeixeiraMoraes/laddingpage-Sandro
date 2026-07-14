@@ -7,7 +7,7 @@ export const metadata = {
     "Como o site do Sandro Higuti trata os dados pessoais de quem preenche o formulário de contato.",
 };
 
-const ATUALIZADO_EM = "13 de julho de 2026";
+const ATUALIZADO_EM = "14 de julho de 2026";
 
 const WHATSAPP_LGPD = buildWhatsAppLink(
   "Olá, Sandro! Gostaria de tratar dos meus dados pessoais (LGPD).",
@@ -71,16 +71,23 @@ export default function PrivacidadePage() {
         </ul>
         <p>
           <strong className="text-brand-navy">Se você não preencher o formulário,
-          nada é guardado.</strong> Navegar pelo site, olhar imóveis, usar os
-          filtros ou clicar no botão do WhatsApp não cria nenhum registro seu
-          conosco.
+          nenhum dado que identifique você é guardado.</strong> Navegar pelo
+          site, olhar imóveis ou usar os filtros não cria registro nenhum.
+        </p>
+        <p>
+          Há uma única exceção, e ela é <strong className="text-brand-navy">anônima</strong>:
+          quando alguém clica num botão de WhatsApp de um imóvel, guardamos
+          apenas que <em>aquele imóvel</em> recebeu um clique — o identificador
+          do imóvel e a data, nada mais. Isso ajuda o Sandro a saber quais
+          imóveis despertam mais interesse. Esse registro não tem nome,
+          telefone, endereço IP nem cookie: não há como ligá-lo a você.
         </p>
         <p>
           Este site <strong className="text-brand-navy">não usa Google Analytics,
           pixel do Facebook, nem qualquer ferramenta de rastreamento ou
-          publicidade</strong>. Não há cookie de rastreio: os únicos cookies são
-          os da sessão de login do painel administrativo, usado apenas pelo
-          Sandro.
+          publicidade de terceiros</strong>. Não há cookie de rastreio: os únicos
+          cookies são os da sessão de login do painel administrativo, usado
+          apenas pelo Sandro.
         </p>
       </Secao>
 
