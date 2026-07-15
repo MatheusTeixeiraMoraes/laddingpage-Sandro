@@ -56,6 +56,12 @@ export default async function AdminPage() {
             Depoimentos
           </Link>
           <Link
+            href="/admin/relatos"
+            className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-brand-pink hover:text-brand-pink"
+          >
+            Relatos
+          </Link>
+          <Link
             href="/admin/atualizar-senha"
             className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-brand-pink hover:text-brand-pink"
           >
