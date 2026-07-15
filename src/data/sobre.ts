@@ -1,7 +1,15 @@
 /**
- * Conteúdo da página /sobre — texto escrito pelo próprio Sandro.
- * Para editar, basta trocar as strings deste arquivo.
+ * Conteúdo PADRÃO da página /sobre. O painel ("Conteúdo do site") pode
+ * sobrescrever cada item na tabela conteudo_site; isto é o que aparece
+ * enquanto o Sandro não editou.
  */
+
+/** Topo da página /sobre (apresentação). */
+export const SOBRE_TITULO_1 = "Muito prazer, eu sou";
+export const SOBRE_TITULO_2 = "Sandro Higuti";
+export const SOBRE_INTRO =
+  "Sorocabano de coração, consultor imobiliário e especialista em apartamentos na planta. Atendo do jeito que eu gostaria de ser atendido.";
+export const SOBRE_FRASE = "Clientes que se tornam amigos.";
 
 /** Corpo da bio, até a virada "o que mais me realiza não são os números". */
 export const BIO_PARAGRAFOS: string[] = [

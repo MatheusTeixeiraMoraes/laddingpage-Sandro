@@ -4,8 +4,12 @@ import { Depoimentos } from "@/components/Depoimentos";
 import { SocialIcons } from "@/components/home/SocialIcons";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { getFotosClientes } from "@/lib/fotosClientes";
-import { getConteudo, texto, resolverNumeros } from "@/lib/conteudo";
+import { getConteudo, texto, lista, resolverNumeros, resolverValores } from "@/lib/conteudo";
 import {
+  SOBRE_TITULO_1,
+  SOBRE_TITULO_2,
+  SOBRE_INTRO,
+  SOBRE_FRASE,
   BIO_PARAGRAFOS,
   BIO_REALIZACOES,
   BIO_PROPOSITO,
@@ -35,6 +39,17 @@ export default async function SobrePage() {
   const fotoSobre = texto(conteudo, "foto_sobre", "/sobre/sandro-sentado.jpg");
   const numeros = resolverNumeros(conteudo, "numeros", NUMEROS);
 
+  const sobreTitulo1 = texto(conteudo, "sobre_titulo_1", SOBRE_TITULO_1);
+  const sobreTitulo2 = texto(conteudo, "sobre_titulo_2", SOBRE_TITULO_2);
+  const sobreIntro = texto(conteudo, "sobre_intro", SOBRE_INTRO);
+  const sobreFrase = texto(conteudo, "sobre_frase", SOBRE_FRASE);
+  const bioParagrafos = lista(conteudo, "bio_paragrafos", BIO_PARAGRAFOS);
+  const bioRealizacoes = lista(conteudo, "bio_realizacoes", BIO_REALIZACOES);
+  const bioProposito = texto(conteudo, "bio_proposito", BIO_PROPOSITO);
+  const bioFraseFinal = lista(conteudo, "bio_frase_final", BIO_FRASE_FINAL);
+  const valores = resolverValores(conteudo, "valores", VALORES);
+  const destaques = lista(conteudo, "destaques", DESTAQUES);
+
   return (
     <div>
       {/* Apresentação */}
@@ -45,16 +60,11 @@ export default async function SobrePage() {
               Sobre mim
             </p>
             <h1 className="mt-2 font-heading text-4xl font-extrabold tracking-tight text-brand-navy sm:text-5xl">
-              Muito prazer, eu sou{" "}
-              <span className="text-brand-pink">Sandro Higuti</span>
+              {sobreTitulo1} <span className="text-brand-pink">{sobreTitulo2}</span>
             </h1>
-            <p className="mt-3 max-w-md text-lg text-slate-600">
-              Sorocabano de coração, consultor imobiliário e especialista em
-              apartamentos na planta. Atendo do jeito que eu gostaria de ser
-              atendido.
-            </p>
+            <p className="mt-3 max-w-md text-lg text-slate-600">{sobreIntro}</p>
             <p className="mt-5 font-script text-3xl text-brand-pink sm:text-4xl">
-              Clientes que se tornam amigos.
+              {sobreFrase}
             </p>
 
             <div className="mt-6">
@@ -93,26 +103,26 @@ export default async function SobrePage() {
         <div className="mx-auto grid max-w-6xl gap-12 px-6 lg:grid-cols-[1fr_340px]">
           <article className="max-w-2xl">
             <div className="flex flex-col gap-4 text-slate-600">
-              {BIO_PARAGRAFOS.map((paragrafo) => (
-                <p key={paragrafo.slice(0, 30)}>{paragrafo}</p>
+              {bioParagrafos.map((paragrafo, i) => (
+                <p key={i}>{paragrafo}</p>
               ))}
             </div>
 
             <ul className="mt-6 flex flex-col gap-3 rounded-2xl bg-brand-blush/50 p-6">
-              {BIO_REALIZACOES.map((linha) => (
-                <li key={linha.slice(0, 30)} className="flex gap-3 text-brand-navy">
+              {bioRealizacoes.map((linha, i) => (
+                <li key={i} className="flex gap-3 text-brand-navy">
                   <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-pink" aria-hidden />
                   <span>{linha}</span>
                 </li>
               ))}
             </ul>
 
-            <p className="mt-6 text-slate-600">{BIO_PROPOSITO}</p>
+            <p className="mt-6 text-slate-600">{bioProposito}</p>
 
             <blockquote className="mt-8 border-l-4 border-brand-pink pl-5">
-              {BIO_FRASE_FINAL.map((linha) => (
+              {bioFraseFinal.map((linha, i) => (
                 <p
-                  key={linha}
+                  key={i}
                   className="font-heading text-xl font-bold text-brand-navy sm:text-2xl"
                 >
                   {linha}
@@ -127,8 +137,8 @@ export default async function SobrePage() {
                 Meus valores
               </h2>
               <ul className="mt-4 flex flex-col gap-3">
-                {VALORES.map((valor) => (
-                  <li key={valor.titulo} className="flex items-start gap-3 text-sm text-slate-700">
+                {valores.map((valor, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-slate-700">
                     <span className="text-lg leading-none" aria-hidden>
                       {valor.emoji}
                     </span>
@@ -143,8 +153,8 @@ export default async function SobrePage() {
                 Alguns números
               </h2>
               <ul className="mt-4 flex flex-col gap-3">
-                {DESTAQUES.map((destaque) => (
-                  <li key={destaque} className="flex items-start gap-3 text-sm text-slate-300">
+                {destaques.map((destaque, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-slate-300">
                     <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-pink/20 text-brand-pink">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-3 w-3">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m5 13 4 4L19 7" />

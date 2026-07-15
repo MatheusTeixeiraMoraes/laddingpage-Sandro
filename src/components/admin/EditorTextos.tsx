@@ -11,6 +11,8 @@ export type CampoTexto = {
   tipo: "texto" | "area" | "lista";
   /** Valor atual já resolvido. Para 'lista', os itens juntados por quebra de linha. */
   valor: string;
+  /** Altura da caixa (linhas) para textos longos. Só vale para area/lista. */
+  linhas?: number;
 };
 
 const campoClasse =
@@ -106,7 +108,7 @@ export function EditorTextos({
               />
             ) : (
               <textarea
-                rows={campo.tipo === "lista" ? 4 : 3}
+                rows={campo.linhas ?? (campo.tipo === "lista" ? 4 : 3)}
                 value={valores[campo.chave]}
                 onChange={(e) => mudar(campo.chave, e.target.value)}
                 className={`mt-1.5 resize-y ${campoClasse}`}

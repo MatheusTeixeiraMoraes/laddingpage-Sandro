@@ -4,8 +4,15 @@ import type { Conteudo } from "@/lib/conteudoTexto";
 
 // Reexporta as funções puras (resolver valor com padrão, parse de números) para
 // quem importa "@/lib/conteudo" continuar pegando tudo de um lugar só.
-export type { Conteudo, Numero } from "@/lib/conteudoTexto";
-export { texto, lista, parseNumeros, resolverNumeros } from "@/lib/conteudoTexto";
+export type { Conteudo, Numero, Valor } from "@/lib/conteudoTexto";
+export {
+  texto,
+  lista,
+  parseNumeros,
+  resolverNumeros,
+  parseValores,
+  resolverValores,
+} from "@/lib/conteudoTexto";
 
 /**
  * Conteúdo editável do site (fotos e textos que o Sandro muda no painel).

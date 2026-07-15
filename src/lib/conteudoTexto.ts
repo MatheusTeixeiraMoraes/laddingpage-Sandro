@@ -54,3 +54,35 @@ export function resolverNumeros(
   }
   return padrao;
 }
+
+export type Valor = { emoji: string; titulo: string };
+
+/**
+ * Converte as linhas "emoji | nome" (como o Sandro edita) em pares.
+ * Ex.: "❤️ | Empatia" -> { emoji: "❤️", titulo: "Empatia" }.
+ * Linha sem "|" vira só o nome (sem emoji); linha sem nome é descartada.
+ */
+export function parseValores(linhas: string[]): Valor[] {
+  return linhas
+    .map((linha) => {
+      const sep = linha.indexOf("|");
+      return sep === -1
+        ? { emoji: "", titulo: linha.trim() }
+        : { emoji: linha.slice(0, sep).trim(), titulo: linha.slice(sep + 1).trim() };
+    })
+    .filter((v) => v.titulo !== "");
+}
+
+/** Resolve os valores editáveis, caindo no padrão quando o parse zera. */
+export function resolverValores(
+  conteudo: Conteudo,
+  chave: string,
+  padrao: Valor[],
+): Valor[] {
+  const bruto = conteudo[chave];
+  if (Array.isArray(bruto)) {
+    const parseados = parseValores(bruto as string[]);
+    if (parseados.length > 0) return parseados;
+  }
+  return padrao;
+}
