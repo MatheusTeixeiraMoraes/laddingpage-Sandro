@@ -65,6 +65,11 @@ export default async function ConteudoPage() {
     { chave: "destaques", label: "Conquistas (“Alguns números”)", ajuda: "Uma por linha.", tipo: "lista", linhas: 6, valor: lista(conteudo, "destaques", DESTAQUES).join("\n") },
   ];
 
+  const camposContato: CampoTexto[] = [
+    { chave: "contato_email", label: "E-mail", ajuda: "Deixe em branco para não mostrar o cartão de e-mail.", tipo: "texto", valor: texto(conteudo, "contato_email", "") },
+    { chave: "contato_endereco", label: "Endereço", ajuda: "Rua, número, bairro, cidade. Em branco = sem endereço nem mapa.", tipo: "texto", valor: texto(conteudo, "contato_endereco", "") },
+  ];
+
   const fotos: FotoEditavel[] = [
     {
       chave: "foto_hero",
@@ -140,6 +145,17 @@ export default async function ConteudoPage() {
           <EditorTextos titulo="Topo da página" campos={camposSobreTopo} />
           <EditorTextos titulo="Sua história e valores" campos={camposSobreHistoria} />
         </div>
+      </section>
+
+      <section className="mt-10">
+        <h2 className="font-heading text-lg font-bold text-brand-navy">
+          Página de contato
+        </h2>
+        <p className="mb-4 mt-1 text-xs text-slate-400">
+          E-mail e endereço da página “Contato”. Cada um só aparece no site
+          depois de preenchido aqui.
+        </p>
+        <EditorTextos titulo="Contato" campos={camposContato} />
       </section>
     </div>
   );
