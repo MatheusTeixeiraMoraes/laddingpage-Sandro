@@ -44,6 +44,12 @@ export default async function AdminPage() {
             Destaques
           </Link>
           <Link
+            href="/admin/conteudo"
+            className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-brand-pink hover:text-brand-pink"
+          >
+            Conteúdo do site
+          </Link>
+          <Link
             href="/admin/depoimentos"
             className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-brand-pink hover:text-brand-pink"
           >

@@ -15,7 +15,7 @@ function Check() {
   );
 }
 
-export function Hero() {
+export function Hero({ foto = "/sandro-recorte.png" }: { foto?: string }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-brand-blush/40 to-white">
       <div className="mx-auto grid max-w-6xl items-center gap-8 px-6 pt-14 pb-4 lg:grid-cols-2 lg:gap-4 lg:pt-20">
@@ -64,7 +64,7 @@ export function Hero() {
           <div className="absolute bottom-0 h-[85%] w-[85%] rounded-[45%] bg-brand-pink/25 blur-2xl" aria-hidden />
           <div className="absolute bottom-0 right-6 h-64 w-64 rounded-full bg-brand-pink/30" aria-hidden />
           <Image
-            src="/sandro-recorte.png"
+            src={foto}
             alt="Sandro Higuti, consultor imobiliário"
             width={520}
             height={640}

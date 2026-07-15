@@ -1,5 +1,6 @@
 import { getEmpreendimentos } from "@/lib/empreendimentos";
 import { getFotosClientes } from "@/lib/fotosClientes";
+import { getConteudo, texto } from "@/lib/conteudo";
 import { empreendimentosEmDestaque } from "@/lib/destaques";
 import type { Zona } from "@/types/empreendimento";
 import { Hero } from "@/components/home/Hero";
@@ -24,23 +25,24 @@ export default async function Home({
 }: {
   searchParams: Promise<{ zona?: string | string[] }>;
 }) {
-  const [empreendimentos, fotosClientes, params] = await Promise.all([
+  const [empreendimentos, fotosClientes, conteudo, params] = await Promise.all([
     getEmpreendimentos(),
     getFotosClientes(),
+    getConteudo(),
     searchParams,
   ]);
 
   return (
     <>
-      <Hero />
+      <Hero foto={texto(conteudo, "foto_hero", "/sandro-recorte.png")} />
       <BuscaImoveis
         empreendimentos={empreendimentos}
         zonaInicial={zonaDaUrl(params.zona)}
       />
-      <SobreMim />
+      <SobreMim foto={texto(conteudo, "foto_sobremim", "/sandro-sobre.jpg")} />
       <ClientesAmigos fotos={fotosClientes} />
       <LancamentosDestaque empreendimentos={empreendimentosEmDestaque(empreendimentos)} />
-      <FaixaContato />
+      <FaixaContato foto={texto(conteudo, "foto_contato", "/sandro-contato.png")} />
     </>
   );
 }

@@ -22,7 +22,7 @@ const PROVAS = [
 const campo =
   "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition-colors placeholder:text-slate-400 focus:border-brand-pink";
 
-export function FaixaContato() {
+export function FaixaContato({ foto = "/sandro-contato.png" }: { foto?: string }) {
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [interesse, setInteresse] = useState(INTERESSES[0]);
@@ -77,7 +77,7 @@ export function FaixaContato() {
                 a moldura branca brigava com o navy. */}
             <div className="hidden justify-center lg:flex">
               <Image
-                src="/sandro-contato.png"
+                src={foto}
                 alt="Sandro Higuti, consultor imobiliário"
                 width={662}
                 height={967}

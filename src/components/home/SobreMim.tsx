@@ -9,7 +9,7 @@ const PILLS = [
   "Especialista em MCMV",
 ];
 
-export function SobreMim() {
+export function SobreMim({ foto = "/sandro-sobre.jpg" }: { foto?: string }) {
   return (
     <section id="sobre" className="scroll-mt-20 bg-white py-16 sm:py-20">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-2">
@@ -61,7 +61,7 @@ export function SobreMim() {
           <div className="absolute -right-6 -top-6 h-56 w-56 rounded-[45%] bg-brand-pink/20 blur-3xl" aria-hidden />
           <div className="relative aspect-[3/4] overflow-hidden rounded-3xl shadow-xl">
             <Image
-              src="/sandro-sobre.jpg"
+              src={foto}
               alt="Sandro Higuti, consultor imobiliário"
               fill
               sizes="(max-width: 1024px) 100vw, 400px"
