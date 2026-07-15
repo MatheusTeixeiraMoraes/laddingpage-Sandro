@@ -1,15 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { NUMEROS } from "@/data/sobre";
+import {
+  SOBREMIM_TITULO_1,
+  SOBREMIM_TITULO_2,
+  SOBREMIM_TEXTO,
+  SOBREMIM_PILLS,
+} from "@/data/home";
+import type { Numero } from "@/lib/conteudoTexto";
 
-const PILLS = [
-  "Atendimento humanizado",
-  "Foco no seu objetivo",
-  "Acompanhamento completo",
-  "Especialista em MCMV",
-];
-
-export function SobreMim({ foto = "/sandro-sobre.jpg" }: { foto?: string }) {
+export function SobreMim({
+  foto = "/sandro-sobre.jpg",
+  titulo1 = SOBREMIM_TITULO_1,
+  titulo2 = SOBREMIM_TITULO_2,
+  paragrafo = SOBREMIM_TEXTO,
+  pills = SOBREMIM_PILLS,
+  numeros = NUMEROS,
+}: {
+  foto?: string;
+  titulo1?: string;
+  titulo2?: string;
+  paragrafo?: string;
+  pills?: string[];
+  numeros?: Numero[];
+}) {
   return (
     <section id="sobre" className="scroll-mt-20 bg-white py-16 sm:py-20">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-2">
@@ -18,20 +32,14 @@ export function SobreMim({ foto = "/sandro-sobre.jpg" }: { foto?: string }) {
             Sobre mim
           </p>
           <h2 className="mt-2 font-heading text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl">
-            Prazer, eu sou <span className="text-brand-pink">Sandro Higuti</span>
+            {titulo1} <span className="text-brand-pink">{titulo2}</span>
           </h2>
-          <p className="mt-4 max-w-md text-slate-600">
-            Acredito que comprar o primeiro imóvel vai muito além de escolher um
-            apartamento. É uma decisão que envolve sonhos, expectativas e uma
-            grande responsabilidade. Por isso, escolhi construir meu trabalho com
-            base na empatia, na transparência e no compromisso de orientar cada
-            cliente como eu gostaria que minha própria família fosse orientada.
-          </p>
+          <p className="mt-4 max-w-md text-slate-600">{paragrafo}</p>
 
           <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {PILLS.map((pill) => (
+            {pills.map((pill, i) => (
               <span
-                key={pill}
+                key={i}
                 className="inline-flex items-center gap-2 rounded-xl bg-brand-blush/60 px-4 py-2.5 text-sm font-medium text-brand-navy"
               >
                 <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-pink/15 text-brand-pink">
@@ -69,8 +77,8 @@ export function SobreMim({ foto = "/sandro-sobre.jpg" }: { foto?: string }) {
             />
           </div>
           <div className="absolute -bottom-4 -right-4 z-20 flex flex-col gap-4 rounded-2xl bg-brand-navy px-6 py-5 shadow-xl">
-            {NUMEROS.map((stat) => (
-              <div key={stat.label}>
+            {numeros.map((stat, i) => (
+              <div key={i}>
                 <p className="font-heading text-2xl font-extrabold text-brand-pink">{stat.valor}</p>
                 <p className="text-xs text-slate-300">{stat.label}</p>
               </div>

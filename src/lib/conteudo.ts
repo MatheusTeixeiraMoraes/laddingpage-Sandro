@@ -1,7 +1,11 @@
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
+import type { Conteudo } from "@/lib/conteudoTexto";
 
-export type Conteudo = Record<string, unknown>;
+// Reexporta as funções puras (resolver valor com padrão, parse de números) para
+// quem importa "@/lib/conteudo" continuar pegando tudo de um lugar só.
+export type { Conteudo, Numero } from "@/lib/conteudoTexto";
+export { texto, lista, parseNumeros, resolverNumeros } from "@/lib/conteudoTexto";
 
 /**
  * Conteúdo editável do site (fotos e textos que o Sandro muda no painel).
@@ -20,15 +24,3 @@ export const getConteudo = cache(async (): Promise<Conteudo> => {
   for (const row of data ?? []) mapa[row.chave] = row.valor;
   return mapa;
 });
-
-/** Texto (ou URL de foto) da chave, caindo no padrão quando não foi editado. */
-export function texto(conteudo: Conteudo, chave: string, padrao: string): string {
-  const valor = conteudo[chave];
-  return typeof valor === "string" && valor.trim() !== "" ? valor : padrao;
-}
-
-/** Lista de strings da chave, caindo no padrão quando não foi editada. */
-export function lista(conteudo: Conteudo, chave: string, padrao: string[]): string[] {
-  const valor = conteudo[chave];
-  return Array.isArray(valor) && valor.length > 0 ? (valor as string[]) : padrao;
-}

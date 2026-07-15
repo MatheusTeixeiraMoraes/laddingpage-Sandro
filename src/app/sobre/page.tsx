@@ -4,7 +4,7 @@ import { Depoimentos } from "@/components/Depoimentos";
 import { SocialIcons } from "@/components/home/SocialIcons";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { getFotosClientes } from "@/lib/fotosClientes";
-import { getConteudo, texto } from "@/lib/conteudo";
+import { getConteudo, texto, resolverNumeros } from "@/lib/conteudo";
 import {
   BIO_PARAGRAFOS,
   BIO_REALIZACOES,
@@ -33,6 +33,7 @@ export default async function SobrePage() {
     getConteudo(),
   ]);
   const fotoSobre = texto(conteudo, "foto_sobre", "/sobre/sandro-sentado.jpg");
+  const numeros = resolverNumeros(conteudo, "numeros", NUMEROS);
 
   return (
     <div>
@@ -160,9 +161,9 @@ export default async function SobrePage() {
 
       {/* Números */}
       <section className="bg-brand-navy py-10">
-        <div className="mx-auto grid max-w-3xl grid-cols-2 gap-6 px-6 text-center">
-          {NUMEROS.map((n) => (
-            <div key={n.label}>
+        <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-x-12 gap-y-6 px-6 text-center">
+          {numeros.map((n, i) => (
+            <div key={i}>
               <p className="font-heading text-3xl font-extrabold text-brand-pink sm:text-4xl">
                 {n.valor}
               </p>

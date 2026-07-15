@@ -1,7 +1,12 @@
 import Image from "next/image";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
-
-const BADGES = ["Empatia", "Transparência", "Honestidade"];
+import {
+  HERO_TITULO_1,
+  HERO_TITULO_2,
+  HERO_SUBTITULO,
+  HERO_BADGES,
+  HERO_FRASE,
+} from "@/data/home";
 
 const WHATSAPP = buildWhatsAppLink(
   "Olá, Sandro! Vi o seu site e gostaria de conhecer os imóveis disponíveis.",
@@ -15,25 +20,36 @@ function Check() {
   );
 }
 
-export function Hero({ foto = "/sandro-recorte.png" }: { foto?: string }) {
+export function Hero({
+  foto = "/sandro-recorte.png",
+  titulo1 = HERO_TITULO_1,
+  titulo2 = HERO_TITULO_2,
+  subtitulo = HERO_SUBTITULO,
+  badges = HERO_BADGES,
+  frase = HERO_FRASE,
+}: {
+  foto?: string;
+  titulo1?: string;
+  titulo2?: string;
+  subtitulo?: string;
+  badges?: string[];
+  frase?: string;
+}) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-brand-blush/40 to-white">
       <div className="mx-auto grid max-w-6xl items-center gap-8 px-6 pt-14 pb-4 lg:grid-cols-2 lg:gap-4 lg:pt-20">
         <div className="order-2 lg:order-1">
           <h1 className="font-heading text-4xl font-extrabold leading-tight tracking-tight text-brand-navy sm:text-5xl lg:text-6xl">
-            Mais que imóveis,
+            {titulo1}
             <br />
-            <span className="text-brand-pink">realizo sonhos.</span>
+            <span className="text-brand-pink">{titulo2}</span>
           </h1>
-          <p className="mt-5 max-w-md text-lg text-slate-600">
-            Especialista em apartamentos na planta em Sorocaba. Atendimento
-            humanizado, transparente e focado em você.
-          </p>
+          <p className="mt-5 max-w-md text-lg text-slate-600">{subtitulo}</p>
 
           <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
-            {BADGES.map((badge) => (
+            {badges.map((badge, i) => (
               <span
-                key={badge}
+                key={i}
                 className="inline-flex items-center gap-2 text-base font-semibold text-brand-navy sm:text-lg"
               >
                 <span className="text-brand-pink">
@@ -56,7 +72,7 @@ export function Hero({ foto = "/sandro-recorte.png" }: { foto?: string }) {
           </div>
 
           <p className="mt-6 font-script text-3xl text-brand-pink sm:text-4xl">
-            Clientes que se tornam amigos.
+            {frase}
           </p>
         </div>
 
