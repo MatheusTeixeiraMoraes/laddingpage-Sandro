@@ -3,7 +3,6 @@ import { getConteudo, texto, lista } from "@/lib/conteudo";
 import { EditorFotos, type FotoEditavel } from "@/components/admin/EditorFotos";
 import { EditorTextos, type CampoTexto } from "@/components/admin/EditorTextos";
 import {
-  NUMEROS,
   SOBRE_TITULO_1,
   SOBRE_TITULO_2,
   SOBRE_INTRO,
@@ -32,8 +31,6 @@ export const dynamic = "force-dynamic";
 export default async function ConteudoPage() {
   const conteudo = await getConteudo();
 
-  const numerosPadrao = NUMEROS.map((n) => `${n.valor} | ${n.label}`);
-
   const camposHome: CampoTexto[] = [
     { chave: "hero_titulo_1", label: "Topo — título, linha 1", tipo: "texto", valor: texto(conteudo, "hero_titulo_1", HERO_TITULO_1) },
     { chave: "hero_titulo_2", label: "Topo — título, linha 2 (em rosa)", tipo: "texto", valor: texto(conteudo, "hero_titulo_2", HERO_TITULO_2) },
@@ -44,7 +41,6 @@ export default async function ConteudoPage() {
     { chave: "sobremim_titulo_2", label: "Sobre mim — título, seu nome (em rosa)", tipo: "texto", valor: texto(conteudo, "sobremim_titulo_2", SOBREMIM_TITULO_2) },
     { chave: "sobremim_texto", label: "Sobre mim — parágrafo", tipo: "area", valor: texto(conteudo, "sobremim_texto", SOBREMIM_TEXTO) },
     { chave: "sobremim_pills", label: "Sobre mim — selos", ajuda: "Um por linha.", tipo: "lista", valor: lista(conteudo, "sobremim_pills", SOBREMIM_PILLS).join("\n") },
-    { chave: "numeros", label: "Números (home e página Sobre)", ajuda: "Um por linha, no formato: valor | descrição. Ex.: +100 | Famílias atendidas", tipo: "lista", valor: lista(conteudo, "numeros", numerosPadrao).join("\n") },
   ];
 
   const valoresPadrao = VALORES.map((v) => `${v.emoji} | ${v.titulo}`);

@@ -1,8 +1,7 @@
 import { getEmpreendimentos } from "@/lib/empreendimentos";
 import { getFotosClientes } from "@/lib/fotosClientes";
-import { getConteudo, texto, lista, resolverNumeros } from "@/lib/conteudo";
+import { getConteudo, texto, lista } from "@/lib/conteudo";
 import { empreendimentosEmDestaque } from "@/lib/destaques";
-import { NUMEROS } from "@/data/sobre";
 import {
   HERO_TITULO_1,
   HERO_TITULO_2,
@@ -44,8 +43,6 @@ export default async function Home({
     searchParams,
   ]);
 
-  const numeros = resolverNumeros(conteudo, "numeros", NUMEROS);
-
   return (
     <>
       <Hero
@@ -66,7 +63,6 @@ export default async function Home({
         titulo2={texto(conteudo, "sobremim_titulo_2", SOBREMIM_TITULO_2)}
         paragrafo={texto(conteudo, "sobremim_texto", SOBREMIM_TEXTO)}
         pills={lista(conteudo, "sobremim_pills", SOBREMIM_PILLS)}
-        numeros={numeros}
       />
       <ClientesAmigos fotos={fotosClientes} />
       <LancamentosDestaque empreendimentos={empreendimentosEmDestaque(empreendimentos)} />

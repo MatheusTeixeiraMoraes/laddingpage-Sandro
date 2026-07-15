@@ -4,12 +4,10 @@ import type { Conteudo } from "@/lib/conteudoTexto";
 
 // Reexporta as funções puras (resolver valor com padrão, parse de números) para
 // quem importa "@/lib/conteudo" continuar pegando tudo de um lugar só.
-export type { Conteudo, Numero, Valor } from "@/lib/conteudoTexto";
+export type { Conteudo, Valor } from "@/lib/conteudoTexto";
 export {
   texto,
   lista,
-  parseNumeros,
-  resolverNumeros,
   parseValores,
   resolverValores,
 } from "@/lib/conteudoTexto";

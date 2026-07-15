@@ -1,13 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { NUMEROS } from "@/data/sobre";
 import {
   SOBREMIM_TITULO_1,
   SOBREMIM_TITULO_2,
   SOBREMIM_TEXTO,
   SOBREMIM_PILLS,
 } from "@/data/home";
-import type { Numero } from "@/lib/conteudoTexto";
 
 export function SobreMim({
   foto = "/sandro-sobre.jpg",
@@ -15,14 +13,12 @@ export function SobreMim({
   titulo2 = SOBREMIM_TITULO_2,
   paragrafo = SOBREMIM_TEXTO,
   pills = SOBREMIM_PILLS,
-  numeros = NUMEROS,
 }: {
   foto?: string;
   titulo1?: string;
   titulo2?: string;
   paragrafo?: string;
   pills?: string[];
-  numeros?: Numero[];
 }) {
   return (
     <section id="sobre" className="scroll-mt-20 bg-white py-16 sm:py-20">
@@ -75,14 +71,6 @@ export function SobreMim({
               sizes="(max-width: 1024px) 100vw, 400px"
               className="object-cover"
             />
-          </div>
-          <div className="absolute -bottom-4 -right-4 z-20 flex flex-col gap-4 rounded-2xl bg-brand-navy px-6 py-5 shadow-xl">
-            {numeros.map((stat, i) => (
-              <div key={i}>
-                <p className="font-heading text-2xl font-extrabold text-brand-pink">{stat.valor}</p>
-                <p className="text-xs text-slate-300">{stat.label}</p>
-              </div>
-            ))}
           </div>
         </div>
       </div>

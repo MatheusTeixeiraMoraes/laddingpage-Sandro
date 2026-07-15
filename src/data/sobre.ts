@@ -57,12 +57,6 @@ export const DESTAQUES: string[] = [
   "Atendimento em Sorocaba e Região",
 ];
 
-/** Faixa de números (home e /sobre usam a mesma lista). */
-export const NUMEROS: { valor: string; label: string }[] = [
-  { valor: "+100", label: "Famílias atendidas" },
-  { valor: "+100", label: "Sonhos realizados" },
-];
-
 // As fotos de clientes saíram daqui: vivem no banco (tabela fotos_clientes,
 // arquivo no Storage) porque o Sandro adiciona e remove sozinho em
 // /admin/depoimentos. Ver src/lib/fotosClientes.ts.

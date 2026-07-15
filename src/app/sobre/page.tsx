@@ -4,7 +4,7 @@ import { Depoimentos } from "@/components/Depoimentos";
 import { SocialIcons } from "@/components/home/SocialIcons";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { getFotosClientes } from "@/lib/fotosClientes";
-import { getConteudo, texto, lista, resolverNumeros, resolverValores } from "@/lib/conteudo";
+import { getConteudo, texto, lista, resolverValores } from "@/lib/conteudo";
 import {
   SOBRE_TITULO_1,
   SOBRE_TITULO_2,
@@ -16,7 +16,6 @@ import {
   BIO_FRASE_FINAL,
   VALORES,
   DESTAQUES,
-  NUMEROS,
 } from "@/data/sobre";
 
 export const dynamic = "force-dynamic";
@@ -37,7 +36,6 @@ export default async function SobrePage() {
     getConteudo(),
   ]);
   const fotoSobre = texto(conteudo, "foto_sobre", "/sobre/sandro-sentado.jpg");
-  const numeros = resolverNumeros(conteudo, "numeros", NUMEROS);
 
   const sobreTitulo1 = texto(conteudo, "sobre_titulo_1", SOBRE_TITULO_1);
   const sobreTitulo2 = texto(conteudo, "sobre_titulo_2", SOBRE_TITULO_2);
@@ -166,20 +164,6 @@ export default async function SobrePage() {
               </ul>
             </div>
           </aside>
-        </div>
-      </section>
-
-      {/* Números */}
-      <section className="bg-brand-navy py-10">
-        <div className="mx-auto flex max-w-3xl flex-wrap justify-center gap-x-12 gap-y-6 px-6 text-center">
-          {numeros.map((n, i) => (
-            <div key={i}>
-              <p className="font-heading text-3xl font-extrabold text-brand-pink sm:text-4xl">
-                {n.valor}
-              </p>
-              <p className="mt-1 text-xs text-slate-300 sm:text-sm">{n.label}</p>
-            </div>
-          ))}
         </div>
       </section>
 
