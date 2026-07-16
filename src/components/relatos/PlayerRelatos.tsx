@@ -21,28 +21,34 @@ export function PlayerRelatos({ videos }: { videos: RelatoVideo[] }) {
 
   return (
     <div>
-      {/* Player grande */}
-      <div className="overflow-hidden rounded-2xl bg-black shadow-lg">
-        <div className="relative aspect-video w-full">
-          <iframe
-            key={ativo.id}
-            src={src}
-            title={ativo.titulo || "Relato em vídeo"}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="absolute inset-0 h-full w-full"
-          />
+      {/* Player em pe (9:16), como um Reels -- centralizado e do tamanho de um
+          celular. Os videos sao verticais; num quadro 16:9 ficariam com tarjas
+          pretas enormes nas laterais. */}
+      <div className="mx-auto w-full max-w-[340px]">
+        <div className="overflow-hidden rounded-2xl bg-black shadow-lg">
+          <div className="relative aspect-[9/16] w-full">
+            <iframe
+              key={ativo.id}
+              src={src}
+              title={ativo.titulo || "Relato em vídeo"}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="absolute inset-0 h-full w-full"
+            />
+          </div>
         </div>
+        {ativo.titulo && (
+          <p className="mt-3 text-center font-heading text-lg font-bold text-brand-navy">
+            {ativo.titulo}
+          </p>
+        )}
       </div>
-      {ativo.titulo && (
-        <p className="mt-3 text-center font-heading text-lg font-bold text-brand-navy">
-          {ativo.titulo}
-        </p>
-      )}
 
-      {/* Galeria (so aparece com mais de um video) */}
+      {/* Galeria de miniaturas verticais (so aparece com mais de um video). O
+          object-cover recorta as tarjas pretas da thumb do YouTube, mostrando
+          so o conteudo vertical. */}
       {videos.length > 1 && (
-        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-3 gap-3 sm:grid-cols-4 sm:gap-4 lg:grid-cols-6">
           {videos.map((video) => {
             const selecionado = video.id === ativo.id;
             return (
@@ -54,7 +60,7 @@ export function PlayerRelatos({ videos }: { videos: RelatoVideo[] }) {
                 className="group text-left"
               >
                 <div
-                  className={`relative aspect-video overflow-hidden rounded-xl ring-2 transition ${
+                  className={`relative aspect-[9/16] overflow-hidden rounded-xl ring-2 transition ${
                     selecionado ? "ring-brand-pink" : "ring-transparent hover:ring-brand-blush"
                   }`}
                 >
@@ -62,11 +68,11 @@ export function PlayerRelatos({ videos }: { videos: RelatoVideo[] }) {
                     src={youtubeThumbUrl(video.youtubeId)}
                     alt={video.titulo || "Relato em vídeo"}
                     fill
-                    sizes="(min-width: 1024px) 240px, (min-width: 640px) 33vw, 50vw"
+                    sizes="(min-width: 1024px) 160px, (min-width: 640px) 22vw, 30vw"
                     className="object-cover"
                   />
                   <span className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-black/50 text-white transition group-hover:bg-brand-pink">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white transition group-hover:bg-brand-pink">
                       <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5 translate-x-0.5">
                         <path d="M8 5v14l11-7z" />
                       </svg>
@@ -74,7 +80,7 @@ export function PlayerRelatos({ videos }: { videos: RelatoVideo[] }) {
                   </span>
                 </div>
                 {video.titulo && (
-                  <p className="mt-2 line-clamp-2 text-sm font-medium text-slate-600">
+                  <p className="mt-2 line-clamp-2 text-xs font-medium text-slate-600">
                     {video.titulo}
                   </p>
                 )}

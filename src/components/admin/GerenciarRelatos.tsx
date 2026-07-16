@@ -105,8 +105,8 @@ export function GerenciarRelatos({ videos }: { videos: RelatoVideo[] }) {
       </form>
 
       <p className="mt-2 text-xs text-slate-400">
-        Cole o link do video no YouTube (o site incorpora o player). O primeiro
-        video ja vira o principal.
+        Cole o link do video no YouTube. Use videos verticais (em pe, tipo
+        Reels/Shorts) -- e o formato da pagina. O primeiro video ja vira o principal.
       </p>
 
       {erro && <p className="mt-4 text-sm text-red-600">{erro}</p>}
@@ -115,12 +115,12 @@ export function GerenciarRelatos({ videos }: { videos: RelatoVideo[] }) {
         <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {videos.map((video) => (
             <li key={video.id} className="flex gap-3 rounded-xl border border-slate-100 p-3">
-              <div className="relative aspect-video w-32 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+              <div className="relative aspect-[9/16] w-20 shrink-0 overflow-hidden rounded-lg bg-slate-100">
                 <Image
                   src={youtubeThumbUrl(video.youtubeId)}
                   alt={video.titulo || "Relato em video"}
                   fill
-                  sizes="128px"
+                  sizes="80px"
                   className="object-cover"
                 />
               </div>
