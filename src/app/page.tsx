@@ -1,5 +1,6 @@
 import { getEmpreendimentos } from "@/lib/empreendimentos";
 import { getFotosClientes } from "@/lib/fotosClientes";
+import { getRelatosVideos } from "@/lib/relatosVideos";
 import { getConteudo, texto, lista } from "@/lib/conteudo";
 import { empreendimentosEmDestaque } from "@/lib/destaques";
 import {
@@ -17,6 +18,7 @@ import type { Zona } from "@/types/empreendimento";
 import { Hero } from "@/components/home/Hero";
 import { BuscaImoveis } from "@/components/home/BuscaImoveis";
 import { ClientesAmigos } from "@/components/home/ClientesAmigos";
+import { RelatoDestaque } from "@/components/home/RelatoDestaque";
 import { SobreMim } from "@/components/home/SobreMim";
 import { LancamentosDestaque } from "@/components/home/LancamentosDestaque";
 import { FaixaContato } from "@/components/home/FaixaContato";
@@ -36,12 +38,17 @@ export default async function Home({
 }: {
   searchParams: Promise<{ zona?: string | string[] }>;
 }) {
-  const [empreendimentos, fotosClientes, conteudo, params] = await Promise.all([
+  const [empreendimentos, fotosClientes, relatos, conteudo, params] = await Promise.all([
     getEmpreendimentos(),
     getFotosClientes(),
+    getRelatosVideos(),
     getConteudo(),
     searchParams,
   ]);
+
+  // O video em destaque na home = o principal escolhido no painel (senao o
+  // primeiro). Sem relatos, a secao nao aparece.
+  const relatoDestaque = relatos.find((v) => v.principal) ?? relatos[0];
 
   return (
     <>
@@ -64,6 +71,7 @@ export default async function Home({
         paragrafo={texto(conteudo, "sobremim_texto", SOBREMIM_TEXTO)}
         pills={lista(conteudo, "sobremim_pills", SOBREMIM_PILLS)}
       />
+      {relatoDestaque && <RelatoDestaque video={relatoDestaque} />}
       <ClientesAmigos fotos={fotosClientes} />
       <LancamentosDestaque empreendimentos={empreendimentosEmDestaque(empreendimentos)} />
       <FaixaContato foto={texto(conteudo, "foto_contato", "/sandro-contato.png")} />
