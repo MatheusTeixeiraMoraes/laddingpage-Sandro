@@ -26,6 +26,7 @@ const ZONAS: { value: Zona; label: string }[] = [
   { value: "leste", label: "Zona Leste" },
   { value: "oeste", label: "Zona Oeste" },
   { value: "central", label: "Central" },
+  { value: "votorantim", label: "Votorantim" },
 ];
 
 const campo =

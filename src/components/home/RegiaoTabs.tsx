@@ -9,6 +9,7 @@ const OPCOES: { value: Zona | "todas"; label: string }[] = [
   { value: "leste", label: "Leste" },
   { value: "oeste", label: "Oeste" },
   { value: "central", label: "Central" },
+  { value: "votorantim", label: "Votorantim" },
 ];
 
 type RegiaoTabsProps = {

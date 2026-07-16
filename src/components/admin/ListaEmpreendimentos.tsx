@@ -14,6 +14,7 @@ const ZONA_LABEL: Record<Zona, string> = {
   leste: "Zona Leste",
   oeste: "Zona Oeste",
   central: "Central",
+  votorantim: "Votorantim",
 };
 
 export function ListaEmpreendimentos({

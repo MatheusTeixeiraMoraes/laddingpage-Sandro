@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-const ZONAS_VALIDAS = ["norte", "sul", "leste", "oeste", "central"] as const;
+const ZONAS_VALIDAS = ["norte", "sul", "leste", "oeste", "central", "votorantim"] as const;
 
 function zonaDaUrl(valor: string | string[] | undefined): Zona | "todas" {
   return typeof valor === "string" && (ZONAS_VALIDAS as readonly string[]).includes(valor)

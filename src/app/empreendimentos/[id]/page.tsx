@@ -20,6 +20,7 @@ const ZONA_LABEL: Record<Zona, string> = {
   leste: "Zona Leste",
   oeste: "Zona Oeste",
   central: "Região Central",
+  votorantim: "Votorantim",
 };
 
 type Props = { params: Promise<{ id: string }> };

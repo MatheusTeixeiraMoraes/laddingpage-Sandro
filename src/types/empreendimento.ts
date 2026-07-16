@@ -1,6 +1,6 @@
 export type TipoEmpreendimento = "apartamento" | "casa" | "comercial";
 
-export type Zona = "norte" | "sul" | "leste" | "oeste" | "central";
+export type Zona = "norte" | "sul" | "leste" | "oeste" | "central" | "votorantim";
 
 /**
  * A planta é só o tamanho. Quem tem suíte, varanda ou quintal é o
