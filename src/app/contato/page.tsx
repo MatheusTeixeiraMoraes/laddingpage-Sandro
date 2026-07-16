@@ -16,6 +16,7 @@ const WHATSAPP = buildWhatsAppLink(
 
 export const metadata: Metadata = {
   title: "Contato | Sandro Higuti Consultor Imobiliário",
+  alternates: { canonical: "/contato" },
   description:
     "Fale com o Sandro Higuti — WhatsApp, e-mail e redes sociais. Consultor imobiliário em Sorocaba, CRECI 278922.",
 };

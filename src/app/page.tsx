@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getEmpreendimentos } from "@/lib/empreendimentos";
 import { getFotosClientes } from "@/lib/fotosClientes";
 import { getRelatosVideos } from "@/lib/relatosVideos";
@@ -24,6 +25,11 @@ import { LancamentosDestaque } from "@/components/home/LancamentosDestaque";
 import { FaixaContato } from "@/components/home/FaixaContato";
 
 export const dynamic = "force-dynamic";
+
+// So o canonical; titulo/descricao/openGraph vem do layout (raiz).
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 const ZONAS_VALIDAS = ["norte", "sul", "leste", "oeste", "central"] as const;
 

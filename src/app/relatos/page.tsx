@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Relatos em vídeo | Sandro Higuti Consultor Imobiliário",
+  alternates: { canonical: "/relatos" },
   description:
     "Histórias de clientes que realizaram o sonho do imóvel com o Sandro Higuti. Veja os relatos em vídeo.",
 };

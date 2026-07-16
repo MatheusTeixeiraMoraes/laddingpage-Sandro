@@ -3,6 +3,8 @@ import { Poppins, Inter, Caveat } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/home/SiteHeader";
 import { SiteFooter } from "@/components/home/SiteFooter";
+import { SchemaOrg } from "@/components/SchemaOrg";
+import { SITE_URL, NEGOCIO } from "@/lib/site";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -21,11 +23,21 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  // Sem isso, o og:image de cada página vira caminho relativo e o WhatsApp
-  // não consegue buscar a imagem para montar o card de compartilhamento.
-  metadataBase: new URL("https://laddingpage-sandro.vercel.app"),
-  title: "Sandro Higuti | Consultor Imobiliário",
-  description: "Encontre o imóvel ideal com a consultoria de Sandro Higuti.",
+  // Aponta para o dominio real (nao o da Vercel): resolve os og:image/URLs
+  // relativos e diz ao Google/WhatsApp qual e o endereco oficial do site.
+  metadataBase: new URL(SITE_URL),
+  title: "Sandro Higuti | Consultor Imobiliário em Sorocaba",
+  description:
+    "Consultor imobiliário em Sorocaba. Apartamentos na planta, Minha Casa Minha Vida e atendimento humano do começo ao fim. CRECI 278922.",
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: SITE_URL,
+    siteName: NEGOCIO.nome,
+    title: "Sandro Higuti | Consultor Imobiliário em Sorocaba",
+    description:
+      "Apartamentos na planta, Minha Casa Minha Vida e atendimento humano em Sorocaba. CRECI 278922.",
+  },
 };
 
 export default function RootLayout({
@@ -39,6 +51,7 @@ export default function RootLayout({
       className={`${poppins.variable} ${inter.variable} ${caveat.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
+        <SchemaOrg />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />

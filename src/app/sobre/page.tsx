@@ -26,6 +26,7 @@ const WHATSAPP = buildWhatsAppLink(
 
 export const metadata = {
   title: "Sobre o Sandro Higuti | Consultor Imobiliário em Sorocaba",
+  alternates: { canonical: "/sobre" },
   description:
     "A história do Sandro Higuti: atendimento humanizado, especialista em Minha Casa Minha Vida em Sorocaba. CRECI 278922.",
 };

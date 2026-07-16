@@ -48,6 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${empreendimento.nome} | Sandro Higuti Consultor Imobiliário`,
     description: descricao,
+    alternates: { canonical: `/empreendimentos/${id}` },
     openGraph: {
       title: empreendimento.nome,
       description: descricao,
