@@ -37,6 +37,21 @@ export const metadata: Metadata = {
     title: "Sandro Higuti | Consultor Imobiliário em Sorocaba",
     description:
       "Apartamentos na planta, Minha Casa Minha Vida e atendimento humano em Sorocaba. CRECI 278922.",
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Sandro Higuti — Consultor Imobiliário em Sorocaba",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sandro Higuti | Consultor Imobiliário em Sorocaba",
+    description:
+      "Apartamentos na planta, Minha Casa Minha Vida e atendimento humano em Sorocaba. CRECI 278922.",
+    images: ["/og.jpg"],
   },
 };
 
