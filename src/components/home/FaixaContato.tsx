@@ -65,12 +65,14 @@ export function FaixaContato({ foto = "/sandro-contato.png" }: { foto?: string }
   return (
     <section id="contato" className="scroll-mt-20 bg-white pb-16 sm:pb-20">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="relative overflow-hidden rounded-3xl bg-brand-navy shadow-xl">
-          {/* brilho rosa atras do Sandro */}
-          <div
-            className="absolute -left-20 top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full bg-brand-pink/25 blur-3xl"
-            aria-hidden
-          />
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#1b1b33] via-brand-navy to-[#0e0e1c] shadow-[0_30px_70px_-30px_rgba(236,72,153,0.45)] ring-1 ring-white/10">
+          {/* Fundo: brilhos rosa amplos e suaves (ambiente da marca, nao mancha)
+              + um fio rosa de destaque no topo. */}
+          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div className="absolute -left-24 -top-24 h-[460px] w-[460px] rounded-full bg-brand-pink/25 blur-[120px]" />
+            <div className="absolute -bottom-28 -right-20 h-[420px] w-[420px] rounded-full bg-brand-pink/15 blur-[120px]" />
+            <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-brand-pink/60 to-transparent" />
+          </div>
 
           <div className="relative grid items-center gap-8 px-6 py-10 sm:px-10 sm:py-12 lg:grid-cols-[280px_1fr_360px] lg:gap-10 lg:px-12">
             {/* Foto diferente da do hero e da do "sobre mim". Fundo recortado:
