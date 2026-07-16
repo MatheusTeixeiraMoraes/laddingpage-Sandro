@@ -7,6 +7,7 @@ import type { Empreendimento } from "@/types/empreendimento";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { formatarPrecoCurto } from "@/lib/preco";
 import { faixaDeMetragem, listaDeDormitorios } from "@/lib/resumo";
+import { track } from "@vercel/analytics/react";
 import { enviarLead } from "@/lib/enviarLead";
 import { registrarClique } from "@/lib/registrarClique";
 import { PlantaSelector, labelDaPlanta } from "@/components/PlantaSelector";
@@ -147,6 +148,7 @@ export function EmpreendimentoDetalhe({
     setEnviando(true);
     try {
       await enviarLead({ nome, telefone, interesse, consentimento });
+      track("lead_enviado", { origem: "imovel", empreendimento: empreendimento.nome });
       void registrarClique(empreendimento.id);
       window.open(whatsappLink, "_blank", "noopener,noreferrer");
       setNome("");

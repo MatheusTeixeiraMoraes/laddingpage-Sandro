@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { track } from "@vercel/analytics/react";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { enviarLead } from "@/lib/enviarLead";
 
@@ -45,6 +46,7 @@ export function FaixaContato({ foto = "/sandro-contato.jpg" }: { foto?: string }
       // Grava ANTES de abrir o WhatsApp: se o lead desistir na conversa, o
       // contato dele nao se perde.
       await enviarLead({ nome, telefone, interesse, consentimento });
+      track("lead_enviado", { origem: "home", interesse });
 
       const link = buildWhatsAppLink(
         `Olá, Sandro! Meu nome é ${nome.trim()}. Procuro: ${interesse}. Gostaria de atendimento.`,
