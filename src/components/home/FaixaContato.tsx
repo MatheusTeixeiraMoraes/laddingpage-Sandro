@@ -22,7 +22,7 @@ const PROVAS = [
 const campo =
   "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition-colors placeholder:text-slate-400 focus:border-brand-pink";
 
-export function FaixaContato({ foto = "/sandro-contato.png" }: { foto?: string }) {
+export function FaixaContato({ foto = "/sandro-contato.jpg" }: { foto?: string }) {
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [interesse, setInteresse] = useState(INTERESSES[0]);
@@ -77,16 +77,18 @@ export function FaixaContato({ foto = "/sandro-contato.png" }: { foto?: string }
           />
 
           <div className="relative grid items-center gap-8 px-6 py-10 sm:px-10 sm:py-12 lg:grid-cols-[280px_1fr_360px] lg:gap-10 lg:px-12">
-            {/* Foto diferente da do hero e da do "sobre mim". Fundo recortado:
-                a moldura branca brigava com o navy. */}
-            <div className="hidden justify-center lg:flex">
-              <Image
-                src={foto}
-                alt="Sandro Higuti, consultor imobiliário"
-                width={662}
-                height={967}
-                className="h-auto w-[260px] object-contain drop-shadow-2xl"
-              />
+            {/* Retrato do ensaio num quadro arredondado -- combina com o fundo
+                claro da secao. */}
+            <div className="hidden lg:block">
+              <div className="relative mx-auto aspect-[3/4] w-[280px] overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5">
+                <Image
+                  src={foto}
+                  alt="Sandro Higuti, consultor imobiliário"
+                  fill
+                  sizes="280px"
+                  className="object-cover object-top"
+                />
+              </div>
             </div>
 
             <div>

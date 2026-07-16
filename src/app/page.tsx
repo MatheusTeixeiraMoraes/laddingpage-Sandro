@@ -74,7 +74,7 @@ export default async function Home({
       {relatoDestaque && <RelatoDestaque video={relatoDestaque} />}
       <ClientesAmigos fotos={fotosClientes} />
       <LancamentosDestaque empreendimentos={empreendimentosEmDestaque(empreendimentos)} />
-      <FaixaContato foto={texto(conteudo, "foto_contato", "/sandro-contato.png")} />
+      <FaixaContato foto={texto(conteudo, "foto_contato", "/sandro-contato.jpg")} />
     </>
   );
 }

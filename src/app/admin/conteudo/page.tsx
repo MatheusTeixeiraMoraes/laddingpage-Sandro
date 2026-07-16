@@ -83,7 +83,7 @@ export default async function ConteudoPage() {
       chave: "foto_contato",
       label: "Foto do contato (home)",
       descricao: "Ao lado do formulário “Fale comigo”.",
-      url: texto(conteudo, "foto_contato", "/sandro-contato.png"),
+      url: texto(conteudo, "foto_contato", "/sandro-contato.jpg"),
     },
     {
       chave: "foto_sobre",
