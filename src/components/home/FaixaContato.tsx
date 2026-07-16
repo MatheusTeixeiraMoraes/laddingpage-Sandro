@@ -65,14 +65,16 @@ export function FaixaContato({ foto = "/sandro-contato.png" }: { foto?: string }
   return (
     <section id="contato" className="scroll-mt-20 bg-white pb-16 sm:pb-20">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#1b1b33] via-brand-navy to-[#0e0e1c] shadow-[0_30px_70px_-30px_rgba(236,72,153,0.45)] ring-1 ring-white/10">
-          {/* Fundo: brilhos rosa amplos e suaves (ambiente da marca, nao mancha)
-              + um fio rosa de destaque no topo. */}
-          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="absolute -left-24 -top-24 h-[460px] w-[460px] rounded-full bg-brand-pink/25 blur-[120px]" />
-            <div className="absolute -bottom-28 -right-20 h-[420px] w-[420px] rounded-full bg-brand-pink/15 blur-[120px]" />
-            <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-brand-pink/60 to-transparent" />
-          </div>
+        <div className="relative overflow-hidden rounded-3xl border border-brand-blush bg-gradient-to-br from-brand-blush/60 via-white to-brand-blush/40 shadow-xl">
+          {/* brilho rosa bem suave nos cantos, so pra dar vida ao branco */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-brand-pink/10 blur-3xl"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-brand-pink/10 blur-3xl"
+          />
 
           <div className="relative grid items-center gap-8 px-6 py-10 sm:px-10 sm:py-12 lg:grid-cols-[280px_1fr_360px] lg:gap-10 lg:px-12">
             {/* Foto diferente da do hero e da do "sobre mim". Fundo recortado:
@@ -87,14 +89,14 @@ export function FaixaContato({ foto = "/sandro-contato.png" }: { foto?: string }
               />
             </div>
 
-            <div className="text-white">
+            <div>
               <p className="font-heading text-xs font-semibold uppercase tracking-widest text-brand-pink">
                 Fale comigo
               </p>
-              <h2 className="mt-2 font-heading text-3xl font-extrabold leading-tight sm:text-4xl">
+              <h2 className="mt-2 font-heading text-3xl font-extrabold leading-tight text-brand-navy sm:text-4xl">
                 Vamos achar o <span className="text-brand-pink">seu imóvel</span>?
               </h2>
-              <p className="mt-3 max-w-md text-slate-300">
+              <p className="mt-3 max-w-md text-slate-600">
                 Conte o que você procura e em que momento está. O atendimento é
                 pessoal: esclareço as condições de financiamento e conduzo cada
                 etapa no seu tempo, sem pressa e sem compromisso.
@@ -106,7 +108,7 @@ export function FaixaContato({ foto = "/sandro-contato.png" }: { foto?: string }
 
             <form
               onSubmit={handleSubmit}
-              className="rounded-2xl bg-white p-5 shadow-lg sm:p-6"
+              className="rounded-2xl border border-slate-100 bg-white p-5 shadow-lg sm:p-6"
             >
               <div className="flex flex-col gap-3">
                 <input
@@ -177,8 +179,8 @@ export function FaixaContato({ foto = "/sandro-contato.png" }: { foto?: string }
             </form>
           </div>
 
-          <div className="relative border-t border-white/10 px-6 py-4 sm:px-10 lg:px-12">
-            <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-400">
+          <div className="relative border-t border-brand-pink/10 px-6 py-4 sm:px-10 lg:px-12">
+            <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-500">
               {PROVAS.map((prova) => (
                 <li key={prova} className="inline-flex items-center gap-2">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} className="h-3.5 w-3.5 text-brand-pink">
