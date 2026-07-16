@@ -17,25 +17,28 @@ export function PlayerRelatos({ videos }: { videos: RelatoVideo[] }) {
     setAutoplay(true);
   };
 
-  const src = `${youtubeEmbedUrl(ativo.youtubeId)}?rel=0${autoplay ? "&autoplay=1" : ""}`;
+  // vq=hd1080: pedido de "melhor esforco" de alta resolucao. O YouTube
+  // descontinuou forcar qualidade (~2019) e decide de forma adaptativa pela
+  // conexao e pelo TAMANHO do player -- por isso o player grande abaixo e o
+  // que de fato puxa a resolucao pra cima.
+  const src = `${youtubeEmbedUrl(ativo.youtubeId)}?rel=0&vq=hd1080${autoplay ? "&autoplay=1" : ""}`;
 
   return (
     <div>
-      {/* Player em pe (9:16), como um Reels -- centralizado e do tamanho de um
-          celular. Os videos sao verticais; num quadro 16:9 ficariam com tarjas
-          pretas enormes nas laterais. */}
-      <div className="mx-auto w-full max-w-[340px]">
-        <div className="overflow-hidden rounded-2xl bg-black shadow-lg">
-          <div className="relative aspect-[9/16] w-full">
-            <iframe
-              key={ativo.id}
-              src={src}
-              title={ativo.titulo || "Relato em vídeo"}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              className="absolute inset-0 h-full w-full"
-            />
-          </div>
+      {/* Player em pe (9:16), como um Reels. A largura e o maior valor que cabe
+          na tela -- limitada por 90vw, por 45vh (pra altura nao passar de 80vh)
+          e por 400px. Player maior = o YouTube entrega resolucao mais alta.
+          Os videos sao verticais; num quadro 16:9 teriam tarjas nas laterais. */}
+      <div className="flex flex-col items-center">
+        <div className="relative aspect-[9/16] w-[min(400px,90vw,45vh)] overflow-hidden rounded-2xl bg-black shadow-lg">
+          <iframe
+            key={ativo.id}
+            src={src}
+            title={ativo.titulo || "Relato em vídeo"}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            className="absolute inset-0 h-full w-full"
+          />
         </div>
         {ativo.titulo && (
           <p className="mt-3 text-center font-heading text-lg font-bold text-brand-navy">
