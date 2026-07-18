@@ -17,6 +17,26 @@ export async function adicionarPremiacao(
   if (error) throw new Error("Não foi possível adicionar a premiação.");
 }
 
+/**
+ * Edita uma premiação. Só sobe imagem nova se `arquivo` vier; senão mantém a
+ * atual (o RLS exige admin). Sem marca d'água — marca é só pra imóveis.
+ */
+export async function editarPremiacao(
+  id: string,
+  dados: { titulo: string; ano: number | null; arquivo: File | null },
+): Promise<void> {
+  const patch: { titulo: string; ano: number | null; imagem?: string } = {
+    titulo: dados.titulo.trim(),
+    ano: dados.ano,
+  };
+  if (dados.arquivo) patch.imagem = await uploadImagem(dados.arquivo);
+
+  const supabase = createClient();
+  const { error } = await supabase.from("premiacoes").update(patch).eq("id", id);
+
+  if (error) throw new Error("Não foi possível salvar a premiação.");
+}
+
 export async function excluirPremiacao(id: string): Promise<void> {
   const supabase = createClient();
   const { error } = await supabase.from("premiacoes").delete().eq("id", id);

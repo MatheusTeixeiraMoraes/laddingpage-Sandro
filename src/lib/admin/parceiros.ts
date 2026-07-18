@@ -19,6 +19,23 @@ export async function adicionarParceiro(arquivo: File, texto: string): Promise<v
   if (error) throw new Error("Não foi possível adicionar o parceiro.");
 }
 
+/**
+ * Edita um parceiro (texto e, opcionalmente, a imagem). Não mexe no destaque —
+ * isso é o definirDestaque. Sem marca d'água — marca é só pra imóveis.
+ */
+export async function editarParceiro(
+  id: string,
+  dados: { texto: string; arquivo: File | null },
+): Promise<void> {
+  const patch: { texto: string; imagem?: string } = { texto: dados.texto.trim() };
+  if (dados.arquivo) patch.imagem = await uploadImagem(dados.arquivo);
+
+  const supabase = createClient();
+  const { error } = await supabase.from("parceiros").update(patch).eq("id", id);
+
+  if (error) throw new Error("Não foi possível salvar o parceiro.");
+}
+
 export async function excluirParceiro(id: string): Promise<void> {
   const supabase = createClient();
   const { error } = await supabase.from("parceiros").delete().eq("id", id);

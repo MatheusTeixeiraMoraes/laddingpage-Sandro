@@ -4,7 +4,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import type { Premiacao } from "@/lib/premiacoes";
-import { adicionarPremiacao, excluirPremiacao } from "@/lib/admin/premiacoes";
+import { adicionarPremiacao, editarPremiacao, excluirPremiacao } from "@/lib/admin/premiacoes";
 
 const campo =
   "mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-brand-navy focus:border-brand-pink focus:outline-none";
@@ -15,6 +15,7 @@ export function GerenciarPremiacoes({ premiacoes }: { premiacoes: Premiacao[] })
   const [preview, setPreview] = useState<string | null>(null);
   const [titulo, setTitulo] = useState("");
   const [ano, setAno] = useState("");
+  const [editandoId, setEditandoId] = useState<string | null>(null);
   const [ocupado, setOcupado] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
 
@@ -126,40 +127,151 @@ export function GerenciarPremiacoes({ premiacoes }: { premiacoes: Premiacao[] })
 
       {premiacoes.length > 0 && (
         <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {premiacoes.map((premiacao) => (
-            <li key={premiacao.id} className="group relative overflow-hidden rounded-xl border border-slate-100">
-              <div className="relative aspect-[4/3] bg-slate-100">
-                <Image
-                  src={premiacao.imagem}
-                  alt={premiacao.titulo || "Premiação"}
-                  fill
-                  sizes="220px"
-                  className="object-cover"
+          {premiacoes.map((premiacao) =>
+            editandoId === premiacao.id ? (
+              <li key={premiacao.id} className="col-span-2 sm:col-span-3 lg:col-span-4">
+                <EditarPremiacaoCard
+                  premiacao={premiacao}
+                  onCancel={() => setEditandoId(null)}
+                  onSaved={() => {
+                    setEditandoId(null);
+                    router.refresh();
+                  }}
                 />
-                <button
-                  type="button"
-                  onClick={() => excluir(premiacao)}
-                  disabled={ocupado}
-                  aria-label="Excluir premiação"
-                  className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-red-600 opacity-0 shadow-sm transition-opacity hover:bg-red-600 hover:text-white focus:opacity-100 group-hover:opacity-100"
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
-                  </svg>
-                </button>
-              </div>
-              <div className="p-2">
-                <p className="truncate text-xs font-medium text-brand-navy">
-                  {premiacao.titulo || "(sem título)"}
-                </p>
-                {premiacao.ano != null && (
-                  <p className="text-xs text-slate-400">{premiacao.ano}</p>
-                )}
-              </div>
-            </li>
-          ))}
+              </li>
+            ) : (
+              <li key={premiacao.id} className="group relative overflow-hidden rounded-xl border border-slate-100">
+                <div className="relative aspect-[4/3] bg-slate-100">
+                  <Image
+                    src={premiacao.imagem}
+                    alt={premiacao.titulo || "Premiação"}
+                    fill
+                    sizes="220px"
+                    className="object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => excluir(premiacao)}
+                    disabled={ocupado}
+                    aria-label="Excluir premiação"
+                    className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-red-600 opacity-0 shadow-sm transition-opacity hover:bg-red-600 hover:text-white focus:opacity-100 group-hover:opacity-100"
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-4 w-4">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+                    </svg>
+                  </button>
+                </div>
+                <div className="p-2">
+                  <p className="truncate text-xs font-medium text-brand-navy">
+                    {premiacao.titulo || "(sem título)"}
+                  </p>
+                  {premiacao.ano != null && (
+                    <p className="text-xs text-slate-400">{premiacao.ano}</p>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setEditandoId(premiacao.id)}
+                    disabled={ocupado}
+                    className="mt-2 inline-flex rounded-full border border-slate-200 px-3 py-1 text-xs font-medium text-slate-600 transition-colors hover:border-brand-pink hover:text-brand-pink disabled:opacity-50"
+                  >
+                    Editar
+                  </button>
+                </div>
+              </li>
+            ),
+          )}
         </ul>
       )}
     </section>
+  );
+}
+
+function EditarPremiacaoCard({
+  premiacao,
+  onCancel,
+  onSaved,
+}: {
+  premiacao: Premiacao;
+  onCancel: () => void;
+  onSaved: () => void;
+}) {
+  const [titulo, setTitulo] = useState(premiacao.titulo);
+  const [ano, setAno] = useState(premiacao.ano != null ? String(premiacao.ano) : "");
+  const [arquivo, setArquivo] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [salvando, setSalvando] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
+
+  const escolher = (event: ChangeEvent<HTMLInputElement>) => {
+    const f = event.target.files?.[0] ?? null;
+    setArquivo(f);
+    setPreview(f ? URL.createObjectURL(f) : null);
+  };
+
+  const salvar = async (event: FormEvent) => {
+    event.preventDefault();
+    setErro(null);
+    setSalvando(true);
+    try {
+      const anoNum = ano.trim() === "" ? null : Number.parseInt(ano, 10);
+      await editarPremiacao(premiacao.id, {
+        titulo,
+        ano: Number.isNaN(anoNum) ? null : anoNum,
+        arquivo,
+      });
+      onSaved();
+    } catch (e) {
+      setErro(e instanceof Error ? e.message : "Não foi possível salvar a premiação.");
+      setSalvando(false);
+    }
+  };
+
+  return (
+    <form
+      onSubmit={salvar}
+      className="flex flex-col gap-3 rounded-xl border border-brand-pink/40 bg-brand-blush/20 p-3 sm:flex-row sm:items-end"
+    >
+      <div>
+        <span className="text-sm font-medium text-slate-600">Imagem</span>
+        <label
+          title="Clique para trocar a imagem"
+          className="mt-1 flex h-24 w-24 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-dashed border-slate-300 bg-slate-50 text-xs text-slate-400 hover:border-brand-pink"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={preview ?? premiacao.imagem} alt="" className="h-full w-full object-cover" />
+          <input type="file" accept="image/jpeg,image/png,image/webp" onChange={escolher} className="hidden" />
+        </label>
+      </div>
+
+      <label className="flex-1">
+        <span className="text-sm font-medium text-slate-600">Título</span>
+        <input type="text" value={titulo} onChange={(e) => setTitulo(e.target.value)} className={campo} />
+      </label>
+
+      <label className="sm:w-24">
+        <span className="text-sm font-medium text-slate-600">Ano</span>
+        <input type="number" inputMode="numeric" value={ano} onChange={(e) => setAno(e.target.value)} className={campo} />
+      </label>
+
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          disabled={salvando}
+          className="rounded-full bg-brand-pink px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-pink-600 disabled:opacity-50"
+        >
+          {salvando ? "Salvando..." : "Salvar"}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          disabled={salvando}
+          className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-slate-300 disabled:opacity-50"
+        >
+          Cancelar
+        </button>
+      </div>
+
+      {erro && <p className="w-full text-sm text-red-600">{erro}</p>}
+    </form>
   );
 }
