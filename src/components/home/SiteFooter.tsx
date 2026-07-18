@@ -9,6 +9,7 @@ const NAVEGACAO = [
   { label: "Sobre", href: "/sobre" },
   { label: "Depoimentos", href: "/#depoimentos" },
   { label: "Relatos", href: "/relatos" },
+  { label: "Parceiros", href: "/parceiros" },
   { label: "Contato", href: "/contato" },
   { label: "Política de Privacidade", href: "/privacidade" },
 ];
