@@ -4,7 +4,6 @@ import { Depoimentos } from "@/components/Depoimentos";
 import { SocialIcons } from "@/components/home/SocialIcons";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { getFotosClientes } from "@/lib/fotosClientes";
-import { getPremiacoes } from "@/lib/premiacoes";
 import { getConteudo, texto, lista, resolverValores } from "@/lib/conteudo";
 import {
   SOBRE_TITULO_1,
@@ -33,9 +32,8 @@ export const metadata = {
 };
 
 export default async function SobrePage() {
-  const [fotos, premiacoes, conteudo] = await Promise.all([
+  const [fotos, conteudo] = await Promise.all([
     getFotosClientes(),
-    getPremiacoes(),
     getConteudo(),
   ]);
   const fotoSobre = texto(conteudo, "foto_sobre", "/sobre/sandro-sentado.jpg");
@@ -169,49 +167,6 @@ export default async function SobrePage() {
           </aside>
         </div>
       </section>
-
-      {/* Premiações */}
-      {premiacoes.length > 0 && (
-        <section className="bg-brand-blush/25 py-16 sm:py-20">
-          <div className="mx-auto max-w-6xl px-6">
-            <div className="text-center">
-              <p className="font-heading text-xs font-semibold uppercase tracking-widest text-brand-pink">
-                Reconhecimento
-              </p>
-              <h2 className="mt-2 font-heading text-3xl font-extrabold tracking-tight text-brand-navy sm:text-4xl">
-                Minhas <span className="text-brand-pink">premiações</span>
-              </h2>
-              <p className="mx-auto mt-3 max-w-xl text-slate-600">
-                Prêmios e reconhecimentos que vieram do trabalho de cada dia.
-              </p>
-            </div>
-
-            <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-              {premiacoes.map((premiacao) => (
-                <li key={premiacao.id} className="overflow-hidden rounded-2xl bg-white shadow-sm">
-                  <div className="relative aspect-[4/3]">
-                    <Image
-                      src={premiacao.imagem}
-                      alt={premiacao.titulo || "Premiação do Sandro Higuti"}
-                      fill
-                      sizes="(max-width: 640px) 50vw, 25vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-3">
-                    {premiacao.titulo && (
-                      <p className="text-sm font-semibold text-brand-navy">{premiacao.titulo}</p>
-                    )}
-                    {premiacao.ano != null && (
-                      <p className="text-xs text-slate-400">{premiacao.ano}</p>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      )}
 
       {/* Clientes que viraram amigos */}
       <section className="bg-slate-50 py-16 sm:py-20">

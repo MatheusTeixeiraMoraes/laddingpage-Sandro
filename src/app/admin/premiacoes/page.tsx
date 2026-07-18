@@ -20,7 +20,7 @@ export default async function AdminPremiacoesPage() {
         Premiações
       </h1>
       <p className="mt-1 text-sm text-slate-500">
-        Seus prêmios e reconhecimentos — aparecem na página “Sobre”.
+        Seus prêmios e reconhecimentos — aparecem na página “Premiações”.
       </p>
 
       <div className="mt-8">

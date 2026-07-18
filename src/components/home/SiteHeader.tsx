@@ -11,6 +11,7 @@ const NAV = [
   { label: "Depoimentos", href: "/#depoimentos" },
   { label: "Relatos", href: "/relatos" },
   { label: "Parceiros", href: "/parceiros" },
+  { label: "Premiações", href: "/premiacoes" },
   { label: "Contato", href: "/contato" },
 ];
 
@@ -49,7 +50,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 text-sm font-medium text-slate-600 lg:flex">
+        <nav className="hidden items-center gap-6 text-sm font-medium text-slate-600 xl:flex">
           {NAV.map((item) => (
             <Link key={item.label} href={item.href} className="transition-colors hover:text-brand-pink">
               {item.label}

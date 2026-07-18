@@ -65,7 +65,7 @@ export function GerenciarPremiacoes({ premiacoes }: { premiacoes: Premiacao[] })
       <p className="mt-1 text-sm text-slate-500">
         {premiacoes.length === 0
           ? "Nenhuma premiação ainda."
-          : `${premiacoes.length} premiação(ões) — aparecem na página “Sobre”.`}
+          : `${premiacoes.length} premiação(ões) — aparecem na página “Premiações”.`}
       </p>
 
       <form onSubmit={adicionar} className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">

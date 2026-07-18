@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-/** Menu de navegação do celular (o nav do desktop some abaixo de lg). */
+/** Menu de navegação do celular (o nav do desktop some abaixo de xl). */
 export function MenuMobile({
   itens,
 }: {
@@ -22,7 +22,7 @@ export function MenuMobile({
   }, [aberto]);
 
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <button
         type="button"
         onClick={() => setAberto((v) => !v)}
