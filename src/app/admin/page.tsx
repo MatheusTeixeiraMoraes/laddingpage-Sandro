@@ -62,6 +62,12 @@ export default async function AdminPage() {
             Depoimentos
           </Link>
           <Link
+            href="/admin/premiacoes"
+            className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-brand-pink hover:text-brand-pink"
+          >
+            Premiações
+          </Link>
+          <Link
             href="/admin/relatos"
             className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:border-brand-pink hover:text-brand-pink"
           >
