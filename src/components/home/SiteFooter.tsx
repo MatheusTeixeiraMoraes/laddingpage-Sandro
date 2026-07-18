@@ -4,13 +4,13 @@ import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { SocialIcons } from "@/components/home/SocialIcons";
 
 const NAVEGACAO = [
-  { label: "Início", href: "/" },
   { label: "Imóveis", href: "/#imoveis" },
   { label: "Sobre", href: "/sobre" },
   { label: "Depoimentos", href: "/#depoimentos" },
   { label: "Relatos", href: "/relatos" },
   { label: "Parceiros", href: "/parceiros" },
   { label: "Premiações", href: "/premiacoes" },
+  { label: "Eventos", href: "/eventos" },
   { label: "Contato", href: "/contato" },
   { label: "Política de Privacidade", href: "/privacidade" },
 ];
