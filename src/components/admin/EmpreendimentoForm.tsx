@@ -175,7 +175,7 @@ export function EmpreendimentoForm({
     setSalvando(true);
     try {
       const imagem = arquivo
-        ? await uploadImagem(arquivo)
+        ? await uploadImagem(arquivo, { marca: true })
         : (empreendimento?.imagem ?? "");
 
       // O texto vive no bairro, nao no imovel: salva na tabela de bairros e
@@ -590,6 +590,7 @@ export function EmpreendimentoForm({
             ajuda="Fachada, piscina, lazer, decorado. Pode escolher várias de uma vez."
             imagens={galeria}
             onChange={setGaleria}
+            marca
           />
         </div>
 

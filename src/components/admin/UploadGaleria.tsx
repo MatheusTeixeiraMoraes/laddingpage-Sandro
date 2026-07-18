@@ -14,11 +14,14 @@ export function UploadGaleria({
   ajuda,
   imagens,
   onChange,
+  marca,
 }: {
   label: string;
   ajuda?: string;
   imagens: string[];
   onChange: (imagens: string[]) => void;
+  /** Queima a marca d'água do Sandro (só na galeria do imóvel, não em plantas). */
+  marca?: boolean;
 }) {
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
@@ -28,7 +31,7 @@ export function UploadGaleria({
     setErro(null);
     setEnviando(true);
     try {
-      const urls = await uploadImagens(Array.from(lista));
+      const urls = await uploadImagens(Array.from(lista), { marca });
       onChange([...imagens, ...urls]);
     } catch (e) {
       setErro(e instanceof Error ? e.message : "Não foi possível enviar as imagens.");

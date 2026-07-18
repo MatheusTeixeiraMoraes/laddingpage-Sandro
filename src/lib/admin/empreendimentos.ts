@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
+import { aplicarMarcaDagua } from "@/lib/admin/marcaDagua";
 import type { TipoEmpreendimento, Zona } from "@/types/empreendimento";
 
 /** Nomes em snake_case: o objeto vai direto para o insert/update do Supabase. */
@@ -52,7 +53,11 @@ function paraLinhaPlanta(dados: PlantaInput) {
   };
 }
 
-export async function uploadImagem(arquivo: File): Promise<string> {
+/** `marca: true` queima a logo do Sandro no centro (só imóveis; ver marcaDagua.ts). */
+export async function uploadImagem(
+  arquivo: File,
+  opts?: { marca?: boolean },
+): Promise<string> {
   if (!TIPOS_ACEITOS.includes(arquivo.type)) {
     throw new Error("Formato não aceito. Use JPG, PNG ou WEBP.");
   }
@@ -60,21 +65,26 @@ export async function uploadImagem(arquivo: File): Promise<string> {
     throw new Error("A imagem passa de 5 MB. Escolha uma menor.");
   }
 
+  const arquivoFinal = opts?.marca ? await aplicarMarcaDagua(arquivo) : arquivo;
+
   const supabase = createClient();
   const extensao = arquivo.name.split(".").pop()?.toLowerCase() ?? "jpg";
   const nome = `${crypto.randomUUID()}.${extensao}`;
 
-  const { error } = await supabase.storage.from(BUCKET).upload(nome, arquivo);
+  const { error } = await supabase.storage.from(BUCKET).upload(nome, arquivoFinal);
   if (error) throw new Error("Não foi possível enviar a imagem. Tente novamente.");
 
   return supabase.storage.from(BUCKET).getPublicUrl(nome).data.publicUrl;
 }
 
 /** Sobe várias imagens e devolve as URLs na mesma ordem. */
-export async function uploadImagens(arquivos: File[]): Promise<string[]> {
+export async function uploadImagens(
+  arquivos: File[],
+  opts?: { marca?: boolean },
+): Promise<string[]> {
   const urls: string[] = [];
   for (const arquivo of arquivos) {
-    urls.push(await uploadImagem(arquivo));
+    urls.push(await uploadImagem(arquivo, opts));
   }
   return urls;
 }
