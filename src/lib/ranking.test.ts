@@ -13,7 +13,7 @@ function emp(id: string, nome: string, destaque = false): Empreendimento {
     id, nome, tipo: "apartamento",
     bairro: { id: "b", nome: "Centro", sobre: "" }, zona: "norte",
     imagem: "", galeria: [], entregaEm: null, precoAPartirDe: 0,
-    dormitorios: [], suite: false, varanda: false, quintal: false,
+    dormitorios: [], suite: 0, varanda: false, quintal: false,
     garagemCoberta: false, vagaDupla: false, pontosAr: null,
     descricao: "", construtora: "", torres: null, andares: "",
     aptosPorAndar: null, elevadores: null, entregaComPiso: "", documentacao: "",

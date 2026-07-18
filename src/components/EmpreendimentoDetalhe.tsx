@@ -162,7 +162,10 @@ export function EmpreendimentoDetalhe({
   };
 
   const presentes = [
-    { label: "Suíte", tem: empreendimento.suite },
+    {
+      label: empreendimento.suite === 1 ? "1 suíte" : `${empreendimento.suite} suítes`,
+      tem: empreendimento.suite > 0,
+    },
     { label: "Varanda", tem: empreendimento.varanda },
     { label: "Quintal", tem: empreendimento.quintal },
     { label: "Garagem coberta", tem: empreendimento.garagemCoberta },

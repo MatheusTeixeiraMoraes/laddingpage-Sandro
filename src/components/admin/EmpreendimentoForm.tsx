@@ -8,11 +8,14 @@ import { parseCoordenadas } from "@/lib/coordenadas";
 import {
   criarEmpreendimento,
   atualizarEmpreendimento,
+  criarPlanta,
   uploadImagem,
   type EmpreendimentoInput,
+  type PlantaInput,
 } from "@/lib/admin/empreendimentos";
 import { criarBairro, salvarSobreBairro } from "@/lib/admin/bairros";
 import { UploadGaleria } from "@/components/admin/UploadGaleria";
+import { PlantasBuffer } from "@/components/admin/PlantasManager";
 
 const TIPOS: { value: TipoEmpreendimento; label: string }[] = [
   { value: "apartamento", label: "Apartamento" },
@@ -90,7 +93,7 @@ export function EmpreendimentoForm({
   // Caracteristicas do PREDIO (a planta guarda so o tamanho).
   const [preco, setPreco] = useState(empreendimento?.precoAPartirDe ?? 0);
   const [dorms, setDorms] = useState<number[]>(empreendimento?.dormitorios ?? [2]);
-  const [suite, setSuite] = useState(empreendimento?.suite ?? false);
+  const [suite, setSuite] = useState<number>(empreendimento?.suite ?? 0);
   const [varanda, setVaranda] = useState(empreendimento?.varanda ?? false);
   const [quintal, setQuintal] = useState(empreendimento?.quintal ?? false);
   const [garagem, setGaragem] = useState(empreendimento?.garagemCoberta ?? false);
@@ -116,6 +119,12 @@ export function EmpreendimentoForm({
   );
   const [endereco, setEndereco] = useState(empreendimento?.endereco ?? "");
   const [destaque, setDestaque] = useState(empreendimento?.destaque ?? false);
+  // Plantas montadas na criação (na edição, quem cuida é o PlantasManager, que
+  // persiste na hora porque o empreendimento já existe).
+  const [plantasBuffer, setPlantasBuffer] = useState<PlantaInput[]>([]);
+  // Trava o "Criar empreendimento" enquanto uma planta está sendo digitada, pra
+  // ela não ser perdida sem ir pra lista.
+  const [plantaAberta, setPlantaAberta] = useState(false);
 
   const numeroOuNulo = (v: string): number | null => (v === "" ? null : Number(v));
 
@@ -218,6 +227,22 @@ export function EmpreendimentoForm({
         router.refresh();
       } else {
         const id = await criarEmpreendimento(dados);
+        // Empreendimento criado: agora as plantas montadas viram linhas de
+        // verdade. Se uma falhar, seguimos (não recriamos o empreendimento —
+        // isso duplicaria) e avisamos pra terminar na tela de edição.
+        let plantaFalhou = false;
+        for (const planta of plantasBuffer) {
+          try {
+            await criarPlanta(id, planta);
+          } catch {
+            plantaFalhou = true;
+          }
+        }
+        if (plantaFalhou) {
+          alert(
+            "Empreendimento criado! Mas uma ou mais plantas não foram salvas — confira na tela de edição e adicione o que faltar.",
+          );
+        }
         router.push(`/admin/empreendimentos/${id}`);
       }
     } catch (e) {
@@ -344,11 +369,29 @@ export function EmpreendimentoForm({
           </span>
         </div>
 
+        <label>
+          <span className={rotulo}>Suítes</span>
+          <select
+            className={campo}
+            value={suite}
+            onChange={(e) => setSuite(Number(e.target.value))}
+          >
+            <option value={0}>Sem suíte</option>
+            {[1, 2, 3, 4].map((n) => (
+              <option key={n} value={n}>
+                {n} {n === 1 ? "suíte" : "suítes"}
+              </option>
+            ))}
+          </select>
+          <span className="mt-1 block text-xs text-slate-400">
+            Quantas suítes a unidade tem (ex.: 3 dormitórios, 2 suítes).
+          </span>
+        </label>
+
         <div className="sm:col-span-2">
           <span className={rotulo}>O que este empreendimento tem</span>
           <div className="mt-2 grid gap-2 sm:grid-cols-3">
             {([
-              ["Suíte", suite, setSuite],
               ["Varanda", varanda, setVaranda],
               ["Quintal", quintal, setQuintal],
               ["Garagem coberta", garagem, setGaragem],
@@ -611,14 +654,30 @@ export function EmpreendimentoForm({
             </span>
           </span>
         </label>
+
+        {!editando && (
+          <div className="sm:col-span-2">
+            <PlantasBuffer
+              plantas={plantasBuffer}
+              onChange={setPlantasBuffer}
+              onAbertoChange={setPlantaAberta}
+            />
+          </div>
+        )}
       </div>
 
       {erro && <p className="mt-4 text-sm text-red-600">{erro}</p>}
       {ok && <p className="mt-4 text-sm text-emerald-600">Alterações salvas.</p>}
+      {plantaAberta && (
+        <p className="mt-4 text-sm text-amber-600">
+          Termine a planta que você está montando (&ldquo;Adicionar à lista&rdquo;) ou
+          cancele antes de criar o empreendimento.
+        </p>
+      )}
 
       <button
         type="submit"
-        disabled={salvando}
+        disabled={salvando || plantaAberta}
         className="mt-6 rounded-full bg-brand-pink px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-pink-600 disabled:opacity-50"
       >
         {salvando ? "Salvando..." : editando ? "Salvar alterações" : "Criar empreendimento"}

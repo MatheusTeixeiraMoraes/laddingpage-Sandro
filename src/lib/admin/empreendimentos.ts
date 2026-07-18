@@ -14,7 +14,8 @@ export type EmpreendimentoInput = {
   entrega_em: string | null;
   preco_a_partir_de: number;
   dormitorios: number[];
-  suite: boolean;
+  /** Quantidade de suítes (0 = sem suíte). */
+  suite: number;
   varanda: boolean;
   quintal: boolean;
   garagem_coberta: boolean;

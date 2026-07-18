@@ -19,7 +19,8 @@ export default async function NovoEmpreendimentoPage() {
         Novo empreendimento
       </h1>
       <p className="mt-1 text-sm text-slate-500">
-        Depois de criar, você adiciona as plantas na tela de edição.
+        Preencha os dados e já pode montar as plantas no fim do formulário — elas
+        entram junto quando você criar o empreendimento.
       </p>
 
       <div className="mt-6">

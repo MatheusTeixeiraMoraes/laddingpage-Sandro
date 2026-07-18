@@ -25,7 +25,7 @@ type EmpreendimentoRow = {
   entrega_em: string | null;
   preco_a_partir_de: number | string;
   dormitorios: number[];
-  suite: boolean;
+  suite: number;
   varanda: boolean;
   quintal: boolean;
   garagem_coberta: boolean;
@@ -62,7 +62,7 @@ function mapRow(row: EmpreendimentoRow): Empreendimento {
     entregaEm: row.entrega_em,
     precoAPartirDe: Number(row.preco_a_partir_de),
     dormitorios: row.dormitorios ?? [],
-    suite: row.suite,
+    suite: row.suite ?? 0,
     varanda: row.varanda,
     quintal: row.quintal,
     garagemCoberta: row.garagem_coberta,

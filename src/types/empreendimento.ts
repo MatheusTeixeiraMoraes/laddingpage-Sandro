@@ -43,7 +43,8 @@ export type Empreendimento = {
   precoAPartirDe: number;
   /** Opções de dormitórios do empreendimento: [2] ou [2, 3] ou [1, 2, 3]. */
   dormitorios: number[];
-  suite: boolean;
+  /** Quantidade de suítes (ex.: 2). 0 = sem suíte. */
+  suite: number;
   varanda: boolean;
   quintal: boolean;
   garagemCoberta: boolean;

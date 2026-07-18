@@ -29,7 +29,7 @@ function emp(
     entregaEm,
     precoAPartirDe,
     dormitorios,
-    suite: false,
+    suite: 0,
     varanda: false,
     quintal: false,
     garagemCoberta: false,
