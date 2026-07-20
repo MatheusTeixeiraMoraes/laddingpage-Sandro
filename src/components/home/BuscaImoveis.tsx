@@ -25,6 +25,13 @@ const selectClass =
   "mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-pink";
 const labelClass = "flex flex-col text-xs font-medium uppercase tracking-wide text-slate-500";
 
+/** 9 = 3 linhas de 3 cards no desktop. */
+const POR_PAGINA = 9;
+const btnPagina =
+  "flex h-10 min-w-[2.5rem] items-center justify-center rounded-full border border-slate-200 px-3 text-sm font-medium text-slate-600 transition-colors hover:border-brand-pink hover:text-brand-pink disabled:opacity-40 disabled:pointer-events-none";
+const btnPaginaAtiva =
+  "flex h-10 min-w-[2.5rem] items-center justify-center rounded-full bg-brand-pink px-3 text-sm font-semibold text-white";
+
 function precoCurto(valor: number): string {
   return valor >= 1_000_000
     ? `${(valor / 1_000_000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} mi`
@@ -38,11 +45,19 @@ export function BuscaImoveis({
   empreendimentos: Empreendimento[];
   zonaInicial?: Zona | "todas";
 }) {
-  const [filtros, setFiltros] = useState<Filtros>({
+  const [filtros, aplicarFiltros] = useState<Filtros>({
     ...FILTROS_VAZIOS,
     zona: zonaInicial,
   });
   const [maisAberto, setMaisAberto] = useState(false);
+  const [pagina, setPagina] = useState(1);
+
+  // Mexeu em qualquer filtro, volta pra primeira pagina: senao dava pra ficar
+  // numa pagina que o resultado novo nem tem mais (grade vazia).
+  const setFiltros: typeof aplicarFiltros = (valor) => {
+    aplicarFiltros(valor);
+    setPagina(1);
+  };
 
   // As opções saem do estoque: nada de faixa que devolve zero imóvel.
   const opcoes = useMemo(
@@ -63,6 +78,20 @@ export function BuscaImoveis({
     () => filterEmpreendimentos(empreendimentos, filtros, ""),
     [empreendimentos, filtros],
   );
+
+  const totalPaginas = Math.max(1, Math.ceil(resultados.length / POR_PAGINA));
+  // Trava a pagina no fim: protege se a lista encolher com a pagina la na frente.
+  const paginaAtual = Math.min(pagina, totalPaginas);
+  const visiveis = resultados.slice(
+    (paginaAtual - 1) * POR_PAGINA,
+    paginaAtual * POR_PAGINA,
+  );
+
+  const irParaPagina = (n: number) => {
+    setPagina(n);
+    // Volta pro topo da lista: senao a pagina nova abre pelo rodape dela.
+    document.getElementById("imoveis")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const parseOrNull = (v: string): number | null => (v === "" ? null : Number(v));
 
@@ -254,10 +283,48 @@ export function BuscaImoveis({
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {resultados.map((emp) => (
+              {visiveis.map((emp) => (
                 <EmpreendimentoCard key={emp.id} empreendimento={emp} />
               ))}
             </div>
+          )}
+
+          {totalPaginas > 1 && (
+            <nav
+              aria-label="Páginas de imóveis"
+              className="mt-8 flex flex-wrap items-center justify-center gap-2"
+            >
+              <button
+                type="button"
+                onClick={() => irParaPagina(paginaAtual - 1)}
+                disabled={paginaAtual === 1}
+                className={btnPagina}
+              >
+                Anterior
+              </button>
+
+              {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => irParaPagina(n)}
+                  aria-label={`Página ${n}`}
+                  aria-current={n === paginaAtual ? "page" : undefined}
+                  className={n === paginaAtual ? btnPaginaAtiva : btnPagina}
+                >
+                  {n}
+                </button>
+              ))}
+
+              <button
+                type="button"
+                onClick={() => irParaPagina(paginaAtual + 1)}
+                disabled={paginaAtual === totalPaginas}
+                className={btnPagina}
+              >
+                Próxima
+              </button>
+            </nav>
           )}
         </div>
       </div>
