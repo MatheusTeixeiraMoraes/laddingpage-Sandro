@@ -28,7 +28,7 @@ export type EmpreendimentoInput = {
   aptos_por_andar: number | null;
   elevadores: number | null;
   entrega_com_piso: "" | "completo" | "areas_molhadas";
-  documentacao: "" | "gratis" | "pago";
+  documentacao: "" | "gratis" | "desconto";
   endereco: string;
   destaque: boolean;
   latitude: number;

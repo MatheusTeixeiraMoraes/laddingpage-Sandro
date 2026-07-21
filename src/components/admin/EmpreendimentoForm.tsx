@@ -525,7 +525,7 @@ export function EmpreendimentoForm({
               >
                 <option value="">Não informado</option>
                 <option value="gratis">Grátis</option>
-                <option value="pago">Por conta do comprador</option>
+                <option value="desconto">Com desconto</option>
               </select>
             </label>
           </div>

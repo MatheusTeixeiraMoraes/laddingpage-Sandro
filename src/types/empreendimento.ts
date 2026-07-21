@@ -64,7 +64,7 @@ export type Empreendimento = {
   /** Quantidade. Nulo = não informado; 0 = prédio sem elevador (sobrado). */
   elevadores: number | null;
   entregaComPiso: "" | "completo" | "areas_molhadas";
-  documentacao: "" | "gratis" | "pago";
+  documentacao: "" | "gratis" | "desconto";
 
   /** Endereço escrito ("R. Ramon Haro Martini, 1160 - Vila Haro"). */
   endereco: string;

@@ -64,7 +64,7 @@ const PISO: Record<Empreendimento["entregaComPiso"], string> = {
 const DOCUMENTACAO: Record<Empreendimento["documentacao"], string> = {
   "": "",
   gratis: "Grátis",
-  pago: "Por conta do comprador",
+  desconto: "Com desconto",
 };
 
 /** Só entra na ficha o que foi informado — campo vazio não vira card vazio. */

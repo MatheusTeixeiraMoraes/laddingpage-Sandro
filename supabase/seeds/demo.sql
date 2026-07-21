@@ -65,7 +65,7 @@ insert into empreendimentos (
  array['/imoveis/sou-viver/1.jpg','/imoveis/sou-viver/2.jpg','/imoveis/sou-viver/3.jpg'],
  '2026-12-01', 235000, array[2], 0, true, false, false, false, 1,
  'Torre única com 45 unidades, elevador e portaria 24h. Entrega prevista para dezembro de 2026.',
- 'COMATT', 1, 'T + 7', 6, 1, 'areas_molhadas', 'pago',
+ 'COMATT', 1, 'T + 7', 6, 1, 'areas_molhadas', 'desconto',
  'R. Antônio Aparecido Ferraz, 350 - Vila Haro', -23.4955, -47.4342),
 
 -- 3. CASA: sem elevador (0), com quintal
@@ -83,7 +83,7 @@ insert into empreendimentos (
  array['/imoveis/gran-campolim/1.jpg','/imoveis/gran-campolim/2.jpg'],
  '2027-06-01', 165000, array[]::integer[], 0, false, false, true, false, 1,
  'Salas comerciais de 32 m² no coração do Centro, com recepção compartilhada e estacionamento rotativo.',
- 'YESS', 1, 'T + 12', 10, 2, 'areas_molhadas', 'pago',
+ 'YESS', 1, 'T + 12', 10, 2, 'areas_molhadas', 'desconto',
  'R. São Bento, 200 - Centro', -23.5015, -47.4526),
 
 -- 5. 3 plantas, o mais barato, SEM galeria e SEM descrição
@@ -108,7 +108,7 @@ insert into empreendimentos (
  array['/imoveis/sao-paulo/1.jpg','/imoveis/sao-paulo/2.jpg','/imoveis/sao-paulo/3.jpg'],
  null, 298000, array[2], 1, true, false, true, false, 2,
  'Pronto para morar, a 5 minutos da Av. Itavuvu. Lazer completo e unidades com suíte.',
- 'CASA GRANDE', 2, 'T + 8', 4, 2, 'completo', 'pago',
+ 'CASA GRANDE', 2, 'T + 8', 4, 2, 'completo', 'desconto',
  'Av. Itavuvu, 5100 - Jardim Ipanema', -23.4590, -47.4415),
 
 -- 8. O mais caro (estica as faixas de preço para cima)
@@ -126,7 +126,7 @@ insert into empreendimentos (
  array['/imoveis/siver-oasis/1.jpg','/imoveis/siver-oasis/2.jpg','/imoveis/siver-oasis/3.jpg'],
  '2029-03-01', 210000, array[1,2], 0, true, false, false, false, 1,
  'Studios e apartamentos de 2 dormitórios no Centro, a 300 m do terminal urbano.',
- 'MUV', 1, 'T + 16', 10, 2, 'areas_molhadas', 'pago',
+ 'MUV', 1, 'T + 16', 10, 2, 'areas_molhadas', 'desconto',
  'R. Barão de Piratininga, 90 - Centro', -23.5040, -47.4560),
 
 -- 10. Ficha técnica TODA VAZIA: campo vazio não pode virar card vazio
