@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import { aplicarMarcaDagua } from "@/lib/admin/marcaDagua";
+import { prepararImagem } from "@/lib/admin/imagemUpload";
 import type { TipoEmpreendimento, Zona } from "@/types/empreendimento";
 
 /** Nomes em snake_case: o objeto vai direto para o insert/update do Supabase. */
@@ -54,7 +54,10 @@ function paraLinhaPlanta(dados: PlantaInput) {
   };
 }
 
-/** `marca: true` queima a logo do Sandro no centro (só imóveis; ver marcaDagua.ts). */
+/**
+ * Sobe a imagem já redimensionada e comprimida (ver imagemUpload.ts). Com
+ * `marca: true` também queima a logo do Sandro no centro — só imóveis.
+ */
 export async function uploadImagem(
   arquivo: File,
   opts?: { marca?: boolean },
@@ -66,10 +69,13 @@ export async function uploadImagem(
     throw new Error("A imagem passa de 5 MB. Escolha uma menor.");
   }
 
-  const arquivoFinal = opts?.marca ? await aplicarMarcaDagua(arquivo) : arquivo;
+  // Sempre prepara: o site serve direto do Storage, então imagem pesada aqui
+  // é imagem pesada no celular do cliente.
+  const arquivoFinal = await prepararImagem(arquivo, opts);
 
   const supabase = createClient();
-  const extensao = arquivo.name.split(".").pop()?.toLowerCase() ?? "jpg";
+  // A extensão vem do arquivo JÁ processado (vira .jpg), não do original.
+  const extensao = arquivoFinal.name.split(".").pop()?.toLowerCase() ?? "jpg";
   const nome = `${crypto.randomUUID()}.${extensao}`;
 
   const { error } = await supabase.storage.from(BUCKET).upload(nome, arquivoFinal);

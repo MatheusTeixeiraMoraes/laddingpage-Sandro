@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
     // site passaram a responder 402 (Payment required) -- inclusive o logo.
     // As imagens agora saem direto do Storage/public, sem cota nenhuma.
     // Para isso valer a pena, o upload comprime a imagem antes de subir
-    // (ver src/lib/admin/marcaDagua.ts): foto de 3 MB vira ~150 KB.
+    // (ver src/lib/admin/imagemUpload.ts): foto de 3 MB vira ~150 KB.
     unoptimized: true,
     remotePatterns: [
       {
